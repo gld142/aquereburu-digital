@@ -7,15 +7,15 @@ export function FoundationSection() {
   const t = useTranslations('foundation');
 
   return (
-    <section className="relative border-t border-black/6 bg-white py-24 px-24 lg:px-32 overflow-hidden">
+    <section className="relative border-t border-black/6 bg-white py-16 px-5 overflow-hidden sm:px-10 sm:py-20 lg:px-24 lg:py-24 2xl:px-32">
       <div className="mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
+        <div className="grid grid-cols-1 gap-8 sm:gap-10 lg:grid-cols-2 lg:items-center lg:gap-12">
           {/* Left: Content */}
           <div className="relative z-10">
             <p className="text-[11px] font-medium uppercase tracking-[0.25em] text-gold-600/70">
               Engagement Social
             </p>
-            <h2 className="mt-4 font-display text-[2.75rem] font-semibold text-navy-900">
+            <h2 className="mt-4 font-display text-[1.75rem] font-semibold text-navy-900 sm:text-[2.25rem] lg:text-[2.75rem]">
               La Fondation AQUEREBURU &amp; <span className="italic text-gold-600">Partners</span>
             </h2>
             <p className="mt-5 text-[15px] leading-relaxed text-navy-700/60">

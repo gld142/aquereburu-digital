@@ -46,14 +46,14 @@ export function TeamPreviewSection() {
   const collaborators = attorneys.filter((a) => a.title === 'collaborateur');
 
   return (
-    <section className="bg-cream py-32 px-24 lg:px-32">
+    <section className="bg-cream py-16 px-5 sm:px-10 sm:py-20 lg:px-24 lg:py-32">
       <div className="mx-auto max-w-7xl">
         {/* Header — centered */}
         <div className="text-center">
           <p className="text-[11px] font-medium uppercase tracking-[0.25em] text-gold-600/70">
             {t('label')}
           </p>
-          <h2 className="mt-4 font-display text-[2.75rem] font-semibold text-navy-900">
+          <h2 className="mt-4 font-display text-[1.75rem] font-semibold text-navy-900 sm:text-[2.25rem] lg:text-[2.75rem]">
             {t('titleMain')} <span className="italic text-gold-600">{t('titleAccent')}</span>
           </h2>
           <p className="mt-4 mx-auto max-w-2xl text-[15px] leading-relaxed text-navy-700/60">

@@ -87,7 +87,7 @@ export function Navbar() {
         className={`sticky top-0 z-50 transition-all duration-300`}
       >
         <nav
-          className="flex h-[72px] items-center justify-between border-b border-black/[0.06] bg-white/[0.97] px-6 backdrop-blur-md lg:px-12"
+          className="flex h-[64px] items-center justify-between border-b border-black/[0.06] bg-white/[0.97] px-4 backdrop-blur-md sm:h-[72px] sm:px-6 lg:px-12"
         >
           {/* Logo: round image + serif text */}
           <Link
@@ -98,7 +98,7 @@ export function Navbar() {
             {/* SVG Logo mark — 44px */}
             <Logo size={44} variant="mark" />
             {/* Text: AQUEREBURU in navy bold + & Partners in gold lighter */}
-            <span className="font-display text-[20px] font-semibold tracking-[0.02em] text-[#1B2A4A]">
+            <span className="font-display text-[15px] font-semibold tracking-[0.02em] text-[#1B2A4A] sm:text-[20px]">
               AQUEREBURU <span className="font-normal text-gold-500">&amp; Partners</span>
             </span>
           </Link>

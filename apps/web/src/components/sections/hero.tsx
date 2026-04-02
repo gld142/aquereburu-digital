@@ -8,9 +8,9 @@ export function HeroSection() {
   const t = useTranslations('hero');
 
   return (
-    <section className="relative grid min-h-[90vh] grid-cols-1 overflow-hidden bg-[#1B2A4A] lg:grid-cols-2">
+    <section className="relative grid min-h-[80vh] grid-cols-1 overflow-hidden bg-[#1B2A4A] sm:min-h-[90vh] lg:grid-cols-2">
       {/* LEFT COLUMN: Text content */}
-      <div className="relative z-10 flex flex-col justify-center px-10 py-24 lg:px-20">
+      <div className="relative z-10 flex flex-col justify-center px-6 py-16 sm:px-10 sm:py-20 lg:px-20 lg:py-24">
         {/* Gold line + text label */}
         <div className="mb-9 flex items-center gap-4">
           <div className="h-px w-12 bg-gold-500" />
@@ -19,7 +19,7 @@ export function HeroSection() {
           </p>
         </div>
 
-        <h1 className="max-w-[540px] font-display text-[32px] font-normal leading-[1.15] text-white sm:text-[42px] lg:text-[54px]">
+        <h1 className="max-w-[540px] font-display text-[26px] font-normal leading-[1.15] text-white sm:text-[36px] md:text-[42px] lg:text-[54px]">
           {t('headlineMain')}{' '}
           <em className="italic text-gold-400">{t('headlineAccent')}</em>
         </h1>
@@ -28,7 +28,7 @@ export function HeroSection() {
           {t('subheadline')}
         </p>
 
-        <div className="mt-11 flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-5">
+        <div className="mt-8 flex flex-col gap-4 sm:mt-11 sm:flex-row sm:items-center sm:gap-5">
           <Link
             href="/contact"
             className="inline-flex items-center justify-center gap-2.5 bg-gold-500 px-8 py-3.5 text-[12px] font-bold uppercase tracking-[0.1em] text-[#1B2A4A] transition-all duration-300 hover:bg-gold-400 hover:-translate-y-px"

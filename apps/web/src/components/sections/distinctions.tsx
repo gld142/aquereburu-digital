@@ -55,13 +55,13 @@ export function DistinctionsSection() {
 
   return (
     <section className="border-t border-black/6 bg-white py-20">
-      <div className="mx-auto max-w-[1200px] px-12">
+      <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-12">
         {/* Header - centered */}
         <div className="mb-14 text-center">
           <p className="mb-5 text-[10px] font-bold uppercase tracking-[0.25em] text-gold-500">
             Reconnaissances
           </p>
-          <h2 className="font-display text-[36px] font-normal text-navy-900">
+          <h2 className="font-display text-[24px] font-normal text-navy-900 sm:text-[30px] lg:text-[36px]">
             Distinctions &amp; classements
           </h2>
         </div>
@@ -69,14 +69,14 @@ export function DistinctionsSection() {
         {/* Horizontal Timeline */}
         <div className="relative flex justify-center">
           {/* Connecting line */}
-          <div className="absolute left-[10%] right-[10%] top-5 h-px bg-[#f0ece3]" />
+          <div className="absolute left-[5%] right-[5%] top-5 hidden h-px bg-[#f0ece3] sm:block" />
 
           {/* Timeline items */}
           <div className="relative z-10 flex flex-wrap justify-center gap-6">
             {distinctions.map((item) => (
               <div
                 key={item.key}
-                className="flex max-w-[220px] flex-1 flex-col items-center px-6 text-center"
+                className="flex max-w-[220px] flex-1 basis-[140px] flex-col items-center px-3 text-center sm:px-6"
               >
                 {/* Year Circle */}
                 <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-navy-900">

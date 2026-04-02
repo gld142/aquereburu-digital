@@ -16,8 +16,7 @@ export function GalleryStrip() {
         {images.map((item) => (
           <div
             key={item.id}
-            className="group relative overflow-hidden"
-            style={{ height: '280px' }}
+            className="group relative h-[180px] overflow-hidden sm:h-[220px] lg:h-[280px]"
           >
             <Image
               src={item.src}

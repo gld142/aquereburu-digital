@@ -27,7 +27,7 @@ export function Footer() {
 
   return (
     <footer className="bg-navy-900 text-white" role="contentinfo">
-      <div className="mx-auto max-w-6xl px-6 pb-10 pt-16 lg:px-8">
+      <div className="mx-auto max-w-6xl px-5 pb-10 pt-12 sm:px-6 sm:pt-16 lg:px-8">
         <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10">
           {/* Col 1: Identity */}
           <div>

@@ -18,16 +18,16 @@ export function StatsSection() {
         {stats.map((stat, i) => (
           <div
             key={stat.id}
-            className={`px-10 py-16 text-center ${
+            className={`px-6 py-10 text-center sm:px-8 sm:py-12 lg:px-10 lg:py-16 ${
               i < 3 ? 'border-r border-black/6' : ''
             }`}
           >
             {/* Value with number and optional + */}
-            <p className="font-display text-5xl font-light text-navy-900">
+            <p className="font-display text-3xl font-light text-navy-900 sm:text-4xl lg:text-5xl">
               {t(stat.valueKey).includes('+') ? (
                 <>
                   {t(stat.valueKey).replace('+', '')}
-                  <span className="text-4xl text-gold-600">+</span>
+                  <span className="text-2xl text-gold-600 sm:text-3xl lg:text-4xl">+</span>
                 </>
               ) : (
                 t(stat.valueKey)

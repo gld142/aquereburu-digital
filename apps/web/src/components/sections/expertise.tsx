@@ -22,11 +22,11 @@ export function ExpertiseSection() {
   const tabKeys = ['tab1', 'tab2', 'tab3', 'tab4'];
 
   return (
-    <section className="bg-navy-900 py-[100px]">
-      <div className="mx-auto max-w-[1200px] px-12">
+    <section className="bg-navy-900 py-16 sm:py-20 lg:py-[100px]">
+      <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-12">
         {/* Header — flex between */}
         <div className="mb-16 flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
-          <h2 className="font-display text-[44px] font-normal leading-[1.2] text-white">
+          <h2 className="font-display text-[28px] font-normal leading-[1.2] text-white sm:text-[36px] lg:text-[44px]">
             {t('titleMain')}<br /><em className="italic text-gold-400">{t('titleAccent')}</em>
           </h2>
           <p className="max-w-xs text-right text-[13px] font-light leading-[1.7] text-white/35">
@@ -35,12 +35,12 @@ export function ExpertiseSection() {
         </div>
 
         {/* Tabs Row */}
-        <div className="mb-12 flex gap-0 border-b border-white/10">
+        <div className="mb-8 flex gap-0 overflow-x-auto border-b border-white/10 sm:mb-12">
           {tabKeys.map((key, idx) => (
             <button
               key={idx}
               onClick={() => setActiveTab(idx)}
-              className={`px-7 pb-3.5 text-[12px] font-semibold uppercase tracking-[0.08em] transition-all duration-250 ${
+              className={`shrink-0 px-4 pb-3.5 text-[11px] font-semibold uppercase tracking-[0.08em] transition-all duration-250 sm:px-7 sm:text-[12px] ${
                 idx === activeTab
                   ? 'border-b-2 border-gold-500 text-gold-500'
                   : 'border-b-2 border-transparent text-white/30 hover:text-white/60'
@@ -53,8 +53,7 @@ export function ExpertiseSection() {
 
         {/* 3-Column Grid of Cards with 1px gap */}
         <div
-          className="grid gap-px bg-white/6"
-          style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}
+          className="grid grid-cols-1 gap-px bg-white/6 sm:grid-cols-2 lg:grid-cols-3"
         >
           {expertise_cards.map((card, i) => (
             <div

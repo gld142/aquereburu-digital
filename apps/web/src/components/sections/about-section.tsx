@@ -18,7 +18,7 @@ export function AboutSection() {
     <section className="grid grid-cols-1 lg:grid-cols-2">
       {/* Left column: Warm background photo placeholder */}
       <div
-        className="min-h-[560px] relative overflow-hidden"
+        className="min-h-[300px] relative overflow-hidden sm:min-h-[400px] lg:min-h-[560px]"
       >
         <Image
           src="/images/photo-associes.jpg"
@@ -33,14 +33,14 @@ export function AboutSection() {
       </div>
 
       {/* Right column: White background with content */}
-      <div className="flex flex-col justify-center bg-white px-20 py-24">
+      <div className="flex flex-col justify-center bg-white px-6 py-12 sm:px-12 sm:py-16 lg:px-20 lg:py-24">
         {/* Gold tag */}
         <p className="mb-5 text-[10px] font-bold uppercase tracking-[0.25em] text-gold-500">
           {t('label')}
         </p>
 
         {/* Serif title with italic accent */}
-        <h2 className="font-display text-[38px] font-normal leading-[1.25] text-navy-900">
+        <h2 className="font-display text-[26px] font-normal leading-[1.25] text-navy-900 sm:text-[32px] lg:text-[38px]">
           {t('titleMain')}{' '}
           <em className="italic text-gold-500">{t('titleAccent')}</em>
         </h2>
@@ -51,7 +51,7 @@ export function AboutSection() {
         </p>
 
         {/* 2x2 Grid of features */}
-        <div className="mt-8 grid grid-cols-2 gap-4">
+        <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
           {features.map((feature, index) => (
             <div key={index} className="flex items-start gap-2.5">
               <span className="shrink-0 text-[14px] font-bold text-gold-500">

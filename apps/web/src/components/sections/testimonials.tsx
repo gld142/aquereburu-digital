@@ -66,14 +66,14 @@ const formations = [
 export function TestimonialsSection() {
   return (
     <section className="bg-navy-900 py-24">
-      <div className="mx-auto max-w-[1200px] px-12">
+      <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-12">
         {/* Header */}
         <div className="mb-16 flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
           <div>
             <p className="mb-5 text-[11px] font-medium uppercase tracking-[0.25em] text-gold-600/70">
               Séminaires &amp; Formations
             </p>
-            <h2 className="font-display text-[44px] font-normal leading-[1.15] text-white">
+            <h2 className="font-display text-[28px] font-normal leading-[1.15] text-white sm:text-[36px] lg:text-[44px]">
               Renforcer les<br />
               <em className="italic text-gold-400">compétences</em>
             </h2>
@@ -99,7 +99,7 @@ export function TestimonialsSection() {
 
         {/* Featured formation — large hero card */}
         <a href={formations[0]!.url} target="_blank" rel="noopener noreferrer" className="group relative grid grid-cols-1 overflow-hidden border border-white/6 lg:grid-cols-2">
-          <div className="relative h-[340px] overflow-hidden">
+          <div className="relative h-[220px] overflow-hidden sm:h-[280px] lg:h-[340px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={formations[0]!.image}
@@ -108,11 +108,11 @@ export function TestimonialsSection() {
             />
             <div className="absolute inset-0 bg-gradient-to-r from-navy-900/50 to-transparent" />
           </div>
-          <div className="flex flex-col justify-center bg-navy-800/50 p-10 lg:p-14">
+          <div className="flex flex-col justify-center bg-navy-800/50 p-6 sm:p-10 lg:p-14">
             <span className="mb-3 text-[10px] font-bold uppercase tracking-wider text-gold-500/60">
               {formations[0]!.type}
             </span>
-            <h3 className="font-display text-[26px] font-medium leading-[1.3] text-white">
+            <h3 className="font-display text-[18px] font-medium leading-[1.3] text-white sm:text-[22px] lg:text-[26px]">
               {formations[0]!.title}
             </h3>
             <p className="mt-1 font-display text-[14px] italic text-white/40">
@@ -171,7 +171,7 @@ export function TestimonialsSection() {
         <div className="mt-14 text-center">
           <Link
             href="/formations"
-            className="inline-flex items-center gap-3 border border-gold-500/30 px-10 py-3.5 text-[11px] font-semibold uppercase tracking-[0.15em] text-gold-500 transition-all duration-300 hover:border-gold-500 hover:bg-gold-500/10"
+            className="inline-flex items-center gap-3 border border-gold-500/30 px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.15em] text-gold-500 transition-all duration-300 hover:border-gold-500 hover:bg-gold-500/10 sm:px-10 sm:py-3.5"
           >
             Voir toutes nos formations
             <span className="text-[14px]">→</span>
