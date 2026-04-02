@@ -1,0 +1,165 @@
+@import 'tailwindcss';
+
+@theme {
+  /* Cabinet colors */
+  --color-navy-50: #E8ECF3;
+  --color-navy-100: #C5CEDF;
+  --color-navy-200: #9EAFC8;
+  --color-navy-300: #7790B1;
+  --color-navy-400: #5A799F;
+  --color-navy-500: #3D628D;
+  --color-navy-600: #2E4D73;
+  --color-navy-700: #1B2A4A;
+  --color-navy-800: #131E35;
+  --color-navy-900: #0B1220;
+
+  --color-gold-50: #FBF6E8;
+  --color-gold-100: #F5E8C2;
+  --color-gold-200: #EED998;
+  --color-gold-300: #E6C96D;
+  --color-gold-400: #D9B85A;
+  --color-gold-500: #C9A84C;
+  --color-gold-600: #B89440;
+  --color-gold-700: #9A7A34;
+  --color-gold-800: #7C6229;
+  --color-gold-900: #5E4A1F;
+
+  /* AI accent color */
+  --color-ai-50: #eff6ff;
+  --color-ai-100: #dbeafe;
+  --color-ai-200: #bfdbfe;
+  --color-ai-300: #93c5fd;
+  --color-ai-400: #60a5fa;
+  --color-ai-500: #2563eb;
+  --color-ai-600: #1d4ed8;
+  --color-ai-700: #1e40af;
+
+  /* Font families */
+  --font-display: var(--font-cormorant), 'Cormorant Garamond', serif;
+  --font-sans: var(--font-inter), 'Inter', system-ui, sans-serif;
+
+  /* Custom font sizes */
+  --text-display-xl: 4.5rem;
+  --text-display-xl--line-height: 1.1;
+  --text-display-xl--letter-spacing: -0.02em;
+
+  --text-display-lg: 3.75rem;
+  --text-display-lg--line-height: 1.1;
+  --text-display-lg--letter-spacing: -0.02em;
+
+  --text-display-md: 3rem;
+  --text-display-md--line-height: 1.2;
+  --text-display-md--letter-spacing: -0.01em;
+
+  --text-display-sm: 2.25rem;
+  --text-display-sm--line-height: 1.3;
+  --text-display-sm--letter-spacing: -0.01em;
+
+  --text-heading-lg: 1.875rem;
+  --text-heading-lg--line-height: 1.3;
+
+  --text-heading-md: 1.5rem;
+  --text-heading-md--line-height: 1.4;
+
+  --text-heading-sm: 1.25rem;
+  --text-heading-sm--line-height: 1.4;
+
+  --text-body-lg: 1.125rem;
+  --text-body-lg--line-height: 1.7;
+
+  --text-body-md: 1rem;
+  --text-body-md--line-height: 1.7;
+
+  --text-body-sm: 0.875rem;
+  --text-body-sm--line-height: 1.6;
+
+  /* Shadows */
+  --shadow-premium: 0 4px 6px -1px rgba(27, 42, 74, 0.1), 0 2px 4px -2px rgba(27, 42, 74, 0.1);
+  --shadow-premium-lg: 0 10px 15px -3px rgba(27, 42, 74, 0.1), 0 4px 6px -4px rgba(27, 42, 74, 0.1);
+  --shadow-premium-xl: 0 20px 25px -5px rgba(27, 42, 74, 0.1), 0 8px 10px -6px rgba(27, 42, 74, 0.1);
+  --shadow-gold: 0 4px 14px 0 rgba(201, 168, 76, 0.25);
+  --shadow-gold-lg: 0 10px 25px 0 rgba(201, 168, 76, 0.3);
+
+  /* Animations */
+  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-fade-in: fadeIn 0.6s ease-out forwards;
+  --animate-fade-in-up: fadeInUp 0.6s ease-out forwards;
+  --animate-shimmer: shimmer 2s linear infinite;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Base styles */
+@layer base {
+  :root {
+    --color-primary: 27 42 74;
+    --color-accent: 201 168 76;
+    --color-background: 250 248 243;
+    --color-foreground: 51 65 85;
+  }
+
+  .dark {
+    --color-primary: 201 168 76;
+    --color-accent: 27 42 74;
+    --color-background: 13 17 23;
+    --color-foreground: 226 232 240;
+  }
+
+  ::selection {
+    background-color: rgba(201, 168, 76, 0.2);
+    color: #1B2A4A;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+  }
+
+  :focus-visible {
+    outline: 2px solid #C9A84C;
+    outline-offset: 2px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #F1F5F9;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(27, 42, 74, 0.3);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(27, 42, 74, 0.5);
+  }
+}
+
+/* Page transition base */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.4s var(--ease-premium), transform 0.4s var(--ease-premium);
+}

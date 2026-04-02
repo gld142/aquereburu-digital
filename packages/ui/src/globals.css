@@ -1,0 +1,112 @@
+/* AQ&P UI shared base styles — do NOT import tailwindcss here (apps do that) */
+
+@layer base {
+  :root {
+    /* Cabinet theme */
+    --color-primary: 27 42 74;
+    --color-accent: 201 168 76;
+    --color-background: 248 250 252;
+    --color-foreground: 51 65 85;
+    --color-muted: 241 245 249;
+    --color-muted-foreground: 100 116 139;
+    --color-border: 226 232 240;
+    --color-card: 255 255 255;
+    --color-card-foreground: 51 65 85;
+
+    --font-display: var(--font-playfair);
+    --font-body: var(--font-inter);
+    --font-mono: var(--font-jetbrains);
+
+    --radius: 0.75rem;
+    --transition-premium: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .dark {
+    --color-primary: 201 168 76;
+    --color-accent: 27 42 74;
+    --color-background: 13 17 23;
+    --color-foreground: 226 232 240;
+    --color-muted: 30 41 59;
+    --color-muted-foreground: 148 163 184;
+    --color-border: 51 65 85;
+    --color-card: 15 23 42;
+    --color-card-foreground: 226 232 240;
+  }
+
+  /* Foundation theme */
+  [data-theme="fondation"] {
+    --color-primary: 27 74 42;
+    --color-accent: 245 158 11;
+    --color-background: 255 251 235;
+    --color-foreground: 51 65 85;
+    --color-muted: 254 243 199;
+    --color-muted-foreground: 100 116 139;
+    --color-border: 253 230 138;
+    --color-card: 255 255 255;
+    --color-card-foreground: 51 65 85;
+  }
+
+  [data-theme="fondation"].dark {
+    --color-primary: 245 158 11;
+    --color-accent: 27 74 42;
+    --color-background: 13 17 23;
+    --color-foreground: 226 232 240;
+    --color-muted: 30 41 59;
+    --color-muted-foreground: 148 163 184;
+    --color-border: 51 65 85;
+    --color-card: 15 23 42;
+    --color-card-foreground: 226 232 240;
+  }
+}
+
+@layer base {
+  * {
+    border-color: rgb(var(--color-border) / 0.2);
+  }
+
+  body {
+    background-color: rgb(var(--color-background));
+    color: rgb(var(--color-foreground));
+    font-family: var(--font-body), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display), serif;
+  }
+
+  ::selection {
+    background-color: rgb(var(--color-accent) / 0.2);
+    color: rgb(var(--color-primary));
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Focus styles for accessibility */
+  :focus-visible {
+    outline: 2px solid rgb(var(--color-accent));
+    outline-offset: 2px;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgb(var(--color-muted));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgb(var(--color-primary) / 0.3);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--color-primary) / 0.5);
+  }
+}

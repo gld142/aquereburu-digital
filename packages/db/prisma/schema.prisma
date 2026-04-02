@@ -1,0 +1,563 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// AUTH & USERS
+// ==========================================
+
+enum UserRole {
+  SUPER_ADMIN
+  TRIEUR
+  AVOCAT
+  CLIENT_B2C
+  CLIENT_B2B
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  passwordHash  String?
+  role          UserRole  @default(CLIENT_B2C)
+  phone         String?
+  avatar        String?
+  twoFactorEnabled Boolean @default(false)
+  twoFactorSecret  String?
+  emailVerified DateTime?
+  isActive      Boolean   @default(true)
+
+  // Relations
+  accounts      Account[]
+  sessions      Session[]
+  dossiers      Dossier[]        @relation("ClientDossiers")
+  assignedDossiers Dossier[]     @relation("AvocatDossiers")
+  triagedDossiers  Dossier[]     @relation("TrieurDossiers")
+  messages      Message[]
+  veilleAlerts  VeilleAlert[]
+  chatSessions  ChatSession[]
+  appointments  Appointment[]
+  payments      Payment[]
+  organization  Organization?    @relation(fields: [organizationId], references: [id])
+  organizationId String?
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([email])
+  @@index([role])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ==========================================
+// ORGANIZATIONS (B2B clients)
+// ==========================================
+
+model Organization {
+  id          String   @id @default(cuid())
+  name        String
+  email       String?
+  phone       String?
+  address     String?
+  plan        PlanType @default(STARTER)
+  packs       String[] // Active jurisdiction pack IDs
+  maxUsers    Int      @default(3)
+
+  users       User[]
+  dossiers    Dossier[]
+  payments    Payment[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum PlanType {
+  STARTER
+  PRO
+  BUSINESS
+  ENTERPRISE
+  CABINET_INTERNATIONAL
+  CUSTOM
+}
+
+// ==========================================
+// CABINET - DOSSIERS & CASES
+// ==========================================
+
+enum DossierStatus {
+  NOUVEAU
+  EN_TRIAGE
+  ATTRIBUE
+  EN_COURS
+  EN_ATTENTE
+  CLOS
+  ARCHIVE
+}
+
+enum DepartmentType {
+  PI_ENVIRONNEMENT
+  BANQUE_FINANCES_FISCALITE
+  DROIT_SOCIAL_PENAL
+  REQUETES_CS_PROCEDURES_ADMIN
+  DROIT_COMMERCIAL
+  FORMATIONS_FISCALITE_SOCIAL
+  FINANCEMENT_PUBLIC_SANTE_SPORT
+}
+
+model Dossier {
+  id              String        @id @default(cuid())
+  reference       String        @unique // e.g., "AQP-2024-0001"
+  title           String
+  description     String?
+  status          DossierStatus @default(NOUVEAU)
+  department      DepartmentType?
+
+  // Triage data
+  complexityScore Int?          // 1-10
+  urgencyScore    Int?          // 1-10
+  triageNotes     String?
+  triageSummary   String?       // AI-generated summary
+
+  // Relations
+  client          User          @relation("ClientDossiers", fields: [clientId], references: [id])
+  clientId        String
+  avocat          User?         @relation("AvocatDossiers", fields: [avocatId], references: [id])
+  avocatId        String?
+  trieur          User?         @relation("TrieurDossiers", fields: [trieurId], references: [id])
+  trieurId        String?
+  organization    Organization? @relation(fields: [organizationId], references: [id])
+  organizationId  String?
+
+  documents       Document[]
+  messages        Message[]
+  appointments    Appointment[]
+  timeline        TimelineEvent[]
+  payments        Payment[]
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([status])
+  @@index([department])
+  @@index([clientId])
+  @@index([avocatId])
+}
+
+model Document {
+  id          String   @id @default(cuid())
+  name        String
+  url         String
+  mimeType    String
+  size        Int
+  ocrText     String?  // Extracted text from OCR
+  aiSummary   String?  // AI-generated summary
+
+  dossier     Dossier  @relation(fields: [dossierId], references: [id], onDelete: Cascade)
+  dossierId   String
+
+  createdAt   DateTime @default(now())
+
+  @@index([dossierId])
+}
+
+model Message {
+  id          String   @id @default(cuid())
+  content     String
+  isFromClient Boolean @default(true)
+  isRead      Boolean  @default(false)
+
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  dossier     Dossier  @relation(fields: [dossierId], references: [id], onDelete: Cascade)
+  dossierId   String
+
+  createdAt   DateTime @default(now())
+
+  @@index([dossierId])
+  @@index([userId])
+}
+
+model TimelineEvent {
+  id          String   @id @default(cuid())
+  type        String   // "created", "triaged", "assigned", "status_change", "document_added", "message", "payment"
+  title       String
+  description String?
+  metadata    Json?
+
+  dossier     Dossier  @relation(fields: [dossierId], references: [id], onDelete: Cascade)
+  dossierId   String
+
+  createdAt   DateTime @default(now())
+
+  @@index([dossierId])
+}
+
+// ==========================================
+// APPOINTMENTS
+// ==========================================
+
+model Appointment {
+  id          String          @id @default(cuid())
+  title       String
+  description String?
+  startTime   DateTime
+  endTime     DateTime
+  location    String?         // "Lomé", "Paris", "Visio"
+  status      AppointmentStatus @default(PENDING)
+
+  user        User            @relation(fields: [userId], references: [id])
+  userId      String
+  dossier     Dossier?        @relation(fields: [dossierId], references: [id])
+  dossierId   String?
+
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([userId])
+  @@index([startTime])
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+// ==========================================
+// PAYMENTS
+// ==========================================
+
+model Payment {
+  id            String        @id @default(cuid())
+  amount        Int           // In FCFA (smallest unit)
+  currency      String        @default("XOF")
+  status        PaymentStatus @default(PENDING)
+  method        PaymentMethod
+  reference     String        @unique
+  stripeId      String?
+  mobileMoneyRef String?
+  description   String?
+
+  user          User          @relation(fields: [userId], references: [id])
+  userId        String
+  dossier       Dossier?      @relation(fields: [dossierId], references: [id])
+  dossierId     String?
+  organization  Organization? @relation(fields: [organizationId], references: [id])
+  organizationId String?
+
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([userId])
+  @@index([status])
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  STRIPE
+  FLOOZ
+  T_MONEY
+  BANK_TRANSFER
+}
+
+// ==========================================
+// AI - CHAT SESSIONS (ResearchBot)
+// ==========================================
+
+model ChatSession {
+  id            String        @id @default(cuid())
+  title         String?
+  jurisdictions String[]      // Active packs for this session
+
+  user          User          @relation(fields: [userId], references: [id])
+  userId        String
+  messages      ChatMessage[]
+
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([userId])
+}
+
+model ChatMessage {
+  id            String      @id @default(cuid())
+  role          String      // "user", "assistant", "system"
+  content       String
+  citations     Json?       // Array of source citations
+  confidence    Float?      // 0-1 confidence score
+  metadata      Json?       // Model used, tokens, etc.
+
+  session       ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  sessionId     String
+
+  createdAt     DateTime    @default(now())
+
+  @@index([sessionId])
+}
+
+// ==========================================
+// AI - VEILLE (VeillBot)
+// ==========================================
+
+model VeilleSource {
+  id          String        @id @default(cuid())
+  name        String
+  url         String
+  type        String        // "journal_officiel", "ohada", "legifrance", etc.
+  jurisdiction String       // Pack ID
+  isActive    Boolean       @default(true)
+  lastSync    DateTime?
+
+  articles    VeilleArticle[]
+
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model VeilleArticle {
+  id          String        @id @default(cuid())
+  title       String
+  content     String
+  summary     String?       // AI-generated summary
+  url         String?
+  category    String?
+  jurisdiction String
+  publishedAt DateTime?
+  isProcessed Boolean       @default(false)
+
+  source      VeilleSource  @relation(fields: [sourceId], references: [id])
+  sourceId    String
+  alerts      VeilleAlert[]
+
+  createdAt   DateTime      @default(now())
+
+  @@index([jurisdiction])
+  @@index([category])
+  @@index([publishedAt])
+}
+
+model VeilleAlert {
+  id          String        @id @default(cuid())
+  isRead      Boolean       @default(false)
+
+  user        User          @relation(fields: [userId], references: [id])
+  userId      String
+  article     VeilleArticle @relation(fields: [articleId], references: [id])
+  articleId   String
+
+  createdAt   DateTime      @default(now())
+
+  @@index([userId, isRead])
+}
+
+// ==========================================
+// CMS - ARTICLES & MEDIA
+// ==========================================
+
+model Article {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  titleEn     String?
+  excerpt     String?
+  excerptEn   String?
+  content     String   // MDX content
+  contentEn   String?  // English MDX content
+  coverImage  String?
+  category    ArticleCategory
+  tags        String[]
+  isPublished Boolean  @default(false)
+  publishedAt DateTime?
+
+  author      String?  // Author name
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([slug])
+  @@index([category])
+  @@index([isPublished])
+}
+
+enum ArticleCategory {
+  ACTUALITE
+  PANORAMA_LEGISLATIF
+  PUBLICATION
+  GALERIE
+  FORMATION
+}
+
+// ==========================================
+// CONTACT & LEADS
+// ==========================================
+
+model ContactSubmission {
+  id            String   @id @default(cuid())
+  type          String   // "particulier", "entreprise", "cabinet"
+  domain        String   // expertise domain
+  name          String
+  email         String
+  phone         String?
+  company       String?
+  message       String
+  attachments   String[] // URLs of uploaded files
+  preferredContact String? // "email", "phone", "visio"
+  isProcessed   Boolean  @default(false)
+
+  createdAt     DateTime @default(now())
+
+  @@index([isProcessed])
+}
+
+// ==========================================
+// FOUNDATION - DONATIONS
+// ==========================================
+
+model Donation {
+  id          String        @id @default(cuid())
+  amount      Int           // In FCFA
+  currency    String        @default("XOF")
+  status      PaymentStatus @default(PENDING)
+  method      PaymentMethod
+  isRecurring Boolean       @default(false)
+  donorName   String?
+  donorEmail  String?
+  donorPhone  String?
+  reference   String        @unique
+  stripeId    String?
+  mobileMoneyRef String?
+  message     String?
+
+  projectId   String?       // Foundation project ID
+
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([status])
+}
+
+model FoundationProject {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  titleEn     String?
+  description String
+  descriptionEn String?
+  category    FoundationCategory
+  location    String?
+  images      String[]
+  isActive    Boolean  @default(true)
+  partners    String[] // Partner names
+  startDate   DateTime?
+  endDate     DateTime?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([category])
+  @@index([isActive])
+}
+
+enum FoundationCategory {
+  SANTE
+  EDUCATION
+  ENVIRONNEMENT
+  CULTURE
+  HYGIENE
+  SOLIDARITE
+}
+
+// ==========================================
+// FORMATIONS
+// ==========================================
+
+model Formation {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  titleEn     String?
+  description String
+  descriptionEn String?
+  program     String   // MDX content
+  programEn   String?
+  duration    String?  // "2 jours", "1 semaine"
+  instructor  String?
+  location    String?
+  maxParticipants Int?
+  price       Int?     // In FCFA
+  startDate   DateTime?
+  endDate     DateTime?
+  isActive    Boolean  @default(true)
+  isPast      Boolean  @default(false)
+
+  registrations FormationRegistration[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isActive])
+  @@index([startDate])
+}
+
+model FormationRegistration {
+  id          String   @id @default(cuid())
+  name        String
+  email       String
+  phone       String?
+  company     String?
+  status      String   @default("pending") // "pending", "confirmed", "cancelled"
+
+  formation   Formation @relation(fields: [formationId], references: [id])
+  formationId String
+
+  createdAt   DateTime @default(now())
+
+  @@index([formationId])
+}

@@ -1,0 +1,10 @@
+@import 'tailwindcss';
+@import '@aqp/ui/globals.css';
+
+@theme {
+  --color-navy-700: #1B2A4A;
+  --color-gold-500: #C9A84C;
+  --font-display: var(--font-playfair), 'Playfair Display', serif;
+  --font-sans: var(--font-inter), 'Inter', system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), 'JetBrains Mono', monospace;
+}

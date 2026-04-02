@@ -1,0 +1,33 @@
+@import 'tailwindcss';
+@import '@aqp/ui/globals.css';
+
+@theme {
+  /* Foundation colors */
+  --color-forest-50: #E8F3EB;
+  --color-forest-100: #C5DFCC;
+  --color-forest-200: #9EC8A9;
+  --color-forest-300: #77B186;
+  --color-forest-400: #5A9F6C;
+  --color-forest-500: #3D8D52;
+  --color-forest-600: #2E7340;
+  --color-forest-700: #1B4A2A;
+  --color-forest-800: #13351E;
+  --color-forest-900: #0B2012;
+
+  --color-amber-50: #FFFBEB;
+  --color-amber-100: #FEF3C7;
+  --color-amber-200: #FDE68A;
+  --color-amber-300: #FCD34D;
+  --color-amber-400: #FBBF24;
+  --color-amber-500: #F59E0B;
+  --color-amber-600: #D97706;
+  --color-amber-700: #B45309;
+  --color-amber-800: #92400E;
+  --color-amber-900: #78350F;
+
+  --font-display: var(--font-playfair), 'Playfair Display', serif;
+  --font-sans: var(--font-inter), 'Inter', system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), 'JetBrains Mono', monospace;
+
+  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+}
