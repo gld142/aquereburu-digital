@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
+import { rateLimited } from '@/lib/rate-limit';
 
 /**
  * Réception des formulaires (contact, rendez-vous, candidature, newsletter).
@@ -21,24 +22,11 @@ const schema = z.object({
   website: z.string().max(0).optional(), // pot de miel
 });
 
-const hits = new Map<string, number[]>();
-const WINDOW_MS = 10 * 60 * 1000;
-const MAX_HITS = 5;
-
-function rateLimited(ip: string) {
-  const now = Date.now();
-  const recent = (hits.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
-  recent.push(now);
-  hits.set(ip, recent);
-  return recent.length > MAX_HITS;
-}
-
 const escape = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 
 export async function POST(req: Request) {
-  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'local';
-  if (rateLimited(ip)) {
+  if (rateLimited(req.headers)) {
     return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 });
   }
 
