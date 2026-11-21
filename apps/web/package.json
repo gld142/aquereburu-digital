@@ -10,29 +10,30 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "next": "^15.1.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "@aqp/config": "workspace:*",
+    "@aqp/db": "workspace:*",
+    "@aqp/ui": "workspace:*",
+    "clsx": "^2.1.1",
     "framer-motion": "^11.18.0",
     "gsap": "^3.12.0",
+    "lucide-react": "^0.468.0",
+    "next": "^15.1.0",
     "next-intl": "^4.0.0",
     "next-themes": "^0.4.4",
-    "zod": "^3.24.0",
-    "lucide-react": "^0.468.0",
-    "@aqp/ui": "workspace:*",
-    "@aqp/db": "workspace:*",
-    "@aqp/config": "workspace:*"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "zod": "^3.24.0"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "typescript": "^5.7.0",
     "eslint": "^9.0.0",
     "eslint-config-next": "^15.1.0",
-    "tailwindcss": "^4.0.0",
-    "@tailwindcss/postcss": "^4.0.0",
     "postcss": "^8.4.0",
-    "prettier-plugin-tailwindcss": "^0.6.0"
+    "prettier-plugin-tailwindcss": "^0.6.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.0"
   }
 }

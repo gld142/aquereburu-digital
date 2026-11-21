@@ -1,200 +1,169 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
+import type { Metadata } from 'next';
+import Image from 'next/image';
+import { setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
+import { Missing, PageHead } from '@/components/ui';
+import { distinctions, firm, offices, type Locale } from '@/content/site';
+import { people } from '@/content/people';
+import associes from '../../../../public/images/photo-associes.jpg';
 
-const SITE = 'https://www.aquereburu-partners.com/wp-content/uploads';
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  return { title: locale === 'fr' ? 'Le cabinet' : 'The firm' };
+}
 
-const milestones = [
-  { year: '1987', text: 'Fondation du cabinet par Me Coffi Alexis AQUEREBURU à Lomé' },
-  { year: '2006', text: 'Intégration de Me Bakoh et extension du département pénal et social' },
-  { year: '2010', text: "Prix d'Excellence Qualité du Togo et de l'UEMOA" },
-  { year: '2015', text: "Extension du réseau de correspondants et consultants internationaux" },
-  { year: '2016', text: 'World Quality Commitment — Catégorie Or (BID Paris)' },
-  { year: '2017', text: "Élu Meilleure Société d'Avocats des Affaires au Togo" },
-  { year: '2019', text: "Certification ISO 9001:2015 — 1er cabinet d'avocats certifié au Togo" },
-  { year: '2023', text: 'Lancement de la Fondation AQUEREBURU & Partners' },
-];
+export default async function FirmPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale: raw } = await params;
+  setRequestLocale(raw);
+  const locale = raw as Locale;
+  const fr = locale === 'fr';
+  const count = (r: string) => people.filter((p) => p.role === r).length;
 
-const values = [
-  {
-    title: 'Excellence',
-    description: "Notre certification ISO 9001:2015 témoigne de notre engagement permanent envers les plus hauts standards de qualité dans la pratique juridique.",
-  },
-  {
-    title: 'Intégrité',
-    description: "L'éthique et la transparence guident chacune de nos actions. Nous défendons les intérêts de nos clients avec la plus grande rigueur morale.",
-  },
-  {
-    title: 'Innovation',
-    description: "Pionniers dans l'adoption des nouvelles technologies juridiques avec JURIS IA, nous transformons la pratique du droit en Afrique de l'Ouest.",
-  },
-  {
-    title: 'Engagement',
-    description: "À travers notre Fondation, nous contribuons activement au développement social, éducatif et environnemental du Togo et de la sous-région.",
-  },
-];
-
-export default function CabinetPage() {
-  const t = useTranslations('about');
+  const identity: { label: string; value: React.ReactNode }[] = [
+    { label: fr ? 'Raison sociale' : 'Registered name', value: firm.legalName },
+    { label: fr ? 'Forme' : 'Legal form', value: firm.legalForm[locale] },
+    { label: fr ? 'Création' : 'Founded', value: `${firm.founded}, ${fr ? 'Lomé' : 'Lomé'}` },
+    { label: fr ? 'Barreau' : 'Bar', value: firm.bar[locale] },
+    { label: fr ? 'Inscription au tableau' : 'Bar registration', value: firm.barRegistration ?? <Missing locale={locale} /> },
+    {
+      label: fr ? 'Bureaux' : 'Offices',
+      value: offices.map((o) => `${o.city[locale]} (${o.role[locale].toLowerCase()})`).join(', '),
+    },
+    {
+      label: fr ? 'Effectif' : 'People',
+      value: fr
+        ? `${count('associe')} associés, ${count('collaborateur') + count('counsel')} avocats, ${count('juriste')} juristes`
+        : `${count('associe')} partners, ${count('collaborateur') + count('counsel')} lawyers, ${count('juriste')} legal counsel`,
+    },
+    { label: fr ? 'Qualité' : 'Quality', value: `${firm.iso}, AFAQ` },
+  ];
 
   return (
     <>
-      {/* Hero banner */}
-      <section className="relative bg-navy-900 py-28 lg:py-36">
-        <div className="absolute inset-0 opacity-10">
-          <div className="h-full w-full" style={{ background: 'linear-gradient(135deg, #C9A84C 0%, transparent 60%)' }} />
-        </div>
-        <div className="relative mx-auto max-w-5xl px-6 text-center lg:px-8">
-          <p className="mb-5 text-[11px] font-medium uppercase tracking-[0.25em] text-gold-500/60">
-            Le Cabinet
-          </p>
-          <h1 className="font-display text-[48px] font-normal leading-[1.15] text-white lg:text-[56px]">
-            Une société d&apos;Avocats de renommée{' '}
-            <em className="italic text-gold-400">nationale et internationale</em>
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-[15px] leading-relaxed text-white/45">
-            Fondé en 1987, le cabinet AQUEREBURU &amp; PARTNERS est devenu une référence incontournable du droit des affaires en Afrique de l&apos;Ouest et à l&apos;international.
-          </p>
-        </div>
-      </section>
+      <PageHead
+        locale={locale}
+        title={fr ? 'Le cabinet' : 'The firm'}
+        lead={
+          fr
+            ? `Fondée à Lomé en ${firm.founded} par ${firm.founder}, la SCP Aquereburu & Partners est l’un des premiers cabinets d’affaires du Togo. Elle conseille et défend entreprises, investisseurs et institutions dans l’espace OHADA et à l’international.`
+            : `Founded in Lomé in ${firm.founded} by ${firm.founder}, SCP Aquereburu & Partners is one of Togo’s leading business law firms. It advises and represents companies, investors and institutions across the OHADA area and internationally.`
+        }
+        crumbs={[{ label: fr ? 'Cabinet' : 'Firm' }]}
+      />
 
-      {/* Présentation */}
-      <section className="grid grid-cols-1 lg:grid-cols-2">
-        <div className="relative min-h-[480px] overflow-hidden bg-[#f0ece3]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={`${SITE}/2019/10/societe-avocats-afrique-aquereburu-partners-cabinet.jpg`}
-            alt="Cabinet AQUEREBURU & PARTNERS"
-            className="h-full w-full object-cover"
-          />
-        </div>
-        <div className="flex flex-col justify-center bg-white px-12 py-20 lg:px-20">
-          <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.25em] text-gold-500">
-            Depuis 1987
-          </p>
-          <h2 className="font-display text-[32px] font-normal leading-[1.25] text-navy-900">
-            L&apos;excellence juridique au service de vos ambitions
+      <section aria-labelledby="devise" className="shell grid gap-x-10 gap-y-10 py-16 md:grid-cols-12 md:py-24">
+        <div className="md:col-span-5">
+          <h2 id="devise" className="t-h2">
+            {firm.motto[locale]}
           </h2>
-          <p className="mt-5 text-[14px] leading-[1.85] text-gray-500">
-            Le cabinet AQUEREBURU &amp; PARTNERS est une Société d&apos;Avocats Juridique et Fiscale, immatriculée au Barreau du Togo. Première société d&apos;avocats en droit de la propriété intellectuelle au Togo et premier cabinet d&apos;avocats certifié ISO 9001:2015, nous accompagnons entreprises nationales et internationales, institutions et particuliers dans tous les domaines du droit des affaires.
+        </div>
+        <div className="t-body measure md:col-span-6 md:col-start-7">
+          <p>
+            {fr
+              ? 'Hier, c’est près de quarante ans de dossiers, de jurisprudence et de pratiques éprouvées devant les juridictions togolaises, régionales et internationales. C’est aussi l’héritage d’un fondateur qui a fait de la propriété intellectuelle et du droit OHADA des spécialités du cabinet avant qu’elles ne deviennent des évidences.'
+              : 'Yesterday means nearly forty years of matters, case law and proven practice before Togolese, regional and international courts. It is also the legacy of a founder who made intellectual property and OHADA law firm specialities before they became obvious choices.'}
           </p>
-          <p className="mt-4 text-[14px] leading-[1.85] text-gray-500">
-            Basé à Lomé, notre équipe pluridisciplinaire de 9 avocats et 6 juristes intervient dans 17 pays de l&apos;espace OHADA ainsi qu&apos;à l&apos;international, offrant une couverture juridique complète et une expertise reconnue par les instances internationales.
+          <p>
+            {fr
+              ? 'Demain, ce sont les questions que nos clients se posent déjà : fintech et données, transition énergétique, partenariats public-privé, intégration régionale. Nous y répondons avec la même rigueur, en nous appuyant sur ce que l’expérience nous a appris.'
+              : 'Tomorrow means the questions our clients already face: fintech and data, the energy transition, public-private partnerships, regional integration. We answer them with the same rigour, drawing on what experience has taught us.'}
           </p>
-
-          {/* Stats row */}
-          <div className="mt-10 grid grid-cols-4 gap-6 border-t border-black/6 pt-8">
-            {[
-              { value: '34+', label: 'Années' },
-              { value: '9', label: 'Avocats' },
-              { value: '17', label: 'Pays OHADA' },
-              { value: '21+', label: 'Domaines' },
-            ].map((s) => (
-              <div key={s.label}>
-                <div className="font-display text-[28px] font-semibold text-navy-900">{s.value}</div>
-                <div className="text-[11px] font-medium text-gray-400">{s.label}</div>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
-      {/* Valeurs */}
-      <section className="bg-[#faf8f3] py-24">
-        <div className="mx-auto max-w-5xl px-6 lg:px-8">
-          <div className="mb-16 text-center">
-            <p className="mb-4 text-[11px] font-medium uppercase tracking-[0.25em] text-gold-500/60">
-              Nos Valeurs
-            </p>
-            <h2 className="font-display text-[38px] font-normal text-navy-900">
-              Les piliers de notre <em className="italic text-gold-500">engagement</em>
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 gap-px bg-black/5 sm:grid-cols-2 lg:grid-cols-4">
-            {values.map((v) => (
-              <div key={v.title} className="flex flex-col bg-white p-8">
-                <h3 className="font-display text-[20px] font-medium text-navy-900">{v.title}</h3>
-                <p className="mt-3 text-[13px] leading-[1.7] text-gray-500">{v.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Timeline / Jalons */}
-      <section className="bg-navy-900 py-24">
-        <div className="mx-auto max-w-4xl px-6 lg:px-8">
-          <div className="mb-16 text-center">
-            <p className="mb-4 text-[11px] font-medium uppercase tracking-[0.25em] text-gold-500/60">
-              Notre Histoire
-            </p>
-            <h2 className="font-display text-[38px] font-normal text-white">
-              Plus de trois décennies d&apos;<em className="italic text-gold-400">excellence</em>
-            </h2>
-          </div>
-
-          <div className="relative">
-            {/* Vertical line */}
-            <div className="absolute left-[7px] top-0 h-full w-px bg-gold-500/20 lg:left-1/2 lg:-translate-x-px" />
-
-            <div className="space-y-10">
-              {milestones.map((m, i) => (
-                <div
-                  key={m.year}
-                  className={`relative flex items-start gap-8 lg:gap-0 ${
-                    i % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'
-                  }`}
-                >
-                  {/* Dot */}
-                  <div className="absolute left-0 top-1 h-[15px] w-[15px] rounded-full border-2 border-gold-500 bg-navy-900 lg:left-1/2 lg:-translate-x-1/2" />
-
-                  {/* Content */}
-                  <div className={`ml-8 lg:ml-0 lg:w-1/2 ${i % 2 === 0 ? 'lg:pr-16 lg:text-right' : 'lg:pl-16'}`}>
-                    <span className="font-display text-[13px] italic text-gold-500/50">{m.year}</span>
-                    <p className="mt-1 text-[14px] leading-relaxed text-white/60">{m.text}</p>
-                  </div>
-                </div>
-              ))}
+      <section aria-labelledby="mission" className="bg-paper-2">
+        <div className="shell grid gap-x-10 gap-y-12 py-16 md:grid-cols-12 md:py-24">
+          <figure className="relative aspect-[4/3] overflow-hidden bg-haze md:col-span-5">
+            <Image
+              src={associes}
+              alt={fr ? 'Deux associés du cabinet' : 'Two of the firm’s partners'}
+              fill
+              sizes="(min-width: 768px) 40vw, 100vw"
+              placeholder="blur"
+              className="portrait object-cover"
+            />
+          </figure>
+          <div className="grid gap-10 sm:grid-cols-2 md:col-span-6 md:col-start-7 md:self-center">
+            <div>
+              <h2 id="mission" className="t-h3">
+                {fr ? 'Mission' : 'Mission'}
+              </h2>
+              <p className="t-body mt-3 text-[1.0625rem] text-ink-2">
+                {fr
+                  ? 'Sécuriser les projets de nos clients et défendre leurs intérêts avec des conseils clairs, applicables et rendus dans les délais.'
+                  : 'To secure our clients’ projects and defend their interests with clear, practical advice delivered on time.'}
+              </p>
+            </div>
+            <div>
+              <h2 className="t-h3">{fr ? 'Vision' : 'Vision'}</h2>
+              <p className="t-body mt-3 text-[1.0625rem] text-ink-2">
+                {fr
+                  ? 'Être, depuis Lomé, un cabinet de référence pour les opérations qui traversent l’Afrique de l’Ouest et la relient au reste du monde.'
+                  : 'To be, from Lomé, a firm of reference for transactions that cross West Africa and connect it with the rest of the world.'}
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Siège */}
-      <section className="bg-white py-24">
-        <div className="mx-auto max-w-5xl px-6 lg:px-8">
-          <div className="mb-16 text-center">
-            <p className="mb-4 text-[11px] font-medium uppercase tracking-[0.25em] text-gold-500/60">
-              Notre Siège
-            </p>
-            <h2 className="font-display text-[38px] font-normal text-navy-900">
-              Nous <em className="italic text-gold-500">trouver</em>
-            </h2>
-          </div>
+      <section aria-labelledby="identite" className="shell grid gap-x-10 gap-y-10 py-16 md:grid-cols-12 md:py-24">
+        <h2 id="identite" className="t-h2 md:col-span-4">
+          {fr ? 'Fiche d’identité' : 'Key facts'}
+        </h2>
+        <dl className="border-t border-ink md:col-span-8">
+          {identity.map((f) => (
+            <div key={f.label} className="grid gap-1 border-b border-rule py-4 sm:grid-cols-3 sm:gap-6">
+              <dt className="t-small text-slate">{f.label}</dt>
+              <dd className="t-ui sm:col-span-2">{f.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
 
-          <div className="mx-auto max-w-lg bg-[#faf8f3] p-10 text-center">
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold-500">Lomé, Togo</p>
-            <p className="mt-4 text-[14px] leading-relaxed text-navy-900/70">
-              777, Avenue Kléber Dadjo<br />
-              08 BP 8989 Lomé 08<br />
-              Tél : +228 22 21 05 05 / 22 21 49 01<br />
-              Fax : +228 22 21 74 32<br />
-              contact@aquereburu-partners.com
-            </p>
-          </div>
+      <section aria-labelledby="distinctions" className="border-t border-rule">
+        <div className="shell grid gap-x-10 gap-y-10 py-16 md:grid-cols-12 md:py-24">
+          <h2 id="distinctions" className="t-h2 md:col-span-4">
+            {fr ? 'Distinctions' : 'Recognition'}
+          </h2>
+          <ol className="border-t border-ink md:col-span-8">
+            {distinctions.map((d) => (
+              <li key={d.title.fr} className="grid grid-cols-[4.5rem_1fr] gap-x-6 border-b border-rule py-4 sm:grid-cols-[6rem_1fr_auto]">
+                <span className="semiwide font-sans text-[1.125rem] tabular-nums">{d.year}</span>
+                <span className="t-ui">{d.title[locale]}</span>
+                <span className="t-small col-start-2 text-slate sm:col-start-3">{d.source}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
 
-          <div className="mt-14 text-center">
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-3 bg-navy-900 px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.15em] text-white transition-colors duration-300 hover:bg-navy-800"
-            >
-              Prendre rendez-vous
-              <span>→</span>
+      <section aria-label={fr ? 'Pour aller plus loin' : 'Further reading'} className="shell grid gap-4 pb-20 md:grid-cols-2 md:pb-28">
+        {[
+          {
+            href: '/cabinet/deontologie' as const,
+            title: fr ? 'Déontologie et conformité UEMOA' : 'Ethics and WAEMU compliance',
+            body: fr
+              ? 'Indépendance, secret professionnel, conflits d’intérêts, activités déclarées : les règles qui encadrent notre exercice.'
+              : 'Independence, professional secrecy, conflicts of interest, declared activities: the rules that govern our practice.',
+            cta: fr ? 'Lire nos engagements' : 'Read our commitments',
+          },
+          {
+            href: '/cabinet/engagement' as const,
+            title: fr ? 'Fondation et responsabilité sociétale' : 'Foundation and social responsibility',
+            body: fr
+              ? 'Pro bono, accès au droit, éducation et environnement : ce que le cabinet et sa Fondation font au Togo.'
+              : 'Pro bono, access to justice, education and the environment: what the firm and its Foundation do in Togo.',
+            cta: fr ? 'Découvrir notre engagement' : 'See our commitment',
+          },
+        ].map((c) => (
+          <div key={c.href} className="flex flex-col rounded-[10px] bg-paper-2 p-8 md:p-10">
+            <h2 className="t-h3">{c.title}</h2>
+            <p className="t-body mt-3 text-[1.0625rem] text-ink-2">{c.body}</p>
+            <Link href={c.href} className="btn btn-primary mt-8 self-start">
+              {c.cta}
             </Link>
           </div>
-        </div>
+        ))}
       </section>
     </>
   );

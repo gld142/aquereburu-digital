@@ -1,71 +1,60 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { ThemeProvider } from 'next-themes';
-import { Cormorant_Garamond, Inter } from 'next/font/google';
+import { Archivo, Newsreader } from 'next/font/google';
 import { routing } from '@/i18n/routing';
-import { Navbar } from '@/components/layout/navbar';
-import { Footer } from '@/components/layout/footer';
+import { Header } from '@/components/header';
+import { Footer } from '@/components/footer';
+import { JsonLd } from '@/components/json-ld';
+import { buildSearchIndex } from '@/lib/search-index';
+import { firm, offices, type Locale } from '@/content/site';
 
-const cormorant = Cormorant_Garamond({
+const archivo = Archivo({
   subsets: ['latin'],
-  variable: '--font-cormorant',
-  display: 'swap',
-  weight: ['300', '400', '500', '600', '700'],
-});
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
+  axes: ['wdth'],
+  variable: '--font-archivo',
   display: 'swap',
 });
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}): Promise<Metadata> {
+const newsreader = Newsreader({
+  subsets: ['latin'],
+  axes: ['opsz'],
+  style: ['normal', 'italic'],
+  variable: '--font-newsreader',
+  display: 'swap',
+});
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+
+export const viewport: Viewport = {
+  themeColor: '#ffffff',
+};
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
-  const isFr = locale === 'fr';
-
+  const fr = locale === 'fr';
   return {
+    metadataBase: new URL(firm.siteUrl),
     title: {
-      default: "AQUEREBURU & PARTNERS — Société d'Avocats Juridique et Fiscale",
-      template: '%s | AQUEREBURU & PARTNERS',
+      default: fr
+        ? 'Aquereburu & Partners, société d’avocats à Lomé et Paris'
+        : 'Aquereburu & Partners, law firm in Lomé and Paris',
+      template: '%s | Aquereburu & Partners',
     },
-    description: isFr
-      ? "Cabinet d'avocats certifié ISO 9001 à Lomé et Paris. Experts en droit OHADA, propriété intellectuelle, fiscal, maritime et environnement."
-      : 'ISO 9001 certified law firm in Lomé and Paris. Experts in OHADA law, intellectual property, tax, maritime, and environmental law.',
-    keywords: [
-      'AQUEREBURU',
-      'avocats',
-      'Togo',
-      'Lomé',
-      'Paris',
-      'OHADA',
-      'propriété intellectuelle',
-      'fiscal',
-      'maritime',
-      'ISO 9001',
-    ],
-    authors: [{ name: 'AQUEREBURU & PARTNERS' }],
+    description: fr
+      ? 'Société civile professionnelle d’avocats fondée en 1987 à Lomé. Droit des affaires OHADA, arbitrage, propriété intellectuelle, financement de projets, contentieux.'
+      : 'Professional partnership of lawyers founded in Lomé in 1987. OHADA business law, arbitration, intellectual property, project finance and disputes.',
     openGraph: {
       type: 'website',
-      locale: isFr ? 'fr_FR' : 'en_US',
-      alternateLocale: isFr ? 'en_US' : 'fr_FR',
-      siteName: 'AQUEREBURU & PARTNERS',
+      siteName: 'Aquereburu & Partners',
+      locale: fr ? 'fr_FR' : 'en_GB',
+      alternateLocale: fr ? 'en_GB' : 'fr_FR',
     },
-    robots: {
-      index: true,
-      follow: true,
-    },
-    alternates: {
-      languages: {
-        fr: '/fr',
-        en: '/en',
-      },
-    },
+    alternates: { languages: { fr: '/fr', en: '/en' } },
+    robots: { index: true, follow: true },
   };
 }
 
@@ -77,27 +66,47 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) notFound();
+  setRequestLocale(locale);
+  const l = locale as Locale;
 
-  if (!hasLocale(routing.locales, locale)) {
-    notFound();
-  }
-
-  const messages = await getMessages();
+  const organisation = {
+    '@context': 'https://schema.org',
+    '@type': 'LegalService',
+    name: firm.legalName,
+    alternateName: firm.name,
+    url: `${firm.siteUrl}/${l}`,
+    foundingDate: String(firm.founded),
+    founder: { '@type': 'Person', name: firm.founder.replace('Me ', '') },
+    email: firm.email,
+    telephone: firm.phone,
+    slogan: firm.motto[l],
+    areaServed: ['TG', 'BJ', 'FR', 'OHADA', 'UEMOA'],
+    address: offices
+      .filter((o) => o.address)
+      .map((o) => ({
+        '@type': 'PostalAddress',
+        streetAddress: o.address![0],
+        addressLocality: o.city[l],
+        addressCountry: o.id === 'paris' ? 'FR' : o.id === 'cotonou' ? 'BJ' : 'TG',
+      })),
+  };
 
   return (
-    <html
-      lang={locale}
-      className={`${cormorant.variable} ${inter.variable}`}
-      suppressHydrationWarning
-    >
-      <body className="min-h-screen bg-[#faf8f3] font-sans text-slate-700 antialiased">
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <NextIntlClientProvider messages={messages}>
-            <Navbar />
-            <main>{children}</main>
-            <Footer />
-          </NextIntlClientProvider>
-        </ThemeProvider>
+    <html lang={l} className={`${archivo.variable} ${newsreader.variable}`}>
+      <body>
+        <a
+          href="#contenu"
+          className="t-ui sr-only z-[100] rounded bg-ink px-4 py-3 text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+        >
+          {l === 'fr' ? 'Aller au contenu' : 'Skip to content'}
+        </a>
+        <JsonLd data={organisation} />
+        <NextIntlClientProvider locale={l} messages={{}}>
+          <Header locale={l} searchIndex={buildSearchIndex(l)} />
+          <main id="contenu">{children}</main>
+          <Footer locale={l} />
+        </NextIntlClientProvider>
       </body>
     </html>
   );
