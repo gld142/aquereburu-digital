@@ -157,6 +157,9 @@ importers:
       '@aqp/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       framer-motion:
         specifier: ^11.18.0
         version: 11.18.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
