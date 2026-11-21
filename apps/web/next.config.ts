@@ -31,6 +31,22 @@ const nextConfig: NextConfig = {
   outputFileTracingRoot: path.join(__dirname, '../../'),
   transpilePackages: ['@aqp/ui', '@aqp/db'],
   images: { formats: ['image/avif', 'image/webp'] },
+  /**
+   * Adresses de l'ancien site, pour ne pas casser les liens déjà partagés
+   * ou indexés. Permanentes quand la page a simplement changé d'adresse ;
+   * temporaires pour Formations et Espace client, qui pourront revenir
+   * (l'espace client est prévu en phase 2).
+   */
+  redirects: async () => [
+    { source: '/fr/actualites', destination: '/fr/publications', permanent: true },
+    { source: '/en/news', destination: '/en/insights', permanent: true },
+    { source: '/en/about-us', destination: '/en/firm', permanent: true },
+    { source: '/en/team', destination: '/en/people', permanent: true },
+    { source: '/fr/formations', destination: '/fr/cabinet', permanent: false },
+    { source: '/en/training', destination: '/en/firm', permanent: false },
+    { source: '/fr/espace-client', destination: '/fr/contact', permanent: false },
+    { source: '/en/client-portal', destination: '/en/contact', permanent: false },
+  ],
   headers: async () => [
     {
       source: '/(.*)',
