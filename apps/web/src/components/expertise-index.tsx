@@ -1,11 +1,12 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import { Link } from '@/i18n/routing';
 import type { Locale } from '@/content/site';
 import type { PracticeGroup } from '@/content/practices';
 import { fold } from '@/lib/content';
 import { Fleche } from './ui';
+import { Pause } from './gravure';
 
 export interface ExpertiseRow {
   slug: string;
@@ -29,6 +30,7 @@ export function ExpertiseIndex({
   const [q, setQ] = useState('');
   const [group, setGroup] = useState<PracticeGroup | null>(null);
 
+  const entiere = !q.trim() && !group;
   const visible = useMemo(() => {
     const terms = fold(q).split(/\s+/).filter(Boolean);
     return rows.filter(
@@ -85,14 +87,20 @@ export function ExpertiseIndex({
         </div>
       ) : (
         <ul className="filet">
-          {visible.map((r) => (
-            <li key={r.slug}>
-              <Link href={r.href} className="ligne">
-                <b>{r.name}</b>
-                <span>{r.pitch}</span>
-                <Fleche strokeWidth={1.8} />
-              </Link>
-            </li>
+          {visible.map((r, i) => (
+            <Fragment key={r.slug}>
+              {/* pauses dessinées : seulement quand la liste est entière (aucun filtre) */}
+              {entiere && i === 4 && <Pause nom="auditeurs" cote="gauche" largeur="clamp(96px, 11vw, 150px)" />}
+              {entiere && i === 9 && <Pause nom="echelle" largeur="clamp(92px, 10.5vw, 146px)" />}
+              {entiere && i === 13 && <Pause nom="ecoliers" cote="gauche" largeur="clamp(118px, 13vw, 180px)" />}
+              <li>
+                <Link href={r.href} className="ligne">
+                  <b>{r.name}</b>
+                  <span>{r.pitch}</span>
+                  <Fleche strokeWidth={1.8} />
+                </Link>
+              </li>
+            </Fragment>
           ))}
         </ul>
       )}

@@ -5,6 +5,7 @@ import { TeamDirectory, type DirectoryPerson } from '@/components/team-directory
 import { people } from '@/content/people';
 import type { Locale } from '@/content/site';
 import { practices as _p } from '@/content/practices';
+import { Gravure } from '@/components/gravure';
 import { getPractice, practiceContent, sortByName } from '@/lib/content';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -51,6 +52,7 @@ export default async function TeamPage({ params }: { params: Promise<{ locale: s
             : 'Lawyers on the Bar roll and legal counsel: search by name, practice or working language.'
         }
         crumbs={[{ label: fr ? 'Équipe' : 'People' }]}
+        aside={<Gravure nom="tailleur" largeur="clamp(104px, 12vw, 168px)" className="g-tete" />}
       />
       <Section
         id="annuaire"

@@ -53,6 +53,7 @@ export default async function ExpertisesPage({ params }: { params: Promise<{ loc
       />
       <Section
         id="index"
+        marge={<Gravure nom="grue" />}
         label={fr ? 'Pratiques' : 'Practices'}
         gloss={
           fr

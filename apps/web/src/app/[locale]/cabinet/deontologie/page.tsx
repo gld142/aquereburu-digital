@@ -4,6 +4,7 @@ import { Link } from '@/i18n/routing';
 import { Missing, PageHead } from '@/components/ui';
 import { ProseSections } from '@/components/prose-sections';
 import { firm, type Locale } from '@/content/site';
+import { Gravure } from '@/components/gravure';
 import { people } from '@/content/people';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -30,8 +31,10 @@ export default async function EthicsPage({ params }: { params: Promise<{ locale:
             : `The firm practises in accordance with the rules of the Togo Bar and ${firm.uemoaRegulation.en}.`
         }
         crumbs={[{ label: fr ? 'Cabinet' : 'Firm', href: '/cabinet' }, { label: fr ? 'Déontologie' : 'Ethics' }]}
+        aside={<Gravure nom="robe" largeur="clamp(40px, 4.2vw, 60px)" className="g-tete" />}
       />
       <ProseSections
+        dessins={[null, 'auditeurs', null, 'lecteur']}
         sections={[
           {
             id: 'independance',

@@ -7,6 +7,7 @@ import { JsonLd } from '@/components/json-ld';
 import { getInsight, insights, insightTypes } from '@/content/insights';
 import { getPerson } from '@/content/people';
 import { firm, type Locale } from '@/content/site';
+import { Gravure, dessinPour } from '@/components/gravure';
 import { formatDate, getPractice, practiceContent, practiceHref } from '@/lib/content';
 
 export function generateStaticParams() {
@@ -72,7 +73,7 @@ export default async function InsightPage({ params }: { params: Promise<{ locale
         </p>
       </Section>
 
-      <Section tone="brume" label={fr ? 'Pour aller plus loin' : 'Further reading'} gloss={fr ? 'Expertises liées' : 'Related expertise'}>
+      <Section tone="brume" marge={<Gravure nom={dessinPour(i.slug)} />} label={fr ? 'Pour aller plus loin' : 'Further reading'} gloss={fr ? 'Expertises liées' : 'Related expertise'}>
         <div className="grid gap-10 sm:grid-cols-2">
           <div>
             <h2 className="t-h3 mb-4">{fr ? 'Expertises' : 'Expertise'}</h2>

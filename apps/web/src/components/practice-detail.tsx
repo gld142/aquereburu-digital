@@ -6,6 +6,7 @@ import { mattersForPractice } from '@/content/matters';
 import { insightsForPractice, insightTypes } from '@/content/insights';
 import { formatDate, getPractice, practiceContent, practiceHref, premierePhrase } from '@/lib/content';
 import { Fleche, PageHead, Portrait, Section, capitale, enLettres } from './ui';
+import { Gravure, dessinPour } from '@/components/gravure';
 import { MatterRows } from './matter-rows';
 
 export function PracticeDetail({ practice, locale }: { practice: Practice; locale: Locale }) {
@@ -53,7 +54,7 @@ export function PracticeDetail({ practice, locale }: { practice: Practice; local
         </ul>
       </Section>
 
-      <Section id="approche" heading label={fr ? 'Notre approche' : 'Our approach'} gloss={fr ? 'Conseil et contentieux' : 'Advice and disputes'}>
+      <Section id="approche" marge={<Gravure nom={dessinPour(practice.slug)} />} heading label={fr ? 'Notre approche' : 'Our approach'} gloss={fr ? 'Conseil et contentieux' : 'Advice and disputes'}>
         <div className="prose">
           <p>{c.approach}</p>
         </div>

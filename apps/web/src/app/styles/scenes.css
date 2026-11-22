@@ -1,0 +1,21 @@
+/* Petites scènes de vie à la plume, sur les pages intérieures : en tête de page, dans la marge d'une section
+   (sur son filet, à l'écran étroit) ou en pause dans une longue liste. Elles accompagnent la lecture sans la gêner :
+   encre légère, petites tailles, toujours dans un blanc qui existait déjà ou qu'elles ouvrent. */
+.gravure.scene .g-encre { background: linear-gradient(180deg, rgba(27, 42, 74, 0.82) 0, rgba(51, 85, 122, 0.7) 100%); }
+.sur-sombre .gravure.scene .g-encre, .brume .gravure.scene .g-encre { background: linear-gradient(180deg, rgba(27, 42, 74, 0.86) 0, rgba(51, 85, 122, 0.74) 100%); }
+
+/* Dans la marge d'une section : le dessin suit la manchette (ils collent ensemble pendant la lecture) */
+.marge-bloc { position: sticky; top: 118px; }
+.marge-bloc > .manchette { position: static; }
+.marge-bloc > .gravure { margin-top: clamp(22px, 2.4vw, 34px); }
+
+/* En pause dans une longue liste : une ligne sans texte, le dessin debout sur le filet */
+.pause { display: flex; justify-content: flex-end; padding: clamp(20px, 2.6vw, 32px) clamp(6px, 2.4vw, 30px) 0 0; border-bottom: 1px solid var(--trait); }
+.pause.gauche { justify-content: flex-start; padding-right: 0; padding-left: clamp(6px, 2.4vw, 30px); }
+
+@media (max-width: 1080px) {
+  /* écran étroit : la manchette devient une ligne ; le dessin se tient debout sur son filet, à droite, et ouvre un peu d'espace au-dessus */
+  .marge-bloc { position: relative; top: auto; }
+  .marge-bloc:has(> .gravure) { margin-top: clamp(60px, 18vw, 88px); }
+  .marge-bloc > .gravure { position: absolute; right: 4px; bottom: 100%; margin: 0 0 -1px; }
+}

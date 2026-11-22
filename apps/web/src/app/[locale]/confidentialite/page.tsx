@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 import { PageHead } from '@/components/ui';
 import { ProseSections } from '@/components/prose-sections';
+import { Gravure } from '@/components/gravure';
 import { firm, type Locale } from '@/content/site';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -26,8 +27,10 @@ export default async function PrivacyPage({ params }: { params: Promise<{ locale
             : 'This site collects the minimum: what you write to us. No advertising trackers, no personal audience tracking.'
         }
         crumbs={[{ label: fr ? 'Confidentialité' : 'Privacy' }]}
+        aside={<Gravure nom="mouette" largeur="clamp(48px, 5vw, 66px)" className="g-tete" />}
       />
       <ProseSections
+        dessins={[null, 'pirogue-plage']}
         sections={[
           {
             id: 'responsable',

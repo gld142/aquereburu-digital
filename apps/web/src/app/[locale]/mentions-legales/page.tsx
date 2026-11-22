@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 import { Missing, PageHead } from '@/components/ui';
 import { ProseSections } from '@/components/prose-sections';
+import { Gravure } from '@/components/gravure';
 import { firm, offices, type Locale } from '@/content/site';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -25,8 +26,9 @@ export default async function LegalPage({ params }: { params: Promise<{ locale: 
 
   return (
     <>
-      <PageHead locale={locale} title={fr ? 'Mentions légales' : 'Legal notice'} crumbs={[{ label: fr ? 'Mentions légales' : 'Legal notice' }]} />
+      <PageHead locale={locale} title={fr ? 'Mentions légales' : 'Legal notice'} crumbs={[{ label: fr ? 'Mentions légales' : 'Legal notice' }]} aside={<Gravure nom="mouette" largeur="clamp(48px, 5vw, 66px)" className="g-tete" />} />
       <ProseSections
+        dessins={[null, null, 'cocotiers']}
         sections={[
           {
             id: 'editeur',

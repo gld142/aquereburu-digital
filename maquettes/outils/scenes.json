@@ -1,0 +1,16 @@
+[
+  {"nom": "echelle", "source": "img2/plume-echelle.webp", "boite": [165, 0, 760, 688], "cote": 440},
+  {"nom": "pecheurs", "source": "img2/plume-pecheurs.webp", "boite": [40, 15, 1010, 680], "cote": 440},
+  {"nom": "tailleur", "source": "img2/plume-tailleur.webp", "boite": [130, 5, 900, 680], "cote": 440},
+  {"nom": "robe", "source": "img2/plume-tailleur.webp", "boite": [618, 5, 890, 640], "cote": 440},
+  {"nom": "ecoliers", "source": "img2/plume-ecoliers.webp", "boite": [110, 20, 890, 665], "cote": 440},
+  {"nom": "lecteur", "source": "img2/plume-ecoliers.webp", "boite": [352, 22, 548, 650], "effacer": [[[352, 300], [372, 300], [372, 420], [352, 420]], [[530, 250], [548, 250], [548, 460], [530, 460]]], "cote": 440},
+  {"nom": "port", "source": "img2/plume-port.webp", "boite": [0, 0, 1024, 688], "fondu": 0.08, "cote": 440},
+  {"nom": "docker", "source": "img2/plume-port.webp", "boite": [112, 250, 416, 688], "fondu": 0.1, "cotes": "b", "cote": 440, "garder": [[[116, 690], [116, 560], [146, 430], [168, 332], [212, 298], [272, 298], [300, 326], [326, 326], [362, 252], [412, 252], [412, 332], [352, 430], [332, 560], [322, 690]]], "plume": 5},
+  {"nom": "mouette", "source": "img2/plume-port.webp", "boite": [205, 72, 348, 178], "cote": 220},
+  {"nom": "grue", "source": "img2/plume-port.webp", "boite": [395, 0, 1024, 688], "fondu": 0.08, "cotes": "gdb", "cote": 440},
+  {"nom": "barque", "source": "img2/plume-robe.webp", "boite": [520, 490, 734, 760], "cote": 360, "fondu": 0.12, "cotes": "gdb"},
+  {"nom": "pirogue-plage", "source": "img2/plume-arbre.webp", "boite": [320, 800, 700, 900], "cote": 400},
+  {"nom": "cocotiers", "source": "img2/plume-arbre.webp", "boite": [1690, 520, 2010, 770], "fondu": 0.1, "cote": 420},
+  {"nom": "auditeurs", "source": "img2/plume-arbre.webp", "boite": [1250, 715, 1575, 1045], "cote": 440, "garder": [[[1262, 1042], [1262, 900], [1288, 800], [1308, 742], [1350, 724], [1396, 740], [1420, 790], [1446, 760], [1476, 738], [1522, 744], [1548, 800], [1568, 900], [1570, 1042]]], "plume": 6}
+]

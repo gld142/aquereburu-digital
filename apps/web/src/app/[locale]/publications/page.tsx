@@ -5,6 +5,7 @@ import { NewsletterForm } from '@/components/newsletter-form';
 import { InsightsList, type InsightRow } from '@/components/insights-list';
 import { insights, insightTypes, type InsightType } from '@/content/insights';
 import type { Locale } from '@/content/site';
+import { Gravure } from '@/components/gravure';
 import { formatDate, getPractice, practiceContent, sortByName } from '@/lib/content';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -53,6 +54,7 @@ export default async function InsightsPage({ params }: { params: Promise<{ local
             : 'Legal notes and briefings on OHADA law, WAEMU regulation and business developments in West Africa.'
         }
         crumbs={[{ label: fr ? 'Publications' : 'Insights' }]}
+        aside={<Gravure nom="echelle" largeur="clamp(84px, 10vw, 140px)" className="g-tete" />}
       />
       <Section
         id="liste"
@@ -63,6 +65,7 @@ export default async function InsightsPage({ params }: { params: Promise<{ local
       </Section>
       <Section
         id="lettre"
+        marge={<Gravure nom="lecteur" />}
         tone="brume"
         label={fr ? 'Recevoir nos publications' : 'Receive our insights'}
         gloss={fr ? 'Un message par mois au plus' : 'One email a month at most'}

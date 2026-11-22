@@ -5,6 +5,7 @@ import { Link } from '@/i18n/routing';
 import { Fleche, Missing, PageHead, Section } from '@/components/ui';
 import { distinctions, firm, offices, type Locale } from '@/content/site';
 import { people } from '@/content/people';
+import { Gravure } from '@/components/gravure';
 import associes from '../../../../public/images/photo-associes.jpg';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -49,9 +50,10 @@ export default async function FirmPage({ params }: { params: Promise<{ locale: s
             : `Founded in Lomé in ${firm.founded} by ${firm.founder}, SCP Aquereburu & Partners is one of Togo’s leading business law firms. It advises and represents companies, investors and institutions across the OHADA area and internationally.`
         }
         crumbs={[{ label: fr ? 'Cabinet' : 'Firm' }]}
+        aside={<Gravure nom="pecheurs" largeur="clamp(132px, 15vw, 210px)" className="g-tete" />}
       />
 
-      <Section id="devise" label={fr ? 'Devise' : 'Motto'} gloss={fr ? `Depuis ${firm.founded}` : `Since ${firm.founded}`}>
+      <Section id="devise" marge={<Gravure nom="auditeurs" />} label={fr ? 'Devise' : 'Motto'} gloss={fr ? `Depuis ${firm.founded}` : `Since ${firm.founded}`}>
         <h2 className="t-h2 max-w-[18ch]">{firm.motto[locale]}</h2>
         <div className="prose mt-6">
           <p>
@@ -106,7 +108,7 @@ export default async function FirmPage({ params }: { params: Promise<{ locale: s
         </div>
       </Section>
 
-      <Section id="identite" heading label={fr ? 'Fiche d’identité' : 'Key facts'} gloss={fr ? 'Mentions institutionnelles' : 'Institutional details'}>
+      <Section id="identite" marge={<Gravure nom="cocotiers" />} heading label={fr ? 'Fiche d’identité' : 'Key facts'} gloss={fr ? 'Mentions institutionnelles' : 'Institutional details'}>
         <dl className="fiche max-w-[52rem]">
           {identity.map((f) => (
             <div key={f.label}>
@@ -129,7 +131,7 @@ export default async function FirmPage({ params }: { params: Promise<{ locale: s
         </ol>
       </Section>
 
-      <Section id="suite" tone="brume" label={fr ? 'Pour aller plus loin' : 'Further reading'} gloss={fr ? 'Règles et engagements' : 'Rules and commitments'}>
+      <Section id="suite" marge={<Gravure nom="mouette" />} tone="brume" label={fr ? 'Pour aller plus loin' : 'Further reading'} gloss={fr ? 'Règles et engagements' : 'Rules and commitments'}>
         <div className="grid gap-5 md:grid-cols-2">
           {[
             {

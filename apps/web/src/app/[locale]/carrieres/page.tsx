@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 import { PageHead, Section } from '@/components/ui';
 import { ContactForm } from '@/components/contact-form';
+import { Gravure } from '@/components/gravure';
 import { firm, type Locale } from '@/content/site';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -52,6 +53,7 @@ export default async function CareersPage({ params }: { params: Promise<{ locale
             : 'Joining the firm means working on matters that count, alongside partners who teach. We recruit lawyers, interns and legal counsel.'
         }
         crumbs={[{ label: fr ? 'Carrières' : 'Careers' }]}
+        aside={<Gravure nom="lecteur" largeur="clamp(32px, 3.4vw, 50px)" className="g-tete" />}
       />
 
       <Section

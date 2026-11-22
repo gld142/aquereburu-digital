@@ -84,6 +84,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
 
       <Section
         id="bureaux"
+        marge={<Gravure nom="barque" />}
         heading
         tone="brume"
         label={fr ? 'Nos bureaux' : 'Our offices'}
