@@ -1,0 +1,47 @@
+/* Accueil — Fondation : l'arbre à palabres gravé en clair sur le violet.
+   Porté depuis maquettes/i.html. Importé dans la couche « maquette » (voir globals.css). */
+
+/* L'encre de l'arbre apparaît depuis son pied : la variable est déclarée pour pouvoir être animée.
+   Les classes « attend » puis « vu » sont posées par components/motion.tsx. */
+@property --fd-o { syntax: '<percentage>'; inherits: false; initial-value: 150%; }
+
+.fondation { --bord: calc(max(0px, (100vw - var(--max)) / 2) + var(--pad)); position: relative; overflow: hidden; background: radial-gradient(120% 96% at 80% 26%, #563180 0, var(--violet) 48%, #351c52 100%); color: #e9e0f3; }
+.fondation .shell { position: relative; padding-top: clamp(64px, 8.6vw, 124px); padding-bottom: clamp(56px, 7vw, 100px); }
+.fd-haut { position: relative; }
+.fd-texte { position: relative; z-index: 2; max-width: min(540px, 45%); padding-bottom: clamp(34px, 4.4vw, 64px); }
+.fd-sur { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-bottom: clamp(18px, 2.2vw, 28px); font: 600 clamp(12.5px, 0.98vw, 14px) / 1.3 var(--serif); letter-spacing: 0.17em; text-transform: uppercase; color: #dccdee; }
+.fd-sur::after { content: ''; flex: 0 0 clamp(28px, 4.4vw, 64px); height: 0; border-top: 3px double #b79cd6; }
+.fondation h2 { color: #fff; font-size: clamp(32px, 4vw, 58px); line-height: 1.07; letter-spacing: -0.02em; }
+.fondation h2 em { font-style: italic; font-weight: 400; letter-spacing: -0.014em; color: #dccdee; }
+.fd-ch { margin-top: clamp(16px, 1.8vw, 24px); max-width: 44ch; font: 400 clamp(17.5px, 1.4vw, 20.5px) / 1.55 var(--serif); color: #e9e0f3; }
+.fd-acts { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 30px; margin-top: clamp(24px, 2.8vw, 36px); }
+.fondation .btn.blanc { color: var(--violet); --survol: #efe7f8; --filet: rgba(70, 39, 104, 0.34); --filet-s: rgba(70, 39, 104, 0.7); }
+.fondation .btn.blanc:focus-visible { box-shadow: inset 0 0 0 3px var(--violet); }
+
+/* la gravure : à droite, jusqu'au bord de l'écran, posée sur le filet double */
+.fd-gravure { position: absolute; z-index: 1; right: calc(-1 * var(--bord)); bottom: 0; width: min(calc(52% + var(--bord)), 860px); margin: 0; }
+.fd-voile { -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 15%); mask-image: linear-gradient(90deg, transparent 0, #000 15%); pointer-events: none; }
+.fd-rev { -webkit-mask-image: radial-gradient(circle at 72% 78%, #000 var(--fd-o), transparent calc(var(--fd-o) + 26%)); mask-image: radial-gradient(circle at 72% 78%, #000 var(--fd-o), transparent calc(var(--fd-o) + 26%)); }
+.fondation.attend .fd-rev { --fd-o: -26%; }
+.fondation.vu .fd-rev { --fd-o: 150%; transition: --fd-o 2.8s cubic-bezier(0.3, 0, 0.2, 1) 0.15s; }
+.fd-encre { aspect-ratio: 2879 / 2162; background: radial-gradient(circle at 66% 66%, rgba(244, 236, 252, 0.86) 0, rgba(214, 194, 238, 0.56) 30%, rgba(190, 164, 222, 0.37) 70%, rgba(176, 148, 212, 0.29) 100%); -webkit-mask: url(/images/fondation/arbre.webp) center / 100% 100% no-repeat; mask: url(/images/fondation/arbre.webp) center / 100% 100% no-repeat; }
+
+/* au pied de l'arbre : une vraie photo de la Fondation, en couleur */
+.fd-photo { position: absolute; left: 13%; bottom: 3.4%; width: 59%; }
+.fd-cadre { --c: clamp(16px, 2.2vw, 30px); padding: 5px; background: #f3ecfa; clip-path: polygon(0 0, calc(100% - var(--c)) 0, 100% var(--c), 100% 100%, 0 100%); filter: none; }
+.fd-cadre img { display: block; width: 100%; height: auto; aspect-ratio: 1024 / 486; object-fit: cover; clip-path: polygon(0 0, calc(100% - var(--c) + 3px) 0, 100% calc(var(--c) - 3px), 100% 100%, 0 100%); }
+.fd-photo p { margin-top: 9px; font: italic 400 clamp(13.5px, 1.05vw, 15px) / 1.35 var(--serif); color: #d6c9e8; }
+
+.fd-axes { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 clamp(20px, 3.4vw, 52px); border-top: 3px double #b79cd6; }
+.fd-axes li { padding-top: 18px; }
+.fd-axes b { display: block; font: 600 13px/1.3 var(--serif); letter-spacing: 0.16em; text-transform: uppercase; color: #fff; }
+.fd-axes span { display: block; margin-top: 9px; max-width: 36ch; font-size: 16.5px; line-height: 1.55; color: #d6c9e8; }
+
+/* Téléphone et tablette en portrait : le texte, le bouton, puis la gravure dans le fil de la page */
+@media (max-width: 860px) {
+  .fd-texte { max-width: none; padding-bottom: 0; }
+  .fd-gravure { position: relative; right: auto; width: calc(100% + var(--bord)); max-width: none; margin: 22px calc(-1 * var(--bord)) 0 0; }
+  .fd-photo { left: 6%; width: 64%; }
+  .fd-axes { grid-template-columns: minmax(0, 1fr); }
+  .fd-axes li + li { margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(183, 156, 214, 0.4); }
+}

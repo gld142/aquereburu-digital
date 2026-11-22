@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
-import { PageHead } from '@/components/ui';
+import { Gravure } from '@/components/gravure';
+import { PageHead, Section } from '@/components/ui';
 import { ContactForm } from '@/components/contact-form';
 import { MapEmbed } from '@/components/map-embed';
 import { firm, offices, type Locale } from '@/content/site';
@@ -40,87 +41,91 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
             : 'Write to us or call the Lomé head office. Every request is read by a lawyer and passed to the relevant partner.'
         }
         crumbs={[{ label: 'Contact' }]}
+        aside={<Gravure nom="duo" largeur="clamp(64px, 6vw, 88px)" className="g-tete" />}
       />
 
-      <div className="shell grid gap-x-10 gap-y-14 py-14 md:grid-cols-12 md:py-20">
-        <section aria-labelledby="ecrire" className="md:col-span-7">
-          <h2 id="ecrire" className="t-h2">
-            {fr ? 'Écrire au cabinet' : 'Write to the firm'}
-          </h2>
-          <div className="mt-8">
-            <ContactForm locale={locale} practiceOptions={options} />
-          </div>
-        </section>
+      <Section
+        id="ecrire"
+        heading
+        label={fr ? 'Écrire au cabinet' : 'Write to the firm'}
+        gloss={fr ? 'Sous le sceau du secret professionnel' : 'Under professional secrecy'}
+      >
+        <div className="deux">
+          <ContactForm locale={locale} practiceOptions={options} />
 
-        <aside className="md:col-span-4 md:col-start-9" aria-label={fr ? 'Coordonnées directes' : 'Direct contact details'}>
-          <dl className="border-t border-ink">
-            <div className="border-b border-rule py-4">
-              <dt className="t-small text-slate">{fr ? 'Standard, Lomé' : 'Switchboard, Lomé'}</dt>
-              <dd className="t-ui mt-1">
-                <a className="link" href={`tel:${firm.phone.replace(/\s/g, '')}`}>
-                  {firm.phone}
-                </a>
-                <br />
-                <a className="link" href={`tel:${firm.phoneAlt.replace(/\s/g, '')}`}>
-                  {firm.phoneAlt}
-                </a>
-              </dd>
-            </div>
-            {generic.map((g) => (
-              <div key={g.label} className="border-b border-rule py-4">
-                <dt className="t-small text-slate">{g.label}</dt>
-                <dd className="t-ui mt-1 break-all">
-                  <a className="link" href={`mailto:${g.value}`}>
-                    {g.value}
+          <aside aria-label={fr ? 'Coordonnées directes' : 'Direct contact details'}>
+            <dl className="fiche etroite">
+              <div>
+                <dt>{fr ? 'Standard, Lomé' : 'Switchboard, Lomé'}</dt>
+                <dd>
+                  <a className="link" href={`tel:${firm.phone.replace(/\s/g, '')}`}>
+                    {firm.phone}
+                  </a>
+                  <br />
+                  <a className="link" href={`tel:${firm.phoneAlt.replace(/\s/g, '')}`}>
+                    {firm.phoneAlt}
                   </a>
                 </dd>
               </div>
-            ))}
-          </dl>
-        </aside>
-      </div>
+              {generic.map((g) => (
+                <div key={g.label}>
+                  <dt>{g.label}</dt>
+                  <dd>
+                    <a className="link" href={`mailto:${g.value}`}>
+                      {g.value}
+                    </a>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </aside>
+        </div>
+      </Section>
 
-      <section aria-labelledby="bureaux" className="bg-paper-2">
-        <div className="shell py-16 md:py-24">
-          <h2 id="bureaux" className="t-h2">
-            {fr ? 'Nos bureaux' : 'Our offices'}
-          </h2>
-          <ul className="mt-12 grid gap-12 md:grid-cols-3 md:gap-8">
-            {offices.map((o) => (
-              <li key={o.id}>
-                <p className="t-h3">{o.city[locale]}</p>
-                <p className="t-small mt-1 text-slate">
-                  {o.role[locale]}, {o.country[locale]}
-                </p>
-                <div className="t-ui mt-5 space-y-3 text-ink-2">
-                  {o.address ? (
-                    <address className="not-italic">
-                      {o.address.map((l) => (
-                        <span key={l} className="block">
-                          {l}
-                        </span>
-                      ))}
-                    </address>
-                  ) : (
-                    <p>{fr ? 'Adresse communiquée lors de la prise de rendez-vous.' : 'Address given when the meeting is booked.'}</p>
-                  )}
-                  {o.hours && <p>{o.hours[locale]}</p>}
-                  {o.phone && (
-                    <a className="link block" href={`tel:${o.phone.replace(/\s/g, '')}`}>
+      <Section
+        id="bureaux"
+        heading
+        tone="brume"
+        label={fr ? 'Nos bureaux' : 'Our offices'}
+        gloss={offices.map((o) => o.city[locale]).join(', ')}
+      >
+        <ul className="bureaux-clairs">
+          {offices.map((o) => (
+            <li key={o.id}>
+              <h3>{o.city[locale]}</h3>
+              <p className="t-glose mt-0.5">
+                {o.role[locale]}, {o.country[locale]}
+              </p>
+              <div className="mt-4 space-y-2.5 text-[16px]">
+                {o.address ? (
+                  <address>
+                    {o.address.map((l) => (
+                      <span key={l} className="block">
+                        {l}
+                      </span>
+                    ))}
+                  </address>
+                ) : (
+                  <p>{fr ? 'Adresse communiquée lors de la prise de rendez-vous.' : 'Address given when the meeting is booked.'}</p>
+                )}
+                {o.hours && <p>{o.hours[locale]}</p>}
+                {o.phone && (
+                  <p>
+                    <a className="link" href={`tel:${o.phone.replace(/\s/g, '')}`}>
                       {o.phone}
                     </a>
-                  )}
-                </div>
-                {o.mapQuery && (
-                  <div className="mt-6">
-                    <MapEmbed query={o.mapQuery} label={o.city[locale]} locale={locale} />
-                  </div>
+                  </p>
                 )}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
+              </div>
+              {o.mapQuery && (
+                <div className="mt-6">
+                  <MapEmbed query={o.mapQuery} label={o.city[locale]} locale={locale} />
+                </div>
+              )}
+            </li>
+          ))}
+        </ul>
+      </Section>
     </>
   );
 }

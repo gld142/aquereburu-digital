@@ -1,23 +1,23 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { Menu, Search, X } from 'lucide-react';
 import clsx from 'clsx';
 import { Link, usePathname } from '@/i18n/routing';
-import { firm, offices, type Locale } from '@/content/site';
+import { firm, type Locale } from '@/content/site';
 import type { SearchItem } from '@/lib/search-index';
-import { SearchDialog } from './search';
 import { NAV } from '@/lib/nav';
-
+import { useVerrouDefilement } from '@/lib/scroll';
+import { SearchDialog } from './search';
 
 export function Header({ locale, searchIndex }: { locale: Locale; searchIndex: SearchItem[] }) {
   const pathname = usePathname();
   const params = useParams();
-  const reduce = useReducedMotion();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuBtnRef = useRef<HTMLButtonElement>(null);
   const fr = locale === 'fr';
   const other: Locale = fr ? 'en' : 'fr';
 
@@ -43,143 +43,224 @@ export function Header({ locale, searchIndex }: { locale: Locale; searchIndex: S
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
+  // L'en-tête prend une ombre dès qu'il se détache du bandeau utilitaire.
   useEffect(() => {
-    document.documentElement.style.overflow = menuOpen ? 'hidden' : '';
+    const onScroll = () => setScrolled(window.scrollY > 48);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useVerrouDefilement(menuOpen);
+
+  // Menu mobile : le focus y entre à l'ouverture et revient au bouton à la fermeture.
+  const dejaOuvert = useRef(false);
+  useEffect(() => {
+    if (menuOpen) {
+      dejaOuvert.current = true;
+      menuRef.current?.querySelector<HTMLElement>('a')?.focus();
+    } else if (dejaOuvert.current) {
+      dejaOuvert.current = false;
+      menuBtnRef.current?.focus();
+    }
   }, [menuOpen]);
+
+  const retenirFocus = (e: React.KeyboardEvent) => {
+    if (e.key !== 'Tab') return;
+    const items = menuRef.current?.querySelectorAll<HTMLElement>('a, button');
+    if (!items?.length) return;
+    const first = items[0]!;
+    const last = items[items.length - 1]!;
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  };
 
   const isActive = (p: string) => pathname === p || pathname.startsWith(`${p}/`);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const switchHref = { pathname, params } as any;
+  const tel = `tel:${firm.phone.replace(/\s/g, '')}`;
 
   return (
     <>
-      <header className="sticky top-0 z-40 border-b border-rule bg-paper/92 backdrop-blur-md supports-[backdrop-filter]:bg-paper/80">
-        <div className="shell flex h-16 items-center gap-3 sm:gap-6 lg:h-[4.5rem]">
-          <Link href="/" className="t-ui shrink-0 text-[1rem] [font-variation-settings:'wdth'_88] min-[360px]:[font-variation-settings:'wdth'_118] font-[560] tracking-[-0.02em] text-ink sm:text-[1.0625rem]">
-            Aquereburu <span className="font-[400] text-slate">&amp;</span> Partners
+      <div className="util sur-sombre">
+        <div className="shell">
+          <ul className="coord">
+            <li>
+              <a href={tel}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true">
+                  <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" />
+                </svg>
+                <span>{firm.phone}</span>
+              </a>
+            </li>
+            <li>
+              <a href={`mailto:${firm.email}`}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true">
+                  <rect x="3" y="5" width="18" height="14" rx="1.5" />
+                  <path d="m3.5 6.5 8.5 7 8.5-7" />
+                </svg>
+                <span>{firm.email}</span>
+              </a>
+            </li>
+          </ul>
+          <ul>
+            <li className="lang">
+              {(['fr', 'en'] as const).map((l, i) => (
+                <span key={l} className="contents">
+                  {i > 0 && <span aria-hidden="true">/</span>}
+                  {l === locale ? (
+                    <span aria-current="true" lang={l}>
+                      {l.toUpperCase()}
+                    </span>
+                  ) : (
+                    <Link
+                      href={switchHref}
+                      locale={l}
+                      hrefLang={l}
+                      lang={l}
+                      aria-label={l === 'en' ? 'Read in English' : 'Lire en français'}
+                    >
+                      {l.toUpperCase()}
+                    </Link>
+                  )}
+                </span>
+              ))}
+            </li>
+            <li>
+              {/* Sous 380 px, le nom (<em>) est masqué : le bouton dit seulement « Fondation ». */}
+              <Link className="fond" href="/cabinet/engagement">
+                {fr ? (
+                  <span>
+                    Fondation <em>Aquereburu</em>
+                  </span>
+                ) : (
+                  <span>
+                    <em>Aquereburu </em>Foundation
+                  </span>
+                )}
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <header className={clsx('top', scrolled && 'scrolled')}>
+        <div className="shell">
+          <Link
+            className="marque"
+            href="/"
+            aria-label={fr ? 'Aquereburu & Partners, société d’avocats, accueil' : 'Aquereburu & Partners, law firm, home'}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/embleme.svg" width={54} height={61} alt="" />
+            <span>
+              <b>AQUEREBURU &amp; PARTNERS</b>
+              <i lang="fr">Société d’Avocats</i>
+            </span>
           </Link>
 
-          <nav aria-label={fr ? 'Navigation principale' : 'Main navigation'} className="ml-auto hidden xl:block">
-            <ul className="flex items-center gap-1">
+          <nav aria-label={fr ? 'Navigation principale' : 'Main navigation'}>
+            <ul>
               {NAV.map((item) => (
                 <li key={item.pathname}>
                   <Link
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     href={item.pathname as any}
                     aria-current={isActive(item.pathname) ? 'page' : undefined}
-                    className={clsx(
-                      't-ui relative rounded px-2.5 py-2 transition-colors hover:text-ink 2xl:px-3',
-                      isActive(item.pathname) ? 'text-ink' : 'text-ink-2',
-                    )}
                   >
                     {item[locale]}
-                    {isActive(item.pathname) && (
-                      <span aria-hidden className="absolute inset-x-2.5 -bottom-[1.1rem] h-[2px] bg-ink 2xl:inset-x-3" />
-                    )}
                   </Link>
                 </li>
               ))}
             </ul>
           </nav>
 
-          <div className="ml-auto flex items-center gap-0.5 sm:gap-1 xl:ml-2">
+          <div className="r">
             <button
               type="button"
+              className="ico"
               onClick={() => setSearchOpen(true)}
-              className="t-ui flex h-10 items-center gap-2 rounded-md px-2.5 text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink"
               aria-label={fr ? 'Rechercher sur le site' : 'Search the site'}
               aria-keyshortcuts="Meta+K Control+K /"
             >
-              <Search className="size-[18px]" strokeWidth={1.75} aria-hidden />
-              <kbd className="t-small hidden rounded border border-rule px-1.5 py-0.5 font-sans text-slate 2xl:inline">
-                ⌘K
-              </kbd>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                <circle cx="11" cy="11" r="6.5" />
+                <path d="m16 16 4.5 4.5" />
+              </svg>
             </button>
-            <Link
-              href={switchHref}
-              locale={other}
-              hrefLang={other}
-              className="t-ui flex h-10 items-center rounded-md px-2.5 text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink"
-              aria-label={fr ? 'Read in English' : 'Lire en français'}
-            >
-              {other.toUpperCase()}
-            </Link>
-            <Link href="/contact" className="btn btn-primary ml-2 hidden min-h-10 sm:inline-flex">
+            <Link className="btn" href="/contact">
               {fr ? 'Prendre rendez-vous' : 'Book a meeting'}
             </Link>
             <button
+              ref={menuBtnRef}
               type="button"
-              className="ml-1 flex size-10 items-center justify-center rounded-md text-ink hover:bg-paper-2 xl:hidden"
+              className="menu-btn"
               aria-expanded={menuOpen}
               aria-controls="menu-mobile"
-              aria-label={menuOpen ? (fr ? 'Fermer le menu' : 'Close menu') : fr ? 'Ouvrir le menu' : 'Open menu'}
-              onClick={() => setMenuOpen((o) => !o)}
+              onClick={() => setMenuOpen(true)}
             >
-              {menuOpen ? <X className="size-5" aria-hidden /> : <Menu className="size-5" aria-hidden />}
+              Menu
             </button>
           </div>
         </div>
       </header>
 
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            id="menu-mobile"
-            role="dialog"
-            aria-modal="true"
-            aria-label={fr ? 'Menu' : 'Menu'}
-            className="fixed inset-x-0 bottom-0 top-16 z-30 overflow-y-auto bg-paper xl:hidden"
-            initial={reduce ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={reduce ? undefined : { opacity: 0 }}
-            transition={{ duration: 0.18 }}
+      <div
+        ref={menuRef}
+        id="menu-mobile"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Menu"
+        className={clsx('mnav sur-sombre', menuOpen && 'ouvert')}
+        onKeyDown={retenirFocus}
+        data-lenis-prevent
+      >
+        <nav aria-label={fr ? 'Menu mobile' : 'Mobile menu'} className="contents">
+          <ul>
+            {[
+              ...NAV,
+              { pathname: '/cabinet/engagement', fr: 'Fondation', en: 'Foundation' },
+              { pathname: '/contact', fr: 'Contact', en: 'Contact' },
+            ].map((item) => (
+              <li key={item.pathname}>
+                <Link
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  href={item.pathname as any}
+                  aria-current={pathname === item.pathname ? 'page' : undefined}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {item[locale]}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <div className="mnav-bas">
+          <a className="link" href={tel}>
+            {firm.phone}
+          </a>
+          {/* Sur les très petits écrans, la loupe de l'en-tête cède sa place : la recherche reste ici. */}
+          <button
+            type="button"
+            onClick={() => {
+              setMenuOpen(false);
+              setSearchOpen(true);
+            }}
           >
-            <nav className="shell flex min-h-full flex-col pb-10 pt-6" aria-label={fr ? 'Menu mobile' : 'Mobile menu'}>
-              <ul>
-                {[...NAV, { pathname: '/contact', fr: 'Contact', en: 'Contact' }].map((item, i) => (
-                  <motion.li
-                    key={item.pathname}
-                    className="border-b border-rule"
-                    initial={reduce ? false : { opacity: 0, x: -8 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.03 * i, duration: 0.22, ease: [0.2, 0.7, 0.2, 1] }}
-                  >
-                    <Link
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      href={item.pathname as any}
-                      aria-current={isActive(item.pathname) ? 'page' : undefined}
-                      className="t-h2 flex py-4 aria-[current=page]:text-accent"
-                    >
-                      {item[locale]}
-                    </Link>
-                  </motion.li>
-                ))}
-              </ul>
-              <div className="t-small mt-auto grid gap-4 pt-10 text-slate xs:grid-cols-2">
-                {offices
-                  .filter((o) => o.address)
-                  .map((o) => (
-                    <p key={o.id}>
-                      <span className="block font-medium text-ink">{o.city[locale]}</span>
-                      {o.address!.join(', ')}
-                    </p>
-                  ))}
-                <p>
-                  <a className="link" href={`tel:${firm.phone.replace(/\s/g, '')}`}>
-                    {firm.phone}
-                  </a>
-                  <br />
-                  <a className="link" href={`mailto:${firm.email}`}>
-                    {firm.email}
-                  </a>
-                </p>
-              </div>
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            {fr ? 'Rechercher' : 'Search'}
+          </button>
+          <button type="button" onClick={() => setMenuOpen(false)}>
+            {fr ? 'Fermer' : 'Close'}
+          </button>
+        </div>
+      </div>
 
-      <SearchDialog open={searchOpen} onClose={() => setSearchOpen(false)} items={searchIndex} locale={locale} />
+      <SearchDialog open={searchOpen} onClose={() => setSearchOpen(false)} items={searchIndex} locale={locale} retour={menuBtnRef} />
     </>
   );
 }

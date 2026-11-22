@@ -1,0 +1,42 @@
+/* Fin de page : les trois bureaux, l'horizon et la devise, les mentions.
+   Porté depuis maquettes/i.html. Importé dans la couche « maquette » (voir globals.css). */
+
+.pied { position: relative; background: var(--nuit); color: var(--clair-2); overflow: hidden; }
+
+/* Les trois bureaux sous un seul filet double */
+.fin { padding-top: clamp(32px, 3.6vw, 50px); padding-bottom: clamp(24px, 2.6vw, 36px); }
+.fin-bureaux { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2.6vw, 44px); padding-top: 16px; border-top: 3px double #5f7f9f; }
+.fin-bureaux h3 { display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px; color: #fff; font-size: 20px; }
+.fin-bureaux h3 i { font: italic 400 14.5px var(--serif); letter-spacing: 0; color: #9db7d3; }
+.fin-bureaux address, .fin-bureaux p { font-style: normal; font-size: 15px; line-height: 1.55; }
+.fin-joindre { display: grid; justify-items: start; gap: 1px; margin-top: 8px; }
+.fin-joindre a { color: #dbe6f2; background: linear-gradient(currentColor, currentColor) 0 100% / 0% 1px no-repeat; transition: background-size 0.4s var(--ease), color 0.2s; }
+.fin-joindre a:hover, .fin-joindre a:focus-visible { color: #fff; background-size: 100% 1px; }
+
+/* L'horizon du hero : le soleil s'y retrace quand on arrive en bas de page, puis la devise referme la page.
+   Les classes « attend » puis « vu » sont posées par components/motion.tsx. */
+.colophon { margin-top: clamp(26px, 3vw, 42px); text-align: center; }
+.co-horizon { display: flex; justify-content: center; border-bottom: 1px solid rgba(157, 183, 211, 0.34); }
+.co-soleil { display: block; width: clamp(100px, 9.4vw, 132px); height: auto; margin-bottom: 4px; overflow: visible; fill: none; stroke: #9db7d3; stroke-width: 1.6; stroke-linecap: round; }
+.co-soleil path { stroke-dasharray: 1; stroke-dashoffset: 0; }
+.colophon.attend .co-soleil path { stroke-dashoffset: 1; }
+.colophon.vu .co-soleil path { stroke-dashoffset: 0; transition: stroke-dashoffset 2.6s cubic-bezier(0.4, 0, 0.2, 1) 0.25s; }
+.co-devise { margin-top: clamp(14px, 1.6vw, 20px); font: 600 clamp(18px, 1.7vw, 23px) / 1.25 var(--serif); letter-spacing: -0.012em; color: #fff; }
+.co-devise em { font-weight: 400; color: #b7cbe0; }
+
+/* Le plan du site, en une ligne discrète, puis les mentions */
+.bas { border-top: 0; }
+.bas .shell { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 40px; padding-top: 0; padding-bottom: clamp(24px, 2.8vw, 36px); font-size: 13.5px; color: #9aaec4; }
+.bas ul { display: flex; flex-wrap: wrap; gap: 6px 22px; }
+.bas p { max-width: 96ch; }
+.bas a { transition: color 0.2s; }
+.bas a:hover, .bas a:focus-visible { color: #fff; }
+.fin-plan { flex-basis: 100%; padding-bottom: 14px; border-bottom: 1px solid rgba(157, 183, 211, 0.2); font-size: 14.5px; color: #c3d2e2; }
+.fin-plan ul { justify-content: center; gap: 6px clamp(16px, 2.4vw, 30px); }
+
+@media (max-width: 620px) {
+  .fin-bureaux { grid-template-columns: 1fr 1fr; gap: 14px 20px; }
+  .fin-bureaux li:first-child { grid-column: 1 / -1; padding-bottom: 14px; border-bottom: 1px solid rgba(157, 183, 211, 0.26); }
+  .bas .shell { justify-content: center; text-align: center; }
+  .bas ul { justify-content: center; }
+}

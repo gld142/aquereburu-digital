@@ -1,0 +1,1613 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Aquereburu &amp; Partners — Société d’avocats</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="shared.css" />
+    <style>
+      /* Identité du cabinet (bleu acier, marine du logo, violet de la Fondation).
+         Forme propre au site : le coin coupé de l'onglet et de la chemise de dossier. */
+      @property --c { syntax: '<length>'; inherits: true; initial-value: 12px; }
+      :root {
+        --bleu: #466c93;
+        --bleu-f: #33557a;
+        --marine: #1b2a4a;
+        --nuit: #0f1d2b;
+        --brume: #edf1f6;
+        --trait: #d6dee8;
+        --texte: #34445a;
+        --gris: #5b6b80;
+        --clair: #f3f6fa;
+        --clair-2: #b9c6d6;
+        --violet: #462768;
+        --serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+        --sans: 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', sans-serif;
+        --pad: clamp(20px, 4vw, 64px);
+        --max: 1280px;
+        --ease: cubic-bezier(0.16, 1, 0.3, 1);
+        --mnav-bg: var(--nuit);
+        --mnav-fg: var(--clair);
+        --focus: var(--bleu);
+      }
+      body { background: #fff; color: var(--texte); font-family: var(--sans); font-size: 17px; line-height: 1.6; }
+      ::selection { background: var(--bleu); color: #fff; }
+      .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
+      h1, h2, h3 { font-family: var(--serif); color: var(--marine); font-weight: 600; letter-spacing: -0.012em; }
+      h2 { font-size: clamp(28px, 2.9vw, 42px); line-height: 1.14; }
+
+      /* ——— Le coin coupé */
+      .coin { clip-path: polygon(0 0, calc(100% - var(--c)) 0, 100% var(--c), 100% 100%, 0 100%); }
+      .ombre { filter: drop-shadow(0 22px 34px rgba(15, 29, 43, 0.16)); }
+
+      /* ——— Boutons : une plaque gravée. Fond marine, filet intérieur qui suit le coin coupé,
+         capitales à empattements comme le nom du cabinet ; la flèche a sa case. */
+      .btn {
+        --c: 12px; --k: calc(var(--c) - 2.34px);
+        --fond: var(--marine); --survol: var(--bleu-f); --filet: rgba(255, 255, 255, 0.36); --filet-s: rgba(255, 255, 255, 0.66);
+        position: relative; isolation: isolate; display: inline-flex; align-items: center; justify-content: center;
+        min-height: 54px; padding: 1px 26px 0; font: 600 13px/1 var(--serif); letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap;
+        color: #fff; background: linear-gradient(var(--survol), var(--survol)) 0 0 / 0% 100% no-repeat var(--fond);
+        clip-path: polygon(0 0, calc(100% - var(--c)) 0, 100% var(--c), 100% 100%, 0 100%);
+        transition: background-size 0.5s var(--ease), color 0.25s;
+      }
+      .btn::before {
+        content: ''; position: absolute; inset: 4px; z-index: -1; background: var(--filet); pointer-events: none; transition: background 0.3s;
+        clip-path: polygon(evenodd, 0 0, calc(100% - var(--k)) 0, 100% var(--k), 100% 100%, 0 100%, 0 0,
+          1px 1px, 1px calc(100% - 1px), calc(100% - 1px) calc(100% - 1px), calc(100% - 1px) calc(var(--k) + 0.41px), calc(100% - var(--k) - 0.41px) 1px, 1px 1px);
+      }
+      .btn > svg { box-sizing: content-box; flex: none; width: 16px; height: 16px; padding: 0 18px; margin-left: 22px; stroke-width: 1.6; transition: transform 0.4s var(--ease); }
+      .btn:has(> svg) { padding-right: 0; }
+      .btn:has(> svg)::after { content: ''; position: absolute; z-index: -1; top: 4px; bottom: 4px; right: 52px; width: 1px; background: var(--filet); pointer-events: none; transition: background 0.3s; }
+      .btn:hover, .btn:focus-visible { background-size: 100% 100%; }
+      .btn:hover::before, .btn:focus-visible::before, .btn:hover::after, .btn:focus-visible::after { background: var(--filet-s); }
+      .btn:hover > svg { transform: translateX(3px); }
+      .btn:active { transform: translateY(1px); }
+      .btn:focus-visible { outline: none; box-shadow: inset 0 0 0 3px #fff; }
+      .btn.blanc { --fond: #fff; --survol: var(--brume); --filet: rgba(27, 42, 74, 0.3); --filet-s: rgba(27, 42, 74, 0.62); color: var(--marine); }
+      .btn.blanc:focus-visible { box-shadow: inset 0 0 0 3px var(--marine); }
+      .btn.contour { --fond: transparent; --survol: rgba(255, 255, 255, 0.14); }
+
+      /* Liens de texte : les mêmes capitales ; au survol, le filet simple devient le filet double du cabinet */
+      .lien {
+        display: inline-flex; align-items: center; gap: 10px; padding-bottom: 8px;
+        font: 600 13px/1.25 var(--serif); letter-spacing: 0.14em; text-transform: uppercase; color: var(--marine);
+        background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat, linear-gradient(currentColor, currentColor) 0 calc(100% - 3px) / 0% 1px no-repeat;
+        transition: background-size 0.5s var(--ease), color 0.2s;
+      }
+      .lien svg { flex: none; width: 15px; height: 15px; stroke-width: 1.6; transition: transform 0.4s var(--ease); }
+      .lien:hover, .lien:focus-visible { background-size: 100% 1px, 100% 1px; }
+      .lien:hover svg { transform: translateX(4px); }
+      .signe .lien { font: 600 16px/1.3 var(--sans); letter-spacing: 0; text-transform: none; color: var(--bleu-f); }
+
+      /* ——— Bandeau utilitaire et en-tête */
+      .util { background: var(--bleu); color: #fff; font-size: 14px; }
+      .util .wrap { display: flex; align-items: stretch; justify-content: space-between; gap: 18px; min-height: 40px; }
+      .util ul { display: flex; align-items: center; gap: clamp(14px, 2vw, 28px); }
+      .util a { display: inline-flex; align-items: center; gap: 8px; padding: 9px 0; }
+      .util svg { width: 15px; height: 15px; opacity: 0.9; }
+      /* le bouton Fondation reprend la section : violet en lumière, capitales à empattements, feuillage de l'arbre à palabres gravé en clair, coin coupé */
+      .util .fond { position: relative; isolation: isolate; overflow: hidden; gap: 10px; min-height: 40px; padding: 1px 46px 0 16px; background: radial-gradient(130% 160% at 86% 0, #5c3688 0, var(--violet) 56%, #351c52 100%); font: 600 11.5px/1 var(--serif); letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap; color: #f3ecfb; clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%); }
+      .util .fond em { font-style: normal; }
+      .util .fond::before { content: ''; flex: none; width: 5px; height: 5px; background: #cdb6e8; transform: rotate(45deg); }
+      .util .fond::after { content: ''; position: absolute; z-index: -1; right: -16px; top: -10px; width: 132px; aspect-ratio: 2879 / 2162; background: linear-gradient(90deg, rgba(226, 210, 244, 0) 6%, rgba(226, 210, 244, 0.66) 62%); -webkit-mask: url(img2/fondation-arbre.webp) center / 100% 100% no-repeat; mask: url(img2/fondation-arbre.webp) center / 100% 100% no-repeat; opacity: 0.8; transition: opacity 0.4s, transform 0.9s var(--ease); }
+      .util .fond:hover::after, .util .fond:focus-visible::after { opacity: 1; transform: translateX(-6px); }
+      .util .fond:focus-visible { outline: none; box-shadow: inset 0 0 0 2px #e6d9f5; }
+      .util .lang { white-space: nowrap; }
+      .util .lang a { opacity: 0.75; padding: 9px 2px; }
+      .util .lang a[aria-current] { opacity: 1; font-weight: 600; }
+      .top { position: sticky; top: 0; z-index: 60; background: #fff; border-bottom: 1px solid var(--trait); transition: box-shadow 0.3s; }
+      .scrolled .top { box-shadow: 0 10px 30px -18px rgba(15, 29, 43, 0.45); }
+      .top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 84px; }
+      .marque { display: flex; align-items: center; gap: 12px; }
+      .marque img { width: 54px; height: 61px; }
+      .marque b { display: block; font: 600 15.5px/1.15 var(--serif); letter-spacing: 0.13em; color: var(--marine); white-space: nowrap; }
+      .marque i { display: block; font: italic 400 13.5px/1.3 var(--serif); color: var(--bleu-f); letter-spacing: 0.03em; }
+      .top nav { display: flex; gap: clamp(14px, 1.9vw, 30px); }
+      .top nav a { font-weight: 500; font-size: 16px; color: var(--marine); padding: 8px 0; position: relative; }
+      .top nav a::after { content: ''; position: absolute; left: 0; right: 0; bottom: 2px; height: 2px; background: var(--bleu); transform: scaleX(0); transform-origin: left; transition: transform 0.35s var(--ease); }
+      .top nav a:hover::after { transform: scaleX(1); }
+      .top .r { display: flex; align-items: center; gap: 12px; }
+      .top .btn { min-height: 46px; }
+      .ico { display: grid; place-items: center; width: 44px; height: 44px; color: var(--marine); transition: background 0.2s; }
+      .ico:hover { background: var(--brume); }
+      .ico svg { width: 20px; height: 20px; }
+      .menu-btn { font-weight: 600; color: var(--marine); min-height: 44px; padding: 0 6px; }
+      .mnav a { font-family: var(--serif); }
+
+      /* ——— Hero : la bibliothèque, éclairée là où l'on regarde */
+      .hero { position: relative; color: #fff; overflow: hidden; background: var(--nuit); }
+      .hero-img { position: absolute; inset: 0; }
+      .hero-img img { width: 100%; height: 112%; object-fit: cover; object-position: 62% 50%; }
+      .voile {
+        position: absolute; inset: 0;
+        background: linear-gradient(90deg, rgba(15, 29, 43, 0.95) 0%, rgba(15, 29, 43, 0.86) 34%, rgba(15, 29, 43, 0.6) 62%, rgba(15, 29, 43, 0.5) 100%);
+        -webkit-mask-image: radial-gradient(circle clamp(180px, 24vw, 340px) at var(--lx, 76%) var(--ly, 44%), rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.62) 55%, #000 100%);
+        mask-image: radial-gradient(circle clamp(180px, 24vw, 340px) at var(--lx, 76%) var(--ly, 44%), rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.62) 55%, #000 100%);
+      }
+      .hero .wrap { position: relative; z-index: 2; padding-top: clamp(64px, 11vh, 132px); padding-bottom: clamp(128px, 20vh, 220px); }
+      .hero-in { max-width: 660px; }
+      .hero .sur { font-weight: 500; font-size: 15.5px; color: #c9d8e8; margin-bottom: 12px; }
+      h1 { color: #fff; font-weight: 600; font-size: clamp(36px, 4.7vw, 72px); line-height: 1.07; letter-spacing: -0.018em; margin-bottom: 22px; }
+      .hero-in { text-shadow: 0 1px 22px rgba(15, 29, 43, 0.6); }
+      .hero-in .btn { text-shadow: none; }
+      .hero p.ch { font-size: clamp(17px, 1.3vw, 19.5px); line-height: 1.6; color: #e3eaf2; max-width: 56ch; }
+      .acts { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+
+      .reperes { position: relative; z-index: 3; margin-top: clamp(-104px, -10vh, -70px); }
+      .reperes ul { --c: 30px; display: grid; grid-template-columns: repeat(4, 1fr); background: #fff; }
+      .reperes li { padding: clamp(20px, 2.2vw, 30px) clamp(18px, 2vw, 30px); }
+      .reperes li + li { border-left: 1px solid var(--trait); }
+      .reperes b { display: block; font: 600 clamp(20px, 1.9vw, 27px) / 1.15 var(--serif); color: var(--marine); }
+      .reperes span { display: block; margin-top: 5px; font-size: 15px; color: var(--gris); }
+
+      /* ——— Mise en page « code annoté » : la manchette suit la lecture dans la marge */
+      .sec { padding: clamp(72px, 9vw, 132px) 0; }
+      .sec.brume { background: var(--brume); }
+      .art { display: grid; grid-template-columns: minmax(160px, 216px) minmax(0, 1fr); gap: clamp(24px, 4.4vw, 76px); align-items: start; }
+      .manchette { position: sticky; top: 118px; padding-top: 12px; border-top: 3px double var(--marine); }
+      .manchette b { display: block; font: 600 15px/1.3 var(--sans); color: var(--marine); }
+      .manchette span { display: block; margin-top: 6px; font: italic 400 15.5px/1.4 var(--serif); color: var(--gris); }
+      .nuit .manchette { border-color: #7fa3c9; }
+      .nuit .manchette b { color: #fff; }
+      .nuit .manchette span { color: #9db7d3; }
+      .tete { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px 40px; margin-bottom: clamp(26px, 3.4vw, 44px); }
+      .tete p { max-width: 56ch; margin-top: 12px; }
+
+      /* Le cabinet */
+      .cab { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(24px, 3.6vw, 60px); align-items: center; }
+      .cab figure { margin: 0; }
+      .cab .ph { --c: 38px; aspect-ratio: 1266 / 810; overflow: hidden; }
+      .cab .ph img { width: 100%; height: 108%; object-fit: cover; }
+      .cab figcaption { margin-top: 10px; font: italic 400 15px var(--serif); color: var(--gris); }
+      .cab h2 { margin-bottom: 16px; }
+      .valeurs { margin: 24px 0 28px; border-top: 1px solid var(--trait); }
+      .valeurs li { padding: 13px 0; border-bottom: 1px solid var(--trait); font-size: 16px; }
+      .valeurs b { display: block; font: 600 17px/1.4 var(--serif); color: var(--marine); }
+
+      /* ——— Répertoire à onglets, comme la tranche d'un code */
+      .rep { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; }
+      .rep-feuille { background: #fff; padding: clamp(22px, 3vw, 44px) clamp(20px, 3.4vw, 52px) clamp(18px, 2.4vw, 30px); min-height: 668px; display: flex; flex-direction: column; }
+      .pan { display: flex; flex-direction: column; flex: 1; }
+      .pan[hidden] { display: none; }
+      .pan-t { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; padding-bottom: 16px; border-bottom: 3px double var(--marine); }
+      .gl { display: block; font: 600 clamp(64px, 7vw, 108px) / 0.78 var(--serif); color: var(--bleu); letter-spacing: -0.02em; }
+      .pan-t p { font-size: 15px; color: var(--gris); }
+      .pan li a { position: relative; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.5fr) 20px; gap: 6px clamp(16px, 2.4vw, 40px); align-items: baseline; padding: 17px 0; border-bottom: 1px solid var(--trait); }
+      .pan a b { font: 600 clamp(18px, 1.55vw, 22px) / 1.25 var(--serif); color: var(--marine); transition: transform 0.4s var(--ease); }
+      .pan a span { font-size: 15.5px; line-height: 1.5; color: #55657a; }
+      .pan a svg { width: 18px; height: 18px; color: var(--bleu); align-self: center; transition: transform 0.35s var(--ease); }
+      .pan a::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 1.5px; background: var(--bleu); transform: scaleX(0); transform-origin: left; transition: transform 0.5s var(--ease); }
+      .pan a:hover::after, .pan a:focus-visible::after { transform: scaleX(1); }
+      .pan a:hover b { transform: translateX(6px); }
+      .pan a:hover svg { transform: translateX(4px); }
+      .rep-pied { margin-top: auto; padding-top: 18px; display: flex; justify-content: space-between; gap: 16px; font: italic 400 15px var(--serif); color: var(--gris); }
+      .tabs { display: flex; flex-direction: column; gap: 3px; padding-top: 20px; }
+      .tabs button {
+        --c: 10px; position: relative; width: 52px; height: 44px; font: 600 18px/1 var(--serif); color: var(--marine);
+        background: color-mix(in srgb, #bccbde calc(var(--k) * 7%), #f6f8fb);
+        clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--c)), calc(100% - var(--c)) 100%, 0 100%);
+        transition: width 0.4s var(--ease), background 0.25s, color 0.25s;
+      }
+      .tabs button:hover { background: #dbe5f0; width: 58px; }
+      .tabs button[aria-selected='true'] { background: var(--bleu); color: #fff; width: 68px; }
+      .tabs button:focus-visible { outline: none; box-shadow: inset 0 0 0 2px #fff, inset 0 0 0 4px var(--marine); }
+
+      /* ——— L'emblème prend vie : l'espace OHADA */
+      .ohada { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(24px, 4vw, 64px); align-items: center; }
+      .ohada h2 { margin-bottom: 16px; }
+      .etats { columns: 2; column-gap: 30px; margin-top: 24px; padding-top: 14px; border-top: 3px double var(--marine); }
+      .etats li { break-inside: avoid; }
+      .etats button { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; padding: 6px 0; font-size: 16px; color: var(--texte); transition: color 0.2s; }
+      .etats button::before { content: ''; flex: none; width: 9px; height: 9px; background: var(--bleu); clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); transition: transform 0.3s var(--ease), background 0.2s; }
+      .etats button:hover, .etats button.on, .etats button:focus-visible { color: var(--marine); font-weight: 600; }
+      .etats button:hover::before, .etats button.on::before { background: var(--marine); transform: scale(1.5) rotate(45deg); }
+      .carte svg { display: block; width: 100%; height: auto; overflow: visible; }
+      .carte .p { fill: #e4eaf2; stroke: #fff; stroke-width: 0.7; }
+      .carte .m { fill: var(--bleu); stroke: #fff; stroke-width: 0.7; cursor: pointer; transition: fill 0.25s; }
+      .carte .m:hover, .carte .m.on { fill: var(--marine); }
+      .carte .meridien { fill: none; stroke: var(--marine); stroke-width: 0.9; stroke-dasharray: 2.4 3; }
+      .carte .pt { fill: #fff; stroke: var(--marine); stroke-width: 1.3; }
+      .carte .pt.com { fill: var(--bleu); stroke: #fff; cursor: pointer; }
+      .carte .pt.com.on { fill: var(--marine); }
+      .carte text { font: 600 11px var(--sans); fill: var(--marine); }
+      .carte text.s { font-weight: 400; fill: var(--gris); }
+      .legende { margin-top: 10px; min-height: 1.6em; font: italic 400 16px var(--serif); color: var(--gris); text-align: center; }
+
+      /* ——— Distinctions */
+      .nuit { position: relative; background: var(--nuit); color: var(--clair); overflow: hidden; }
+      .nuit h2 { color: #fff; }
+      .nuit .tete p { color: var(--clair-2); }
+      .frise { position: relative; display: grid; grid-template-columns: repeat(6, 1fr); gap: clamp(10px, 1.4vw, 22px); }
+      .frise::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 2px; background: var(--bleu); transform-origin: left; transform: scaleX(var(--trace, 1)); }
+      .frise li { position: relative; padding-top: 26px; }
+      .frise li::before { content: ''; position: absolute; left: 0; top: -5px; width: 12px; height: 12px; background: #9db7d3; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
+      .frise li:first-child::before { background: #fff; }
+      .frise time { display: block; font: 600 clamp(24px, 2.3vw, 36px) / 1 var(--serif); color: #fff; font-variant-numeric: lining-nums; }
+      .frise p { margin: 12px 0 8px; font-size: 15.5px; line-height: 1.45; color: var(--clair); }
+      .frise span { font-size: 14px; color: #9db7d3; }
+
+      /* ——— Associés : portraits en couleur, plaque à double filet */
+      .trois { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(14px, 2vw, 30px); }
+      .trois a { display: block; }
+      .trois .pp { --c: 26px; aspect-ratio: 4 / 5; overflow: hidden; background: #e8eef5; transition: --c 0.5s var(--ease); }
+      .trois a:hover .pp, .trois a:focus-visible .pp { --c: 44px; }
+      .trois img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 12%; transition: transform 0.9s var(--ease); }
+      .trois a:hover img { transform: scale(1.04); }
+      .plaque { margin-top: 14px; padding-top: 12px; border-top: 3px double var(--marine); }
+      .plaque b { display: block; font: 600 clamp(17px, 1.4vw, 20px) / 1.25 var(--serif); color: var(--marine); }
+      .plaque span { display: block; font-size: 15px; color: var(--gris); }
+      .plaque i { display: block; margin-top: 4px; font: italic 400 15px var(--serif); color: var(--bleu-f); }
+
+      /* ——— Fondation : l'arbre à palabres gravé en clair sur le violet de la Fondation ; à son pied, une action réelle */
+      @property --fd-o { syntax: '<percentage>'; inherits: false; initial-value: 150%; }
+      .fondation { --bord: calc(max(0px, (100vw - var(--max)) / 2) + var(--pad)); position: relative; overflow: hidden; background: radial-gradient(120% 96% at 80% 26%, #563180 0, var(--violet) 48%, #351c52 100%); color: #e9e0f3; }
+      .fondation .wrap { position: relative; padding-top: clamp(64px, 8.6vw, 124px); padding-bottom: clamp(56px, 7vw, 100px); }
+      .fd-haut { position: relative; }
+      .fd-texte { position: relative; z-index: 2; max-width: min(540px, 45%); padding-bottom: clamp(34px, 4.4vw, 64px); }
+      .fd-sur { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-bottom: clamp(18px, 2.2vw, 28px); font: 600 clamp(12.5px, 0.98vw, 14px) / 1.3 var(--serif); letter-spacing: 0.17em; text-transform: uppercase; color: #dccdee; }
+      .fd-sur::after { content: ''; flex: 0 0 clamp(28px, 4.4vw, 64px); height: 0; border-top: 3px double #b79cd6; }
+      .fondation h2 { color: #fff; font-size: clamp(32px, 4vw, 58px); line-height: 1.07; letter-spacing: -0.02em; }
+      .fondation h2 em { font-style: italic; font-weight: 400; letter-spacing: -0.014em; color: #dccdee; }
+      .fd-ch { margin-top: clamp(16px, 1.8vw, 24px); max-width: 44ch; font: 400 clamp(17.5px, 1.4vw, 20.5px) / 1.55 var(--serif); color: #e9e0f3; }
+      .fd-acts { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 30px; margin-top: clamp(24px, 2.8vw, 36px); }
+      .fondation .btn.blanc { color: var(--violet); --survol: #efe7f8; --filet: rgba(70, 39, 104, 0.34); --filet-s: rgba(70, 39, 104, 0.7); }
+      .fondation .btn.blanc:focus-visible { box-shadow: inset 0 0 0 3px var(--violet); }
+      /* la gravure : à droite, jusqu'au bord de l'écran, posée sur le filet double */
+      .fd-gravure { position: absolute; z-index: 1; right: calc(-1 * var(--bord)); bottom: 0; width: min(calc(52% + var(--bord)), 860px); margin: 0; }
+      .fd-voile { -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 15%); mask-image: linear-gradient(90deg, transparent 0, #000 15%); pointer-events: none; }
+      .fd-rev { -webkit-mask-image: radial-gradient(circle at 72% 78%, #000 var(--fd-o), transparent calc(var(--fd-o) + 26%)); mask-image: radial-gradient(circle at 72% 78%, #000 var(--fd-o), transparent calc(var(--fd-o) + 26%)); }
+      .fondation.attend .fd-rev { --fd-o: -26%; }
+      .fondation.vu .fd-rev { --fd-o: 150%; transition: --fd-o 2.8s cubic-bezier(0.3, 0, 0.2, 1) 0.15s; }
+      .fd-encre { aspect-ratio: 2879 / 2162; background: radial-gradient(circle at 66% 66%, rgba(244, 236, 252, 0.86) 0, rgba(214, 194, 238, 0.56) 30%, rgba(190, 164, 222, 0.37) 70%, rgba(176, 148, 212, 0.29) 100%); -webkit-mask: url(img2/fondation-arbre.webp) center / 100% 100% no-repeat; mask: url(img2/fondation-arbre.webp) center / 100% 100% no-repeat; }
+      /* au pied de l'arbre : une vraie photo de la Fondation, en couleur */
+      .fd-photo { position: absolute; left: 13%; bottom: 3.4%; width: 59%; }
+      .fd-cadre { --c: clamp(16px, 2.2vw, 30px); padding: 5px; background: #f3ecfa; clip-path: polygon(0 0, calc(100% - var(--c)) 0, 100% var(--c), 100% 100%, 0 100%); filter: none; }
+      .fd-cadre img { display: block; width: 100%; height: auto; aspect-ratio: 1024 / 486; object-fit: cover; clip-path: polygon(0 0, calc(100% - var(--c) + 3px) 0, 100% calc(var(--c) - 3px), 100% 100%, 0 100%); }
+      .fd-photo p { margin-top: 9px; font: italic 400 clamp(13.5px, 1.05vw, 15px) / 1.35 var(--serif); color: #d6c9e8; }
+      .fd-axes { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 clamp(20px, 3.4vw, 52px); border-top: 3px double #b79cd6; }
+      .fd-axes li { padding-top: 18px; }
+      .fd-axes b { display: block; font: 600 13px/1.3 var(--serif); letter-spacing: 0.16em; text-transform: uppercase; color: #fff; }
+      .fd-axes span { display: block; margin-top: 9px; max-width: 36ch; font-size: 16.5px; line-height: 1.55; color: #d6c9e8; }
+
+      /* ——— Pied de page : se referme comme un acte, avec le timbre sec du cabinet */
+      .pied { position: relative; background: var(--nuit); color: var(--clair-2); overflow: hidden; }
+      .pied .haut { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 4vw, 72px); padding-top: clamp(64px, 8vw, 110px); padding-bottom: clamp(44px, 5vw, 72px); }
+      .pied h2 { color: #fff; margin-bottom: 14px; }
+      .pied .rdv p { max-width: 44ch; margin-bottom: 26px; }
+      .bureaux { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2vw, 32px); }
+      .bureaux > div { padding-top: 12px; border-top: 3px double #5f7f9f; }
+      .bureaux h3 { color: #fff; font-size: 21px; margin-bottom: 2px; }
+      .bureaux .r { font: italic 400 15px var(--serif); color: #9db7d3; margin-bottom: 10px; }
+      .bureaux address, .bureaux p { font-size: 15.5px; line-height: 1.6; }
+      .acte { display: flex; align-items: center; justify-content: space-between; gap: 30px; padding-top: clamp(26px, 3vw, 44px); padding-bottom: clamp(26px, 3vw, 44px); border-top: 1px solid rgba(185, 198, 214, 0.2); }
+      .fait { font: italic 400 clamp(20px, 2vw, 28px) / 1.3 var(--serif); color: #dfe7f0; }
+      .fait small { display: block; margin-top: 8px; font: 400 15px/1.5 var(--sans); color: var(--clair-2); max-width: 58ch; }
+      .sceau { flex: none; width: clamp(150px, 17vw, 232px); height: auto; }
+      .bas { border-top: 1px solid rgba(185, 198, 214, 0.2); }
+      .bas .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 40px; padding-top: 22px; padding-bottom: 84px; font-size: 14px; }
+      .bas ul { display: flex; flex-wrap: wrap; gap: 6px 22px; }
+      .bas a:hover { color: #fff; }
+
+      @media (max-width: 1080px) {
+        .top nav, .top .r .btn { display: none; }
+        .menu-btn { display: inline-flex; align-items: center; }
+        .art { grid-template-columns: 1fr; gap: 22px; }
+        .manchette { position: static; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
+        .manchette span { margin: 0; }
+        .frise { grid-template-columns: 1fr; gap: 0; padding-left: 26px; }
+        .frise::before { right: auto; bottom: 0; width: 2px; height: auto; transform-origin: top; transform: scaleY(var(--trace, 1)); }
+        .frise li { padding: 0 0 24px; }
+        .frise li::before { left: -31px; top: 8px; }
+      }
+      @media (max-width: 860px) {
+        .util ul.c li:nth-child(2) { display: none; }
+        .reperes ul { grid-template-columns: 1fr 1fr; }
+        .reperes li:nth-child(3) { border-left: 0; }
+        .reperes li:nth-child(n + 3) { border-top: 1px solid var(--trait); }
+        .cab, .ohada, .fondation .wrap, .pied .haut { grid-template-columns: 1fr; }
+        .voile { background: linear-gradient(180deg, rgba(15, 29, 43, 0.92) 0%, rgba(15, 29, 43, 0.82) 60%, rgba(15, 29, 43, 0.7) 100%); -webkit-mask-image: none; mask-image: none; }
+        .rep { grid-template-columns: minmax(0, 1fr); }
+        .tabs { order: -1; flex-direction: row; gap: 3px; padding: 0; min-width: 0; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+        .tabs::-webkit-scrollbar { display: none; }
+        .tabs button, .tabs button:hover, .tabs button[aria-selected='true'] { flex: 1 0 44px; width: auto; height: 46px; clip-path: polygon(0 0, calc(100% - var(--c)) 0, 100% var(--c), 100% 100%, 0 100%); }
+        .rep-feuille { min-height: 0; }
+        .pan li a { grid-template-columns: minmax(0, 1fr) 20px; }
+        .pan a span { grid-column: 1; }
+        .pan a svg { grid-column: 2; grid-row: 1 / 3; }
+        .acte { flex-direction: column; align-items: flex-start; }
+      }
+      @media (max-width: 560px) {
+        .util ul.c li:first-child span { display: none; }
+        .util .fond { gap: 8px; padding: 1px 28px 0 12px; font-size: 10.5px; letter-spacing: 0.09em; }
+        .util .fond::after { right: -20px; top: -8px; width: 108px; }
+        .marque img { width: 44px; height: 50px; }
+        .marque b { font-size: 12.5px; letter-spacing: 0.1em; }
+        .marque i { font-size: 12.5px; }
+        .trois, .bureaux { grid-template-columns: 1fr; }
+        .trois { max-width: 320px; }
+        .etats { columns: 1; }
+        .acts .btn { flex: 1 1 100%; }
+      }
+      @media (max-width: 380px) {
+        .top .ico { display: none; }
+        .top .wrap { gap: 10px; }
+        .marque { gap: 9px; }
+        .marque img { width: 38px; height: 43px; }
+        .marque b { font-size: 11.5px; letter-spacing: 0.07em; }
+        .marque i { font-size: 12px; }
+        .util .fond { padding: 1px 30px 0 11px; }
+        .util .fond em { display: none; }
+      }
+
+      /* ══════════════ V2 — relief et instruments de consultation ══════════════ */
+      :root { --lx2: -0.707; --ly2: -0.707; --clair-3: #f4f7fb; }
+      /* Gravure : texte creusé, dont l'ombre suit la lumière du curseur */
+      .grave { text-shadow: calc(var(--lx2) * 1.1px) calc(var(--ly2) * 1.1px) 0 rgba(2, 8, 14, 0.8), calc(var(--lx2) * -1.1px) calc(var(--ly2) * -1.1px) 0 rgba(150, 185, 222, 0.3); }
+      .puce { --c: 7px; padding: 7px 13px 7px 11px; font-size: 14.5px; text-align: left; clip-path: polygon(0 0, calc(100% - var(--c)) 0, 100% var(--c), 100% 100%, 0 100%); transition: background 0.2s, color 0.2s; }
+      .puce:focus-visible { outline: none; box-shadow: inset 0 0 0 2px currentColor; }
+
+      .sec, .fondation, .pied { scroll-margin-top: 100px; }
+      /* Sections-outils : la manchette passe en tête, la section prend toute la largeur */
+      .art.plein { grid-template-columns: minmax(0, 1fr); gap: clamp(20px, 2.4vw, 30px); }
+      .art.plein > .manchette { position: relative; top: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
+      .art.plein > .manchette span { margin: 0; }
+
+      /* ——— Hero : un dessin à la plume, à l'encre bleu marine, qui apparaît puis vit doucement */
+      @property --hd-o { syntax: '<percentage>'; inherits: false; initial-value: 140%; }
+      .hero { color: var(--texte); background: #fff; overflow: clip; }
+      .hero.ouvert { z-index: 5; }
+      .hero .wrap { padding-top: clamp(28px, 5vh, 58px); padding-bottom: clamp(150px, 13vw, 190px); min-height: clamp(600px, calc(100svh - 125px), 840px); }
+      .hero-in { max-width: none; text-shadow: none; }
+      /* la ligne d'identité : capitales à empattements, espacées, comme le nom du cabinet dans son logo */
+      .hero .sur { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 14px; margin-bottom: clamp(18px, 2.2vw, 30px); font: 600 clamp(12.5px, 0.98vw, 14.5px) / 1.3 var(--serif); letter-spacing: 0.17em; text-transform: uppercase; color: var(--marine); }
+      .hero .sur::before, .hero .sur::after { content: ''; flex: 0 0 clamp(28px, 4.4vw, 64px); height: 0; border-top: 3px double var(--marine); }
+      .hero .sur::before { margin-right: 4px; }
+      .hero .sur::after { margin-left: 4px; }
+      .hero .sur i, .hero .orn i { flex: none; width: 6px; height: 6px; background: var(--bleu); transform: rotate(45deg); }
+      /* l'ornement : un filet, un losange, un filet */
+      .hero .orn { display: flex; align-items: center; gap: 14px; margin: 0 0 clamp(18px, 2.2vw, 28px); }
+      .hero .orn::before, .hero .orn::after { content: ''; flex: 0 0 clamp(40px, 6vw, 84px); height: 1px; background: var(--marine); opacity: 0.55; }
+      .hero h1 { color: var(--marine); font-size: clamp(38px, var(--hd-titre, 5.2vw), 96px); line-height: 1.04; letter-spacing: -0.024em; margin-bottom: clamp(18px, 2.2vw, 28px); }
+      .hero h1 em { font-style: italic; font-weight: 400; letter-spacing: -0.016em; color: var(--bleu-f); }
+      .hero-col { max-width: min(520px, 37vw); }
+      /* la première phrase, seule ; le nom du cabinet en capitales espacées, comme celui d'une partie dans un acte */
+      .hero p.ch { font: 400 clamp(19px, 1.62vw, 23.5px) / 1.4 var(--serif); color: var(--marine); text-wrap: balance; }
+      .hero p.ch b { font-weight: 600; font-size: 0.8em; letter-spacing: 0.13em; text-transform: uppercase; }
+      .hero p.ch2 { margin-top: 10px; max-width: 80ch; font: 400 clamp(16px, 1.18vw, 17.5px) / 1.6 var(--sans); color: var(--texte); text-wrap: balance; }
+      .hero[data-dessin='wharf'] p.ch2 { margin-inline: auto; }
+      .hero .guichet { margin-top: 22px; max-width: none; }
+      .hero .g-champ { box-shadow: inset 0 0 0 1.5px var(--marine); }
+      .hero .g-res { box-shadow: 0 0 0 1px var(--trait), 0 26px 54px -20px rgba(15, 29, 43, 0.45); }
+      .hero .g-souvent { color: var(--gris); }
+      .hero .g-souvent .puce { color: var(--bleu-f); background: #fff; box-shadow: inset 0 0 0 1px var(--trait); }
+      .hero .g-souvent .puce:hover { background: var(--bleu); color: #fff; box-shadow: none; }
+      .hero .acts { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 34px; margin-top: clamp(24px, 2.8vw, 38px); }
+      .hero .acts .btn { flex: 0 0 auto; min-height: 58px; font-size: 13.5px; }
+      /* chaque dessin a son cadrage : largeur, débord à droite, fondu à gauche, taille du titre, foyer de l'apparition */
+      .hero[data-dessin='robe'] { --hd-img: url(img2/plume-robe.webp); --hd-img-m: url(img2/plume-robe-1280.webp); --hd-voile: linear-gradient(90deg, transparent 0, #000 24%); --hd-w: min(84vw, 1720px); --hd-debord: 0.083; --hd-fondu: 24%; --hd-titre: 5.2vw; --hd-cx: 62%; --hd-cy: 44%; --hd-m: -49vw; --vx0: 420px; --vy0: 400px; --vx1: 760px; --vy1: 170px; }
+      .hero[data-dessin='arbre'] { --hd-img: url(img2/plume-arbre.webp); --hd-img-m: url(img2/plume-arbre-1280.webp); --hd-voile: linear-gradient(90deg, transparent 0, #000 18%); --hd-w: min(86vw, 1760px); --hd-debord: 0.151; --hd-fondu: 18%; --hd-titre: 4.7vw; --hd-cx: 58%; --hd-cy: 70%; --hd-m: -56vw; --vx0: 250px; --vy0: 560px; --vx1: 620px; --vy1: 330px; }
+      .hero[data-dessin='wharf'] { --hd-img: url(img2/plume-wharf.webp); --hd-img-m: url(img2/plume-wharf-1280.webp); --hd-voile: linear-gradient(90deg, transparent 0, rgba(0, 0, 0, 0.5) 20%, #000 44%); --hd-w: max(1080px, min(92vw, 152svh)); --hd-debord: 0.152; --hd-fondu: 14%; --hd-titre: 5.6vw; --hd-cx: 62%; --hd-cy: 66%; --hd-m: -55vw; --vx0: 300px; --vy0: 470px; --vx1: 960px; --vy1: 250px; }
+      .hero[data-dessin='wharf'] h1 .l3 { display: none; }
+      .hero[data-dessin='wharf'] .hero-in { display: flex; flex-direction: column; align-items: center; text-align: center; }
+      .hero[data-dessin='wharf'] .sur, .hero[data-dessin='wharf'] .orn, .hero[data-dessin='wharf'] .acts { justify-content: center; }
+      .hero[data-dessin='wharf'] .hero-col { max-width: min(920px, 90vw); }
+      .hero[data-dessin='wharf'] p.ch { max-width: none; }
+      .hero[data-dessin='wharf'] { --vx0: 960px; --vy0: 400px; --vx1: 1420px; --vy1: 190px; --hd-bas: -44px; }
+      .hero-dessin { position: absolute; z-index: 1; right: calc(var(--hd-w) * var(--hd-debord) * -1); bottom: var(--hd-bas, 0px); width: var(--hd-w); margin: 0; pointer-events: none; }
+      /* le blanc partout, sauf autour de la scène : un lavis bleu qui s'éteint dans le papier, plus dense sur l'horizon */
+      .hero-dessin::before {
+        content: ''; position: absolute; z-index: -1; inset: -16% -6% 0 -30%;
+        background:
+          radial-gradient(ellipse 46% 15% at calc(var(--hd-cx) * 0.74 + 23%) calc(var(--hd-cy) * 0.86 + 7%), rgba(176, 200, 227, 0.5) 0, rgba(176, 200, 227, 0) 100%),
+          radial-gradient(ellipse 44% 60% at calc(var(--hd-cx) * 0.74 + 27%) calc(var(--hd-cy) * 0.86 + 4%), rgba(203, 219, 237, 0.88) 0, rgba(219, 230, 242, 0.6) 36%, rgba(236, 242, 248, 0.3) 62%, rgba(255, 255, 255, 0) 82%);
+      }
+      .hero[data-dessin='wharf'] .hero-dessin::after { content: ''; position: absolute; z-index: -1; left: 44.1%; top: 61.5%; width: 26%; aspect-ratio: 1; transform: translate(-50%, -50%); background: radial-gradient(circle, rgba(255, 255, 255, 0.96) 0, rgba(255, 255, 255, 0.7) 22%, rgba(255, 255, 255, 0) 68%); }
+      .hd-cadre { position: relative; -webkit-mask-image: var(--hd-voile); mask-image: var(--hd-voile); will-change: transform; }
+      /* l'encre est un masque teinté : soutenue au cœur de la scène, elle s'allège et bleuit en s'éloignant */
+      .hd-encre {
+        width: 100%; aspect-ratio: 2048 / 1152;
+        background: radial-gradient(circle at var(--hd-cx) var(--hd-cy), rgba(27, 42, 74, 0.94) 0, rgba(27, 42, 74, 0.86) 8%, rgba(51, 85, 122, 0.6) 24%, rgba(70, 108, 147, 0.42) 52%, rgba(70, 108, 147, 0.33) 100%);
+        -webkit-mask: var(--hd-img) center / 100% 100% no-repeat; mask: var(--hd-img) center / 100% 100% no-repeat;
+      }
+      .hd-rev { position: relative; -webkit-mask-image: radial-gradient(circle at var(--hd-cx) var(--hd-cy), #000 var(--hd-o), transparent calc(var(--hd-o) + 24%)); mask-image: radial-gradient(circle at var(--hd-cx) var(--hd-cy), #000 var(--hd-o), transparent calc(var(--hd-o) + 24%)); }
+      /* le trait qui tremble, comme repassé à la main : sur grand écran seulement (la classe est posée et retirée par le script) */
+      .hero-dessin.tremble .hd-rev { filter: url(#main-0); }
+      .hero-dessin.tremble[data-main='1'] .hd-rev { filter: url(#main-1); }
+      .hero-dessin.tremble[data-main='2'] .hd-rev { filter: url(#main-2); }
+      /* le soleil : son trait est sorti du dessin (un trou dans l'encre) et rejoué dans une petite boîte à part,
+         pour qu'il puisse s'effacer puis se retracer en suivant le cercle. Mesures prises sur le dessin : centre 908 × 722,5, rayon 54,6 */
+      .hd-soleil { display: none; }
+      .hero[data-dessin='wharf'] .hd-encre { clip-path: polygon(evenodd, 0 0, 100% 0, 100% 100%, 0 100%, 0 0, 40.918% 56.771%, 40.918% 63.802%, 47.754% 63.802%, 47.754% 56.771%, 40.918% 56.771%); }
+      .hero[data-dessin='wharf'] .hd-soleil {
+        display: block; position: absolute; left: 40.918%; top: 56.771%; width: 6.836%; height: 7.031%; --sa: 208deg; --sb: 0deg;
+        -webkit-mask-image: conic-gradient(from 258deg at 49.99% 84.61%, transparent 0 var(--sb), #000 calc(var(--sb) + 2deg) calc(var(--sa) - 2deg), transparent var(--sa));
+        mask-image: conic-gradient(from 258deg at 49.99% 84.61%, transparent 0 var(--sb), #000 calc(var(--sb) + 2deg) calc(var(--sa) - 2deg), transparent var(--sa));
+      }
+      .hd-soleil i {
+        display: block; width: 100%; height: 100%;
+        background: radial-gradient(circle at var(--hd-cx) var(--hd-cy), rgba(27, 42, 74, 0.94) 0, rgba(27, 42, 74, 0.86) 8%, rgba(51, 85, 122, 0.6) 24%, rgba(70, 108, 147, 0.42) 52%, rgba(70, 108, 147, 0.33) 100%) 43.92% 61.064% / 1462.86% 1422.22% no-repeat;
+        -webkit-mask: var(--hd-img) 43.92% 61.064% / 1462.86% 1422.22% no-repeat; mask: var(--hd-img) 43.92% 61.064% / 1462.86% 1422.22% no-repeat;
+      }
+      .hero-dessin.pret .hd-rev { --hd-o: -26%; }
+      .hero-dessin.trace .hd-rev { --hd-o: 140%; transition: --hd-o 3.4s cubic-bezier(0.3, 0, 0.2, 1) 0.2s; }
+      .hd-vie { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; will-change: transform; }
+      .hd-vie .oiseau { fill: none; stroke: #5b7da3; stroke-width: 1.7; stroke-linecap: round; transform-box: fill-box; transform-origin: 50% 100%; animation: s-aile 0.84s steps(2, jump-none) infinite alternate; }
+      .hd-vie .vol { animation: s-vol 46s linear infinite; }
+      .hd-vie .feuilles { display: none; }
+      .hero[data-dessin='arbre'] .hd-vie .feuilles { display: inline; }
+      .hd-vie .feuille { fill: #33557a; opacity: 0; animation: s-feuille var(--ft) linear var(--fr) infinite; }
+      @keyframes s-vol { 0% { transform: translate(var(--vx0), var(--vy0)); opacity: 0; } 7% { opacity: 1; } 86% { opacity: 1; } 100% { transform: translate(var(--vx1), var(--vy1)); opacity: 0; } }
+      @keyframes s-aile { from { transform: scaleY(1); } to { transform: scaleY(0.5); } }
+      @keyframes s-feuille { 0% { transform: translate(var(--fx), 300px) rotate(0deg); opacity: 0; } 8% { opacity: 0.85; } 50% { transform: translate(calc(var(--fx) + var(--fd)), 540px) rotate(160deg); } 90% { opacity: 0.85; } 100% { transform: translate(calc(var(--fx) + var(--fd) * 0.4), 790px) rotate(320deg); opacity: 0; } }
+      @media (prefers-reduced-motion: reduce) { .hd-vie .vol, .hd-vie .oiseau, .hd-vie .feuille { animation: none; } .hd-vie .vol { transform: translate(var(--vx1), var(--vy1)); } }
+      /* ——— Les petites gravures : la suite de l'histoire du hero, posée par-ci par-là. Tracé net, encre teintée comme le grand dessin. */
+      @property --g-o { syntax: '<percentage>'; inherits: false; initial-value: 150%; }
+      .gravure { margin: 0; pointer-events: none; }
+      .g-rev { -webkit-mask-image: radial-gradient(circle at 50% 64%, #000 var(--g-o), transparent calc(var(--g-o) + 30%)); mask-image: radial-gradient(circle at 50% 64%, #000 var(--g-o), transparent calc(var(--g-o) + 30%)); }
+      .gravure.attend .g-rev { --g-o: -30%; }
+      .gravure.vu .g-rev { --g-o: 150%; transition: --g-o 1.9s cubic-bezier(0.3, 0, 0.2, 1) 0.1s; }
+      .g-encre { display: block; width: var(--g-w); aspect-ratio: var(--g-r); background: linear-gradient(180deg, rgba(27, 42, 74, 0.92) 0, rgba(51, 85, 122, 0.84) 100%); -webkit-mask: var(--g-img) center / 100% 100% no-repeat; mask: var(--g-img) center / 100% 100% no-repeat; }
+      .gravure figcaption { font: italic 400 clamp(14.5px, 1.12vw, 16px) / 1.35 var(--serif); color: var(--gris); white-space: nowrap; }
+      /* la consultation : debout sur le bord du répertoire */
+      .rep-pose { position: relative; }
+      .g-palabre { --g-img: url(img2/gravure-palabre.svg); --g-r: 1137 / 1405; --g-w: clamp(84px, 8.6vw, 124px); position: absolute; z-index: 1; right: clamp(70px, 11vw, 168px); bottom: 100%; display: flex; align-items: flex-end; gap: 18px; margin-bottom: -2px; }
+      .g-palabre figcaption { order: -1; padding-bottom: 14px; }
+      /* la transmission : derrière le filet de la section Équipe */
+      #equipe { padding-top: clamp(112px, 12.4vw, 178px); }
+      #equipe > .wrap { position: relative; }
+      .g-transmission { --g-img: url(img2/gravure-transmission.svg); --g-r: 1866 / 1986; --g-w: clamp(84px, 9vw, 130px); position: absolute; right: calc(var(--pad) + clamp(6px, 3vw, 46px)); bottom: 100%; display: flex; align-items: flex-end; gap: 18px; }
+      .g-transmission figcaption { order: -1; padding-bottom: 10px; }
+      /* la pirogue, cachée au large de Lomé */
+      .carte .pirogue { opacity: 0.6; pointer-events: none; }
+      /* les repères : la légende de la gravure, à même la page, sous un filet double */
+      .hero-mentions { position: absolute; z-index: 3; left: 0; right: 0; bottom: 0; padding-top: 16px; background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0, #fff 16px); }
+      .hero-mentions ul { display: grid; grid-template-columns: repeat(4, 1fr); max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
+      .hero-mentions ul::before { content: ''; grid-column: 1 / -1; border-top: 3px double var(--marine); }
+      .hero-mentions li { padding: 14px clamp(10px, 1.6vw, 24px) clamp(18px, 2vw, 26px); text-align: center; }
+      .hero-mentions li + li { border-left: 1px solid rgba(27, 42, 74, 0.16); }
+      .hero-mentions b { display: block; font: 600 clamp(16.5px, 1.36vw, 19.5px) / 1.25 var(--serif); color: var(--marine); }
+      .hero-mentions span { display: block; margin-top: 3px; font: italic 400 clamp(14px, 1.06vw, 15.5px) / 1.4 var(--serif); color: var(--gris); }
+      .guichet { position: relative; margin-top: 30px; max-width: 610px; text-shadow: none; }
+      .g-champ { --c: 14px; display: flex; align-items: center; gap: 12px; height: 60px; padding: 0 18px; background: #fff; color: var(--marine); }
+      .g-champ > svg { width: 20px; height: 20px; flex: none; color: var(--bleu); }
+      .g-champ input { flex: 1; min-width: 0; height: 100%; border: 0; outline: 0; background: transparent; font: 400 18px var(--sans); color: var(--marine); }
+      .g-champ input::placeholder { color: var(--gris); }
+      .g-champ input::-webkit-search-cancel-button { display: none; }
+      .g-champ kbd { font: 600 13px var(--sans); color: var(--gris); border: 1px solid var(--trait); padding: 2px 8px; }
+      .guichet:focus-within .g-champ { box-shadow: inset 0 0 0 2px var(--bleu); }
+      .g-res { position: absolute; left: 0; right: 0; top: 66px; z-index: 5; background: #fff; color: var(--marine); box-shadow: 0 26px 54px -20px rgba(15, 29, 43, 0.7); max-height: 322px; overflow: auto; }
+      .g-res li { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; padding: 12px 18px; cursor: pointer; border-top: 1px solid var(--trait); }
+      .g-res li:first-child { border-top: 0; }
+      .g-res li[aria-selected='true'] { background: var(--brume); }
+      .g-res b { font: 600 17px var(--serif); }
+      .g-res span { font-size: 14px; color: var(--gris); white-space: nowrap; }
+      .g-res .vide { cursor: default; color: var(--gris); display: block; }
+      .g-souvent { margin-top: 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 14px; color: #c9d8e8; }
+      .g-souvent .puce { font-size: 14px; padding: 7px 11px 7px 10px; }
+      .g-souvent .puce { color: #fff; background: rgba(255, 255, 255, 0.16); }
+      .g-souvent .puce:hover { background: rgba(255, 255, 255, 0.28); }
+
+      /* ——— Répertoire V2 : trois volets, comme une base de consultation */
+      .rep2 { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; }
+      .r-feuille { background: #fff; display: flex; flex-direction: column; height: 676px; min-width: 0; }
+      .r-barre { flex: none; display: flex; align-items: center; gap: 12px; height: 62px; padding: 0 clamp(18px, 2.4vw, 34px); border-bottom: 3px double var(--marine); }
+      .r-barre > svg { width: 18px; height: 18px; flex: none; color: var(--bleu); }
+      .r-barre input { flex: 1; min-width: 0; height: 100%; border: 0; outline: 0; background: transparent; font: 400 17px var(--sans); color: var(--marine); }
+      .r-barre input::-webkit-search-cancel-button { display: none; }
+      .r-barre:focus-within { box-shadow: inset 0 -2px 0 var(--bleu); }
+      .r-compte { font: italic 400 15px var(--serif); color: var(--gris); white-space: nowrap; }
+      .r-corps { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(230px, 304px) minmax(0, 1fr); }
+      .r-liste { overflow-y: auto; border-right: 1px solid var(--trait); padding-bottom: 22px; scrollbar-width: thin; }
+      .r-liste h3 { position: sticky; top: 0; z-index: 1; background: #fff; padding: 14px clamp(18px, 2.4vw, 34px) 6px; font: 600 26px/1 var(--serif); color: var(--bleu); }
+      .r-liste button { position: relative; display: block; width: 100%; text-align: left; padding: 9px clamp(18px, 2.4vw, 34px); font: 400 16.5px/1.35 var(--sans); color: var(--texte); transition: background 0.15s, color 0.15s, padding-left 0.3s var(--ease); }
+      .r-liste button:hover { background: var(--clair-3); color: var(--marine); }
+      .r-liste button[aria-current='true'] { background: var(--brume); color: var(--marine); font-weight: 600; padding-left: calc(clamp(18px, 2.4vw, 34px) + 16px); }
+      .r-liste button[aria-current='true']::before { content: ''; position: absolute; left: clamp(18px, 2.4vw, 34px); top: 50%; width: 8px; height: 8px; margin-top: -4px; background: var(--bleu); clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
+      .r-liste button:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--bleu); }
+      .r-liste mark { background: #d7e3f1; color: inherit; }
+      .r-vide { padding: 26px clamp(18px, 2.4vw, 34px); color: var(--gris); }
+      .r-detail { overflow-y: auto; padding: clamp(22px, 2.8vw, 40px) clamp(22px, 3vw, 46px); scrollbar-width: thin; }
+      .r-detail h3 { font-size: clamp(24px, 2.4vw, 34px); line-height: 1.12; margin-bottom: 12px; }
+      .r-detail .acc { font: 400 17px/1.55 var(--serif); color: var(--texte); max-width: 58ch; }
+      .r-detail h4, .fiche h4 { margin: 22px 0 8px; font: 600 14px var(--sans); color: var(--bleu-f); }
+      .r-detail .sv li { position: relative; padding: 7px 0 7px 20px; border-bottom: 1px solid var(--trait); font-size: 16px; line-height: 1.45; }
+      .r-detail .sv li::before { content: ''; position: absolute; left: 2px; top: 15px; width: 7px; height: 7px; background: var(--bleu); clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
+      .r-ref { display: flex; align-items: center; gap: 14px; margin-top: 8px; }
+      .r-ref img, .r-ref .ini { --c: 10px; width: 54px; height: 64px; flex: none; object-fit: cover; object-position: 50% 12%; background: #e8eef5; clip-path: polygon(0 0, calc(100% - var(--c)) 0, 100% var(--c), 100% 100%, 0 100%); }
+      .r-ref .ini { display: grid; place-items: center; font: 600 18px var(--serif); color: var(--bleu-f); }
+      .r-ref b { display: block; font: 600 17px var(--serif); color: var(--marine); }
+      .r-ref span { font-size: 14.5px; color: var(--gris); }
+      .r-detail { container-type: inline-size; }
+      .r-d { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px clamp(24px, 3.4vw, 52px); }
+      @container (min-width: 600px) {
+        .r-d { grid-template-columns: minmax(0, 1fr) minmax(200px, 250px); }
+        .r-cote > h4:first-child { margin-top: 6px; }
+        .r-voir, .r-actions { flex-direction: column; align-items: flex-start; }
+        .r-actions { gap: 16px; }
+      }
+      .r-orient { font: italic 400 16px var(--serif); color: var(--gris); }
+      .r-voir, .dom { display: flex; flex-wrap: wrap; gap: 6px 8px; }
+      .r-voir .puce, .dom .puce { color: var(--bleu-f); background: var(--brume); }
+      .r-voir .puce:hover, .dom .puce:hover { background: var(--bleu); color: #fff; }
+      .r-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin-top: 26px; }
+      .rep2 .tabs button[aria-pressed='true'] { background: var(--bleu); color: #fff; width: 68px; }
+      .rep2 .tabs button:disabled { opacity: 0.35; cursor: default; }
+
+      /* ——— Distinctions V4 : à gauche le titre et la photo de la remise, à droite le registre des cinq distinctions avec leurs vrais insignes */
+      .dist3 { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(28px, 4.6vw, 72px); align-items: stretch; }
+      .ds-tete { display: flex; flex-direction: column; }
+      .ds-tete p { margin-top: 12px; max-width: 40ch; font-size: 17px; color: var(--clair-2); }
+      .ds-photo { margin: auto 0 0; padding-top: clamp(20px, 2.2vw, 30px); }
+      .ds-photo .coin { --c: clamp(14px, 1.8vw, 24px); }
+      .ds-photo img { display: block; width: 100%; height: auto; aspect-ratio: 1600 / 746; object-fit: cover; }
+      .ds-photo figcaption { margin-top: 9px; font: italic 400 15px/1.4 var(--serif); color: #9db7d3; }
+      .ds-frise { display: grid; border-bottom: 1px solid rgba(157, 183, 211, 0.34); }
+      .ds-frise li { position: relative; display: grid; grid-template-columns: clamp(50px, 4.5vw, 64px) 96px minmax(0, 1fr); column-gap: clamp(14px, 1.5vw, 22px); align-items: center; padding: 12px 0; border-top: 1px solid rgba(157, 183, 211, 0.34); }
+      .ds-frise li:first-child { border-top-color: #7fa3c9; }
+      .ds-frise li::before { content: ''; position: absolute; left: 0; top: -4px; width: 7px; height: 7px; background: #9db7d3; transform: rotate(45deg); }
+      .ds-an { grid-column: 1; grid-row: 1 / span 2; font: 600 clamp(21px, 1.8vw, 26px) / 1 var(--serif); letter-spacing: -0.01em; color: #fff; font-variant-numeric: lining-nums tabular-nums; }
+      .ds-plaque { --c: 10px; grid-column: 2; grid-row: 1 / span 2; display: grid; place-items: center; aspect-ratio: 300 / 185; background: #fff; }
+      .ds-plaque img { display: block; width: 88%; height: 88%; object-fit: contain; }
+      .ds-frise b { grid-column: 3; grid-row: 1; align-self: end; font: 600 16.5px/1.3 var(--serif); color: #fff; }
+      .ds-frise i { grid-column: 3; grid-row: 2; align-self: start; margin-top: 3px; font: italic 400 15px/1.4 var(--serif); color: #9db7d3; }
+
+      /* ——— Associés V2 : la plaque du cabinet et la fiche qui s'ouvre à côté */
+      .assoc2 { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(22px, 3.4vw, 56px); align-items: stretch; }
+      .plaque2 { --c: 34px; display: flex; flex-direction: column; padding: clamp(26px, 3vw, 46px); background: linear-gradient(158deg, #1d3753 0%, #132739 52%, #0f1d2b 100%); color: #e9f0f7; }
+      .plaque2 h2 { color: #fff; font-size: clamp(26px, 2.6vw, 38px); }
+      .pl-liste { margin: clamp(20px, 2.6vw, 34px) 0; border-top: 3px double rgba(159, 187, 216, 0.42); }
+      .pl-liste button { position: relative; display: block; width: 100%; text-align: left; padding: 18px 0; border-bottom: 1px solid rgba(159, 187, 216, 0.22); color: #b9c9da; transition: padding-left 0.45s var(--ease), color 0.25s; }
+      .pl-liste button::before { content: ''; position: absolute; left: 0; top: 50%; width: 9px; height: 9px; margin-top: -5px; background: #9fbbd8; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); opacity: 0; transition: opacity 0.3s; }
+      .pl-liste button:hover { color: #fff; }
+      .pl-liste button[aria-selected='true'] { padding-left: 24px; color: #fff; }
+      .pl-liste button[aria-selected='true']::before { opacity: 1; }
+      .pl-liste button:focus-visible { outline: none; box-shadow: inset 0 0 0 2px #9fbbd8; }
+      .pl-n { display: block; font: 600 clamp(20px, 2vw, 28px) / 1.2 var(--serif); letter-spacing: 0.012em; }
+      .pl-r { display: block; margin-top: 3px; font-size: 15px; color: #9db7d3; text-shadow: none; }
+      .pl-b { margin-top: auto; font: italic 400 16px var(--serif); color: #9db7d3; }
+      .plaque2 .lien { align-self: flex-start; margin-top: 14px; color: #dbe6f2; }
+      .plaque2 .lien:hover { color: #fff; }
+      .fiche { display: grid; grid-template-columns: minmax(0, 236px) minmax(0, 1fr); gap: clamp(18px, 2.6vw, 40px); align-items: start; }
+      .fiche .pp { --c: 26px; aspect-ratio: 4 / 5; overflow: hidden; background: #e8eef5; }
+      .fiche .pp img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 12%; }
+      .fiche h3 { font-size: clamp(24px, 2.3vw, 32px); line-height: 1.14; }
+      .fiche .role { margin: 4px 0 14px; font: italic 400 17px var(--serif); color: var(--bleu-f); }
+      .fiche .bio { font: 400 16.5px/1.6 var(--serif); }
+      .fiche dl { margin: 18px 0 20px; border-top: 3px double var(--marine); }
+      .fiche dl > div { display: grid; grid-template-columns: 8.6em minmax(0, 1fr); gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--trait); font-size: 16px; }
+      .fiche dt { color: var(--gris); }
+      .fiche dd { margin: 0; }
+
+      /* ——— Rendez-vous V3 : la demande se remplit comme un acte ; les précisions vont dans la marge, le cabinet y appose son tampon */
+      .pied .acte2 { padding-top: clamp(56px, 6.4vw, 92px); }
+      .feuille { --c: 34px; position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: clamp(22px, 2.8vw, 40px); align-items: start; background: #fbfcfe; color: var(--texte); padding: clamp(24px, 3.2vw, 46px) clamp(22px, 4vw, 58px) clamp(22px, 2.5vw, 36px); }
+      .feuille h2 { grid-column: 1 / -1; color: var(--marine); font-size: clamp(23px, 2.4vw, 34px); margin-bottom: clamp(8px, 1.3vw, 16px); }
+      .phrase { font: 400 clamp(17px, 1.75vw, 20.5px) / 1.9 var(--serif); color: var(--texte); }
+      .phrase input, .phrase select { height: 1.52em; min-width: 7ch; max-width: 100%; padding: 0 0.22em; border: 0; border-bottom: 1px solid #9fb1c7; border-radius: 0; background-color: transparent; font: inherit; font-style: italic; line-height: 1.2; color: var(--marine); field-sizing: content; vertical-align: baseline; transition: background-color 0.2s, border-color 0.2s; }
+      .phrase input:hover, .phrase select:hover { border-bottom-color: var(--bleu); background-color: rgba(70, 108, 147, 0.06); }
+      .phrase select { appearance: none; -webkit-appearance: none; padding-right: 1.15em; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='%237b8ea6' stroke-width='1.5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.26em center; background-size: 0.5em; }
+      .phrase .nb { white-space: nowrap; }
+      .phrase input::placeholder { color: #6f8097; }
+      .phrase select:has(option[value='']:checked) { color: #6f8097; }
+      .phrase input:focus-visible, .phrase select:focus-visible { outline: none; background-color: #e9f0f8; box-shadow: 0 1px 0 var(--marine); border-bottom-color: var(--marine); }
+      .phrase [aria-invalid='true'] { border-bottom-color: #b42318; background-color: #fdecea; }
+      .marge { align-self: stretch; padding: 9px 0 2px clamp(22px, 2.8vw, 40px); border-left: 1px solid var(--trait); }
+      .precis { display: block; }
+      .precis span { display: block; margin-bottom: 6px; font-size: 14.5px; line-height: 1.45; color: var(--gris); }
+      .precis textarea { display: block; width: 100%; min-height: 72px; padding: 8px 11px; border: 1px solid var(--trait); border-radius: 0; background: #fff; font: 400 16.5px/1.5 var(--sans); color: var(--marine); resize: vertical; }
+      .precis textarea:focus-visible { outline: 2px solid var(--bleu); outline-offset: 0; }
+      .accord { display: flex; align-items: flex-start; gap: 10px; margin-top: 13px; font-size: 14.5px; line-height: 1.5; color: var(--gris); }
+      .accord input { flex: none; width: 17px; height: 17px; margin-top: 2px; accent-color: var(--bleu-f); }
+      .accord input[aria-invalid='true'] { outline: 2px solid #b42318; outline-offset: 2px; }
+      .signe { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 26px; margin-top: clamp(18px, 2.2vw, 28px); margin-right: clamp(0px, 13.4vw, 192px); padding-top: 16px; border-top: 3px double #7f93ab; }
+      .signe .fait { font: italic 400 clamp(16.5px, 1.4vw, 19px) var(--serif); color: var(--marine); }
+      .retour { flex-basis: 100%; font-size: 15.5px; }
+      .retour:empty { margin-top: -12px; }
+      .retour.err { color: #b42318; }
+      .feuille .sceau { position: absolute; right: clamp(14px, 3.4vw, 50px); bottom: clamp(12px, 1.4vw, 20px); width: clamp(72px, 7.2vw, 104px); height: auto; pointer-events: none; }
+      .tampon { position: absolute; right: clamp(24px, 6vw, 86px); bottom: clamp(30px, 4.3vw, 62px); padding: 8px 16px 7px; border: 3px solid #2d5ba6; color: #2d5ba6; font: 600 clamp(13px, 1.1vw, 15.5px) / 1.25 var(--sans); letter-spacing: 0.15em; text-transform: uppercase; text-align: center; transform: rotate(-9deg) scale(1.9); opacity: 0; mix-blend-mode: multiply; pointer-events: none; }
+      .tampon.pose { animation: tampon 0.55s cubic-bezier(0.2, 1.4, 0.4, 1) forwards; }
+      @keyframes tampon { 0% { opacity: 0; transform: rotate(-9deg) scale(1.9); } 60% { opacity: 0.94; transform: rotate(-9deg) scale(0.95); } 100% { opacity: 0.86; transform: rotate(-9deg) scale(1); } }
+      .pied .bureaux2 { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2.6vw, 44px); padding-top: clamp(30px, 3.4vw, 48px); padding-bottom: clamp(30px, 3.4vw, 48px); }
+      .pied .bureaux2 > div { padding-top: 12px; border-top: 3px double #5f7f9f; }
+      .pied .bureaux2 h3 { color: #fff; font-size: 21px; margin-bottom: 2px; }
+      .pied .bureaux2 .r { font: italic 400 15px var(--serif); color: #9db7d3; margin-bottom: 10px; }
+      .pied .bureaux2 address, .pied .bureaux2 p { font-size: 15.5px; line-height: 1.6; }
+      .bas p { max-width: 96ch; }
+      .pied .bas .wrap { padding-bottom: 72px; }
+
+      @media (max-width: 1080px) {
+.hero { display: flex; flex-direction: column; }
+        .hero .wrap { order: 1; }
+        .hero-dessin { order: 2; }
+        .hero-mentions { order: 3; position: relative; padding-top: 0; margin-top: -28px; background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0, #fff 28px); }
+        .hero-mentions ul { grid-template-columns: 1fr 1fr; padding-top: 28px; }
+        .hero-mentions li:nth-of-type(3) { border-left: 0; }
+        .hero-mentions li:nth-of-type(n + 3) { border-top: 1px solid rgba(27, 42, 74, 0.16); }
+        .hero .wrap { min-height: 0; padding-bottom: 0; }
+        .hero-col { max-width: 620px; }
+        .hero h1 { font-size: clamp(34px, 8.6vw, 64px); }
+        .hero h1 .l3 { display: none; }
+        .hero-dessin { position: relative; right: auto; bottom: auto; width: 170vw; max-width: none; margin: 12px 0 0 var(--hd-m); }
+        .hd-cadre { -webkit-mask-image: none; mask-image: none; }
+        .hd-encre, .hd-soleil i { -webkit-mask-image: var(--hd-img-m); mask-image: var(--hd-img-m); }
+        .hero-col { max-width: 620px; }
+        .hero[data-dessin] { --hd-w: 170vw; --hd-bas: 0px; }
+        .hero .sur { gap: 4px 10px; letter-spacing: 0.13em; }
+        .hero .sur::before, .hero .sur::after { display: none; }
+        .hero .sur { justify-content: center; }
+        .hero .sur i:last-of-type { display: none; }
+        .hero .sur span:last-child { flex-basis: 100%; }
+        .assoc2 { grid-template-columns: 1fr; }
+      }
+      @media (max-width: 860px) {
+        .rep2 { grid-template-columns: minmax(0, 1fr); }
+        .r-feuille { height: auto; }
+        .r-corps { grid-template-columns: minmax(0, 1fr); }
+        .r-liste { max-height: 264px; border-right: 0; border-bottom: 3px double var(--marine); }
+        .r-detail { overflow: visible; }
+        .rep2 .tabs button[aria-pressed='true'] { width: auto; }
+        .dist3 { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+        .ds-tete { flex-direction: row; align-items: center; gap: clamp(20px, 4.4vw, 38px); }
+        .ds-tete > * { flex: 1 1 0; min-width: 0; }
+        .ds-photo { margin: 0; padding-top: 0; }
+        .signe { margin-right: 0; }
+        .feuille { grid-template-columns: minmax(0, 1fr); }
+        .marge { margin-top: 14px; padding: 0; border-left: 0; }
+        .feuille .sceau { width: 72px; right: 18px; bottom: 18px; }
+        .retour { padding-right: 84px; }
+        .tampon { position: relative; right: auto; bottom: auto; display: none; justify-self: start; margin: 16px 0 4px 8px; }
+        .tampon.pose { display: block; }
+      }
+      @media (max-width: 620px) {
+        .fiche { grid-template-columns: minmax(0, 1fr); }
+        .fiche .pp { max-width: 220px; }
+        .fiche dl > div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+        .ds-tete { flex-direction: column; align-items: stretch; gap: 0; }
+        .ds-tete > * { flex: none; }
+        .ds-photo { padding-top: 18px; }
+        .ds-frise li { grid-template-columns: 88px minmax(0, 1fr); grid-template-rows: auto auto 1fr; column-gap: 14px; align-items: start; padding: 13px 0; }
+        .ds-frise li::before { display: none; }
+        .ds-an { grid-column: 1; grid-row: 1; padding-bottom: 7px; font-size: 19px; }
+        .ds-plaque { --c: 9px; grid-column: 1; grid-row: 2 / span 2; align-self: start; }
+        .ds-frise b { grid-column: 2; grid-row: 1 / span 2; align-self: start; font-size: 16px; }
+        .ds-frise i { grid-column: 2; grid-row: 3; align-self: start; }
+        .pied .bureaux2 { grid-template-columns: 1fr 1fr; gap: 18px 20px; }
+        .pied .bureaux2 > div:first-child { grid-column: 1 / -1; }
+        .g-champ kbd { display: none; }
+        .phrase { line-height: 1.95; }
+        .precis textarea { min-height: 62px; }
+        .feuille { padding-top: 22px; }
+      }
+
+      /* ——— Troisième passe : adaptations */
+      @media (max-width: 860px) {
+        .fd-texte { max-width: none; padding-bottom: 0; }
+        .fd-gravure { position: relative; right: auto; width: calc(100% + var(--bord)); max-width: none; margin: 22px calc(-1 * var(--bord)) 0 0; }
+        .fd-photo { left: 6%; width: 64%; }
+        .fd-axes { grid-template-columns: minmax(0, 1fr); }
+        .fd-axes li + li { margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(183, 156, 214, 0.4); }
+        .rep-pose { margin-top: clamp(84px, 24vw, 104px); }
+        .g-palabre { right: clamp(28px, 9vw, 70px); }
+      }
+      @media (max-width: 420px) {
+        .btn { min-height: 52px; max-width: 100%; padding: 9px 18px 8px; font-size: 12px; line-height: 1.3; letter-spacing: 0.1em; white-space: normal; text-align: left; }
+        .btn > svg { padding: 0 13px; margin-left: 14px; }
+        .btn:has(> svg)::after { right: 42px; }
+        .hero .acts .btn { min-height: 54px; font-size: 12px; }
+        .lien { font-size: 12px; letter-spacing: 0.11em; }
+        .feuille .sceau { width: 60px; right: 14px; bottom: 14px; }
+        .retour { padding-right: 70px; }
+      }
+      @media (max-width: 480px) { .signe .lien { max-width: 11.5em; } }
+      @media (prefers-reduced-motion: reduce) { .btn, .btn > svg, .lien, .lien svg { transition: none; } }
+    </style>
+  </head>
+  <body>
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
+      <defs>
+        <path id="arc-haut" d="M100,169 A69,69 0 1,1 100,31 A69,69 0 1,1 100,169" />
+        <path id="arc-bas" d="M100,17 A83,83 0 1,0 100,183 A83,83 0 1,0 100,17" />
+        <filter id="relief-medaille" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB">
+          <feOffset in="SourceAlpha" dx="1.13" dy="1.13" result="o1" data-l="-1" data-m="1.6" />
+          <feComposite in="SourceAlpha" in2="o1" operator="out" result="clair" />
+          <feFlood flood-color="#b4cde6" flood-opacity="0.8" />
+          <feComposite in2="clair" operator="in" result="L" />
+          <feOffset in="SourceAlpha" dx="-1.13" dy="-1.13" result="o2" data-l="1" data-m="1.6" />
+          <feComposite in="SourceAlpha" in2="o2" operator="out" result="sombre" />
+          <feFlood flood-color="#02070c" flood-opacity="0.78" />
+          <feComposite in2="sombre" operator="in" result="D" />
+          <feFlood flood-color="#ffffff" flood-opacity="0.05" />
+          <feComposite in2="SourceAlpha" operator="in" result="F" />
+          <feMerge><feMergeNode in="F" /><feMergeNode in="D" /><feMergeNode in="L" /></feMerge>
+        </filter>
+        <filter id="relief-pastille" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB">
+          <feOffset in="SourceAlpha" dx="0.67" dy="0.67" result="o1" data-l="-1" data-m="0.95" />
+          <feComposite in="SourceAlpha" in2="o1" operator="out" result="clair" />
+          <feFlood flood-color="#b4cde6" flood-opacity="0.8" />
+          <feComposite in2="clair" operator="in" result="L" />
+          <feOffset in="SourceAlpha" dx="-0.67" dy="-0.67" result="o2" data-l="1" data-m="0.95" />
+          <feComposite in="SourceAlpha" in2="o2" operator="out" result="sombre" />
+          <feFlood flood-color="#02070c" flood-opacity="0.78" />
+          <feComposite in2="sombre" operator="in" result="D" />
+          <feFlood flood-color="#ffffff" flood-opacity="0.06" />
+          <feComposite in2="SourceAlpha" operator="in" result="F" />
+          <feMerge><feMergeNode in="F" /><feMergeNode in="D" /><feMergeNode in="L" /></feMerge>
+        </filter>
+        <filter id="relief-papier" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB">
+          <feOffset in="SourceAlpha" dx="1.63" dy="1.63" result="o1" data-l="-1" data-m="2.3" />
+          <feComposite in="SourceAlpha" in2="o1" operator="out" result="clair" />
+          <feFlood flood-color="#ffffff" flood-opacity="1" />
+          <feComposite in2="clair" operator="in" result="L" />
+          <feOffset in="SourceAlpha" dx="-1.63" dy="-1.63" result="o2" data-l="1" data-m="2.3" />
+          <feComposite in="SourceAlpha" in2="o2" operator="out" result="sombre" />
+          <feFlood flood-color="#1b2a4a" flood-opacity="0.4" />
+          <feComposite in2="sombre" operator="in" result="D" />
+          <feFlood flood-color="#1b2a4a" flood-opacity="0.04" />
+          <feComposite in2="SourceAlpha" operator="in" result="F" />
+          <feMerge><feMergeNode in="F" /><feMergeNode in="D" /><feMergeNode in="L" /></feMerge>
+        </filter>
+      </defs>
+    </svg>    <div class="util">
+      <div class="wrap">
+        <ul class="c">
+          <li><a href="tel:+22822210505"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" /></svg><span>+228 22 21 05 05</span></a></li>
+          <li><a href="mailto:contact@aquereburu-partners.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1.5" /><path d="m3.5 6.5 8.5 7 8.5-7" /></svg><span>contact@aquereburu-partners.com</span></a></li>
+        </ul>
+        <ul>
+          <li class="lang"><a href="#" aria-current="true" lang="fr">FR</a> / <a href="#" lang="en">EN</a></li>
+          <li><a class="fond" href="#fondation"><span>Fondation <em>Aquereburu</em></span></a></li>
+        </ul>
+      </div>
+    </div>
+
+    <header class="top">
+      <div class="wrap">
+        <a class="marque" href="#" aria-label="Aquereburu &amp; Partners, société d’avocats, accueil">
+          <img src="img2/embleme.svg" width="54" height="61" alt="" />
+          <span><b>AQUEREBURU &amp; PARTNERS</b><i>Société d’Avocats</i></span>
+        </a>
+        <nav aria-label="Navigation principale">
+          <a href="#cabinet">Le cabinet</a><a href="#expertises">Expertises</a><a href="#ohada">Espace OHADA</a><a href="#equipe">Équipe</a><a href="#contact">Contact</a>
+        </nav>
+        <div class="r">
+          <button class="ico" aria-label="Rechercher sur le site"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="6.5" /><path d="m16 16 4.5 4.5" /></svg></button>
+          <a class="btn" href="#contact">Prendre rendez-vous</a>
+          <button class="menu-btn" data-menu aria-expanded="false" aria-controls="mnav">Menu</button>
+        </div>
+      </div>
+    </header>
+    <nav class="mnav" id="mnav" aria-label="Menu">
+      <a href="#cabinet">Le cabinet</a><a href="#expertises">Expertises</a><a href="#ohada">Espace OHADA</a><a href="#equipe">Équipe</a><a href="#fondation">Fondation</a><a href="#contact">Contact</a>
+      <button data-menu style="margin-top: 28px; text-align: left; font-weight: 600">Fermer</button>
+    </nav>
+
+    <main>
+      <section class="hero" data-intro data-solid-after data-dessin="wharf">
+        <figure class="hero-dessin">
+          <div class="hd-cadre">
+            <div class="hd-rev">
+              <div class="hd-encre" role="img" aria-label="Dessin à la plume : au bout d’un vieux wharf, deux silhouettes vues de dos, un avocat âgé en robe et un plus jeune, regardent le soleil sur l’océan ; des cocotiers, une pirogue et, tout au loin, un arbre à palabres."></div>
+              <div class="hd-soleil" aria-hidden="true"><i></i></div>
+            </div>
+          </div>
+          <svg class="hd-vie" viewBox="0 0 1600 900" aria-hidden="true">
+            <defs>
+              <filter id="main-0" x="-2%" y="-2%" width="104%" height="104%"><feTurbulence type="fractalNoise" baseFrequency="0.014" numOctaves="2" seed="4" result="n" /><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G" /></filter>
+              <filter id="main-1" x="-2%" y="-2%" width="104%" height="104%"><feTurbulence type="fractalNoise" baseFrequency="0.014" numOctaves="2" seed="17" result="n" /><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G" /></filter>
+              <filter id="main-2" x="-2%" y="-2%" width="104%" height="104%"><feTurbulence type="fractalNoise" baseFrequency="0.014" numOctaves="2" seed="29" result="n" /><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G" /></filter>
+            </defs>
+            <g class="vol">
+              <path class="oiseau" d="M-15 -8Q-7 -12 0 0Q7 -12 15 -8" /><path class="oiseau" d="M36 -30Q42 -34 48 -24Q54 -34 60 -30" /><path class="oiseau" d="M70 3Q77 -1 84 10Q91 -1 98 3" /><path class="oiseau" d="M130 -19Q135 -22 140 -12Q145 -22 150 -19" /><path class="oiseau" d="M-55 14Q-49 10 -44 20Q-39 10 -33 14" />
+            </g>
+            <g class="feuilles">
+              <path class="feuille" style="--fx: 760px; --fd: 60px; --ft: 11s; --fr: 0s" d="M0 0q7 -9 16 0q-9 9 -16 0z" /><path class="feuille" style="--fx: 900px; --fd: -40px; --ft: 14s; --fr: 3s" d="M0 0q7 -9 16 0q-9 9 -16 0z" /><path class="feuille" style="--fx: 1010px; --fd: 70px; --ft: 12s; --fr: 6.5s" d="M0 0q7 -9 16 0q-9 9 -16 0z" /><path class="feuille" style="--fx: 1150px; --fd: -55px; --ft: 15s; --fr: 1.5s" d="M0 0q7 -9 16 0q-9 9 -16 0z" /><path class="feuille" style="--fx: 1280px; --fd: 30px; --ft: 13s; --fr: 8s" d="M0 0q7 -9 16 0q-9 9 -16 0z" />
+            </g>
+          </svg>
+        </figure>
+        <div class="wrap">
+          <div class="hero-in">
+            <p class="sur"><span>Cabinet d’avocats</span><i aria-hidden="true"></i><span>Barreau du Togo</span><i aria-hidden="true"></i><span>Depuis 1987</span></p>
+            <h1 data-split>Construire demain<br /><em>en s’inspirant<br class="l3" /> d’hier.</em></h1>
+            <p class="orn" aria-hidden="true"><i></i></p>
+            <div class="hero-col">
+              <p class="ch"><b>Aquereburu &amp; Partners</b> est un cabinet d’avocats fondé à Lomé en 1987.</p>
+              <p class="ch2">Il conseille et défend entreprises, investisseurs et États en droit des affaires OHADA, arbitrage, propriété intellectuelle et financement de projets.</p>
+              <div class="acts">
+                <a class="btn" href="#contact">Prendre rendez-vous <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+                <a class="lien" href="#expertises">Nos domaines d’intervention <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-mentions">
+          <ul>
+            <li><b>Depuis 1987</b><span>Fondé à Lomé par Me Coffi Alexis Aquereburu</span></li>
+            <li><b>Barreau du Togo</b><span>Société civile professionnelle d’avocats</span></li>
+            <li><b>ISO 9001:2015</b><span>Certification qualité AFAQ</span></li>
+            <li><b>Trois bureaux</b><span>Lomé, Paris et Cotonou</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="sec" id="cabinet">
+        <div class="wrap art">
+          <p class="manchette"><b>Le cabinet</b><span>Fondé à Lomé en 1987</span></p>
+          <div class="cab">
+            <figure data-fade>
+              <div class="ph coin"><img src="img2/associes.webp" width="1266" height="810" alt="Deux associés du cabinet" loading="lazy" decoding="async" data-parallax="4" /></div>
+              <figcaption>Les associés du cabinet</figcaption>
+            </figure>
+            <div data-stagger>
+              <h2>Près de quarante ans au service du droit des affaires</h2>
+              <p>Le cabinet accompagne ses clients dans l’espace OHADA et à l’international. Pionnier de la propriété intellectuelle au Togo, mandataire agréé auprès de l’OAPI, il intervient en conseil comme en contentieux.</p>
+              <ul class="valeurs">
+                <li><b>Culture du progrès</b>Adapter nos méthodes sans renoncer à ce qui a fait ses preuves.</li>
+                <li><b>Excellence et rigueur</b>Un processus qualité certifié, appliqué à chaque dossier.</li>
+                <li><b>Intégrité intransigeante</b>Secret professionnel, indépendance et loyauté.</li>
+              </ul>
+              <a class="lien" href="#">Découvrir le cabinet <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec brume" id="expertises">
+        <div class="wrap art plein">
+          <p class="manchette"><b>Expertises</b><span>Vingt-quatre domaines, de A à S</span></p>
+          <div>
+            <div class="tete">
+              <div><h2>Le répertoire du cabinet</h2><p>Cherchez un mot ou feuilletez par lettre. Chaque domaine s’ouvre à côté, avec l’avocat qui le suit.</p></div>
+            </div>
+            <div class="rep-pose">
+            <figure class="gravure g-palabre">
+              <div class="g-rev"><span class="g-encre" role="img" aria-label="Gravure : assis sur un tabouret, un ancien expose son affaire ; un avocat en robe l’écoute, carnet en main."></span></div>
+              <figcaption>D’abord, écouter.</figcaption>
+            </figure>
+            <div class="rep2 ombre" data-fade>
+              <div class="r-feuille">
+                <div class="r-barre">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="6.5" /><path d="m16 16 4.5 4.5" /></svg>
+                  <label class="sr" for="r-q">Filtrer les domaines</label>
+                  <input id="r-q" type="search" autocomplete="off" spellcheck="false" placeholder="Filtrer : marque, fusion, concession…" />
+                  <p class="r-compte" aria-live="polite">24 domaines</p>
+                </div>
+                <div class="r-corps">
+                  <nav class="r-liste" aria-label="Domaines d’intervention" data-lenis-prevent>
+                    <section data-l="A"><h3>A</h3>
+                      <ul>
+                        <li><button type="button" data-s="droit-aerien">Aérien</button></li>
+                        <li><button type="button" data-s="arbitrage">Arbitrage</button></li>
+                        <li><button type="button" data-s="assurances">Assurances</button></li>
+                      </ul></section>
+                    <section data-l="B"><h3>B</h3>
+                      <ul>
+                        <li><button type="button" data-s="banque-finance">Banque et finance</button></li>
+                      </ul></section>
+                    <section data-l="C"><h3>C</h3>
+                      <ul>
+                        <li><button type="button" data-s="contentieux-des-affaires">Contentieux des affaires</button></li>
+                      </ul></section>
+                    <section data-l="D"><h3>D</h3>
+                      <ul>
+                        <li><button type="button" data-s="droit-de-la-famille">Droit de la famille et du patrimoine</button></li>
+                        <li><button type="button" data-s="droit-de-l-environnement">Droit de l’environnement</button></li>
+                        <li><button type="button" data-s="corporate">Droit des sociétés et corporate</button></li>
+                        <li><button type="button" data-s="droit-du-travail">Droit du travail et relations sociales</button></li>
+                        <li><button type="button" data-s="droit-penal">Droit pénal et pénal des affaires</button></li>
+                        <li><button type="button" data-s="droit-public">Droit public et marchés publics</button></li>
+                      </ul></section>
+                    <section data-l="E"><h3>E</h3>
+                      <ul>
+                        <li><button type="button" data-s="energie-ressources-naturelles">Énergie et ressources naturelles</button></li>
+                        <li><button type="button" data-s="procedures-collectives">Entreprises en difficulté</button></li>
+                      </ul></section>
+                    <section data-l="F"><h3>F</h3>
+                      <ul>
+                        <li><button type="button" data-s="financement-de-projets">Financement de projets</button></li>
+                        <li><button type="button" data-s="fintech">Fintech et numérique</button></li>
+                        <li><button type="button" data-s="droit-social-fiscalite">Fiscalité des entreprises</button></li>
+                        <li><button type="button" data-s="fonds-d-investissement">Fonds d’investissement</button></li>
+                      </ul></section>
+                    <section data-l="H"><h3>H</h3>
+                      <ul>
+                        <li><button type="button" data-s="hotellerie-tourisme">Hôtellerie et tourisme</button></li>
+                      </ul></section>
+                    <section data-l="I"><h3>I</h3>
+                      <ul>
+                        <li><button type="button" data-s="immobilier-construction">Immobilier et construction</button></li>
+                      </ul></section>
+                    <section data-l="P"><h3>P</h3>
+                      <ul>
+                        <li><button type="button" data-s="partenariats-public-prive">Partenariats public-privé</button></li>
+                        <li><button type="button" data-s="privatisations">Privatisations et entreprises publiques</button></li>
+                        <li><button type="button" data-s="propriete-intellectuelle">Propriété intellectuelle</button></li>
+                      </ul></section>
+                    <section data-l="R"><h3>R</h3>
+                      <ul>
+                        <li><button type="button" data-s="restructurations">Restructurations</button></li>
+                      </ul></section>
+                    <section data-l="S"><h3>S</h3>
+                      <ul>
+                        <li><button type="button" data-s="droit-du-sport">Sport</button></li>
+                      </ul></section>
+                    <p class="r-vide" hidden>Aucun domaine ne correspond. Décrivez votre question au cabinet : il vous orientera.</p>
+                  </nav>
+                  <div class="r-detail" id="r-detail" role="region" aria-labelledby="r-titre" tabindex="-1" data-lenis-prevent></div>
+                </div>
+              </div>
+              <div class="tabs" role="group" aria-label="Aller à une lettre">
+                <button type="button" data-l="A" aria-pressed="false" style="--k: 0"><span class="sr">Lettre </span>A</button>
+                <button type="button" data-l="B" aria-pressed="false" style="--k: 1"><span class="sr">Lettre </span>B</button>
+                <button type="button" data-l="C" aria-pressed="false" style="--k: 2"><span class="sr">Lettre </span>C</button>
+                <button type="button" data-l="D" aria-pressed="false" style="--k: 3"><span class="sr">Lettre </span>D</button>
+                <button type="button" data-l="E" aria-pressed="false" style="--k: 4"><span class="sr">Lettre </span>E</button>
+                <button type="button" data-l="F" aria-pressed="false" style="--k: 5"><span class="sr">Lettre </span>F</button>
+                <button type="button" data-l="H" aria-pressed="false" style="--k: 6"><span class="sr">Lettre </span>H</button>
+                <button type="button" data-l="I" aria-pressed="false" style="--k: 7"><span class="sr">Lettre </span>I</button>
+                <button type="button" data-l="P" aria-pressed="false" style="--k: 8"><span class="sr">Lettre </span>P</button>
+                <button type="button" data-l="R" aria-pressed="false" style="--k: 9"><span class="sr">Lettre </span>R</button>
+                <button type="button" data-l="S" aria-pressed="false" style="--k: 10"><span class="sr">Lettre </span>S</button>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec" id="ohada">
+        <div class="wrap art">
+          <p class="manchette"><b>Espace OHADA</b><span>Dix-sept États, un même droit des affaires</span></p>
+          <div class="ohada">
+            <div>
+              <h2>Le terrain du cabinet</h2>
+              <p>L’OHADA réunit dix-sept États africains autour d’un droit des affaires commun. Le cabinet y intervient depuis Lomé et Cotonou, en lien avec son bureau de Paris.</p>
+              <ul class="etats" aria-label="États membres de l’OHADA">
+                <li><button type="button" data-i="3">Bénin</button></li>
+            <li><button type="button" data-i="1">Burkina Faso</button></li>
+            <li><button type="button" data-i="9">Cameroun</button></li>
+            <li><button type="button" data-i="6">Centrafrique</button></li>
+            <li><button type="button" data-i="com">Comores</button></li>
+            <li><button type="button" data-i="7">Congo</button></li>
+            <li><button type="button" data-i="8">Côte d’Ivoire</button></li>
+            <li><button type="button" data-i="15">Gabon</button></li>
+            <li><button type="button" data-i="18">Guinée</button></li>
+            <li><button type="button" data-i="19">Guinée équatoriale</button></li>
+            <li><button type="button" data-i="20">Guinée-Bissau</button></li>
+            <li><button type="button" data-i="27">Mali</button></li>
+            <li><button type="button" data-i="32">Niger</button></li>
+            <li><button type="button" data-i="5" data-nom="République démocratique du Congo" aria-label="République démocratique du Congo">RD Congo</button></li>
+            <li><button type="button" data-i="37">Sénégal</button></li>
+            <li><button type="button" data-i="41">Tchad</button></li>
+            <li><button type="button" data-i="42">Togo</button></li>
+              </ul>
+            </div>
+            <div class="carte">
+              <svg viewBox="866 244 410 558" role="img" aria-label="Carte de l’Afrique : les dix-sept États membres de l’OHADA, avec Lomé, Cotonou et la direction de Paris">
+                <g id="pays">
+                  <path class="p" data-i="0" d="M1068.3 609.6l-16.6-.1-1.9.7-1.7-.1-2.3.9-.5 1.2 2.8 4 1.1 4.3 1.6 6.1-1.7 2.6-.3 1.3 1.3 3.8 1.5 3.9 1.6 2.2.3 3.6-.7 4.8-1.8 2.8-3.3 4.2-1.3 2.6-1.9 5.7-.3 2.7-2 5.9-.9 5.5.5 4 2.7-1.2 3.3-1 3.6.1 3.2 2.9.9-.4 22.5-.3 3.7 3 13.4.9 10.3-2.5-3.5-4-3.6-5.2.8-20.3 11.6.1-.5-2.2.9-2.4-.9-3 .7-3-.5-2-2.6-.4-3.5 1-2.4-.2-1.4.6.5-7.6-1.9-2.3-.3-4 .9-3.8-1.2-2.4v-4h-6.8l.5-2.3h-2.9l-.3 1.1-3.4.3-1.5 3.7-.9 1.6-3-.9-1.9.9-3.7.5-2.1-3.3-1.3-2.1-1.6-3.8-1.3-4.7zm-21.8-1.3l.2-2.7.9-1.7 2-1.3-2-2.2-1.8 1.1-2.2 2.7 1.4 4.8 1.5-.7z"/>
+          <path class="m" data-i="1" d="M978.8 477.2h-3.6l-1.4-1.2-3 .9-5.2 2.6-1.1 2-4.3 2.9-.8 1.6-2.3 1.3-2.7-.9-1.6 1.6-.8 4.4-4.5 5.2.2 2.2-1.6 2.7.4 3.7 2.5 1.4 1 2.1 2.5 1.3 1.9-1.6 2.7-.2 3.8 1.6-.8-4.8.2-3.6 9.7-.3 2.4.5 1.8-1 2.6.5 4.9.1 1.9-.7 1.2-2.8 2.7-.6 1.2-1.9.1-4.4-6.4-1.4-.2-3.1-3.1-4.1-.8-2.9.5-3.1z"/>
+          <path class="p" data-i="2" d="M1148.2 590l-.3-2.5-3-.4-1.7 3.6-3.5-.5 1.4 2.9.1 1.1 2 6.1-.1.3.6-.1 2.1-2.3 2.2-3.3 1.4-1.4v-2l-1.2-1.5z"/>
+          <path class="m" data-i="3" d="M996.9 498l-4.3-3.7h-2l-1.9 1.9-1.2 1.9-2.7.6-1.2 2.8-1.9.7-.7 3.3 1.7 1.9 2 2.3.2 3.1 1.1 1.3-.2 14.6 1.4 4.4 4.6-.8.3-10.2-.1-4.1 1-4 1.7-1.9 2.7-4-.6-1.7 1.1-2.5-1.2-3.8.2-2.1z"/>
+          <path class="p" data-i="4" d="M1116.7 685l-1-.5-3.2 1.5h-1.6l-3.7 2.5-2-2.6-8.6 2.2-4.1.2-.9 22.7-5.4.2-.6 18.5 1.4 1 3 6.1-.7 3.8 1.1 2.3 4-.7 2.8-2.8 2.7-1.9 1.5-3.1 2.7-1.5 2.3.8 2.5 1.8 4.4.3 3.6-1.5.6-2 1.2-3 3-.5 1.7-2.4 2-4.3 5.2-4.7 8-4.7-3.4-2.9-4.2-.9-1.5-4.1.1-2.2-2.3-.7-6-7-1.6-3.7-1.1-1.1-1.9-5.1z"/>
+          <path class="m" data-i="5" d="M1124.9 539.4l-4.3-.7-2 .6-.9 1.5-1.8.2-2.2-1.3-6.2 3.1-2.6-.6-.8.5-1.6 3.8-4.2-1.2-4.1-.6-3.6-2.4-4.6-2.1-3 2-2.2 3.2-.5 4.5-.3 3.8-1.6 3.4-1.1 4-.7 5.6.3 3.6-.9 2.2-.2 2.4-.6 2-3.7 3.1-2.6 3.2-2.5 6.2.2 5.3-1.4 2-3.3 3.1-3.4 4-2-1.1-.4-1.8-3.1-.1-1.9 2.4-1.5-.6-2 1.3-.9 1.7-.2 2.7-1.5.7.8 2 2.3-.9 1.7.1 1.9-.7 16.6.1 1.3 4.7 1.6 3.8 1.3 2.1 2.1 3.3 3.7-.5 1.9-.9 3 .9.9-1.6 1.5-3.7 3.4-.3.3-1.1h2.9l-.5 2.3h6.8v4l1.2 2.4-.9 3.8.3 4 1.9 2.3-.5 7.6 1.4-.6 2.4.2 3.5-1 2.6.4 1.9.1.3 2 2.6-.1 3.5.6 1.8 2.8 4.5.9 3.4-2 1.2 3.4 4.3.8 2 2.8 2.1 3.5h4.3l-.3-6.9-1.5 1.2-3.9-2.5-1.4-1.1.8-6.4 1.2-7.5-1.2-2.8 1.6-4.1 1.6-.7 7.5-1.1 1 .3.2-1.1-1.5-1.7-.7-3.5-3.4-3.5-1.8-4.5 1-2.7-1.5-3.6 1.1-10.2.1.1-.1-1.1-1.4-2.9.6-3.5.8-.4.2-3.8 1.6-1.8.1-4.8 1.3-2.4.3-5.1 1.2-3 2.1-3.3 2.2-1.7 1.8-2.3-2.3-.8.3-7.5-5-4.2-1.4-2.7-3.1 1.3-2.6-.4-1.5 1.1-2.5-.8-3.5-5.2-1.8.6-3.6-.1z"/>
+          <path class="m" data-i="6" d="M1110.5 517.3l-.5-.3-2-1.8-.3-2 .8-2.6V508l-3.3-4-.7-2.7-3.5 1.1-2.8 2.5-4 7-5.2 2.9-5.4-.4-1.6.6.6 2.3-2.9 2.2-2.3 2.5-7.1 2.4-1.4-1.4-.9-.2-1 1.7-4.7.4-2.7 6.5-1.4 1.1-.4 5 .6 2.7-.4 1.9 2.6 3.3.5 2.3 2.1 3.2 2.6 2.1.3 2.9.6 1.8 2.9-5.9 3.3-3.4 3.8 1.1 3.6.4.5-4.5 2.2-3.2 3-2 4.6 2.1 3.6 2.4 4.1.6 4.2 1.2 1.6-3.8.8-.5 2.6.6 6.2-3.1 2.2 1.3 1.8-.2.9-1.5 2-.6 4.3.7 3.6.1 1.8-.6-.9-2.1-4.2-2.5-1.5-3.8-2.4-2.7-3.8-3.4-.1-2-3.1-2.6-3.8-2.5z"/>
+          <path class="m" data-i="7" d="M1080.3 549.9l-3.6-.4-3.8-1.1-3.3 3.4-2.9 5.9-.4 3.5-4.5-1.5-4.5-1.7-7.1-.3-.4 2.8 1.5 3.3 4.2-.5 1.4 1.2-2.4 7.4 2.7 3.8.6 4.9-.8 4.3-1.7 3-4.9-.3-3-3-.5 2.8-3.8.8-1.9 1.6 2.1 4.2-4.3 3.5 4.6 6.7 2.2-2.7 1.8-1.1 2 2.2 1.5.6 1.9-2.4 3.1.1.4 1.8 2 1.1 3.4-4 3.3-3.1 1.4-2-.2-5.3 2.5-6.2 2.6-3.2 3.7-3.1.6-2 .2-2.4.9-2.2-.3-3.6.7-5.6 1.1-4 1.6-3.4.3-3.8z"/>
+          <path class="m" data-i="8" d="M946.5 506.2l-2.3.9-1.3.8-.9-2.7-1.6.7-1-.1-1 1.9-4.3-.1-1.6-1-.7.6-1.1.5-.5 2.2 1.3 2.6 1.3 5.1-2 .8-.6.9.4 1.2-.3 2.8h-.9l-.3 1.8.6 3.1-1.2 2.8 1.6 1.8 1.8.4 2.3 2.7.2 2.5-.5.8-.5 5.2 1.1.2 5.6-2.4 3.9-1.8 6.6-1.1 3.6-.1 3.9 1.3 2.6-.1.2-2.5-2.4-5.5 1.5-7.2 2.3-5.3-1.4-9.1-3.8-1.6-2.7.2-1.9 1.6-2.5-1.3-1-2.1-2.5-1.4z"/>
+          <path class="m" data-i="9" d="M1060.1 502.9l.2-4.3-.5-4.2-2.2-4.1-1.6.4-.2 2 2.3 2.6-.6 1.1-.3 2.1-4.6 5-1.5 4-.7 3.3-1.2 1.4-1.1 4.5-3 2.6-.8 3.2-1.2 2.6-.5 2.6-3.9 2.2-3.2-2.6-2.1.1-3.3 3.7-1.6.1-2.7 6.1-1.4 4.5v1.8l1.4.9 1.1 2.8 2.6 1.1 2.2 4.2-.8 5 9.2.2 2.6-.4 3.4.8 3.4-.8.7.3 7.1.3 4.5 1.7 4.5 1.5.4-3.5-.6-1.8-.3-2.9-2.6-2.1-2.1-3.2-.5-2.3-2.6-3.3.4-1.9-.6-2.7.4-5 1.4-1.1 2.7-6.5.9-1.7-1.8-4.4-.8-2.6-2.5-1.1-3.3-3.7 1.2-3 2.5.6 1.6-.4 3.1.1-3.1-5.8z"/>
+          <path class="p" data-i="10" d="M1217.8 499.2l-2.5-1.7 3.1-1.5.1-2.7-1.4-1.9-1.6 1.5-2.4-.5-1.9 2.8-1.8 3 .5 1.7.2 2 3.1.1 1.3-.5 1.3 1.1 2-3.4z"/>
+          <path class="p" data-i="11" d="M1021 336.9l-3.6.4-2.2-1.5h-5.6l-4.9 2.6-2.7-1-8.7.5-8.9 1.2-5 2-3.4 2.6-5.7 1.2-5.1 3.5 2 4.1.3 3.9 1.8 6.7 1.4 1.4-1 2.5-7 1-2.5 2.4-3.1.5-.3 4.7-6.3 2.5-2.1 3.2-4.4 1.7-5.4 1-8.9 4.7-.1 7.5v.4l-.1 1.2 20.3 15.5 18.4 13.9 18.6 13.8 1.3 3 3.4 1.8 2.6 1.1.1 4 6.1-.6 7.8-2.8 15.8-12.5 18.6-12.2-2.5-4-4.3-2.9-2.6 1.2-2-3.6-.2-2.7-3.4-4.7 2.1-2.6-.5-4 .6-3.5-.5-2.9.9-5.2-.4-3-1.9-5.6-2.6-11.3-3.4-2.6v-1.5l-4.5-3.8-.6-4.8 3.2-3.6 1.1-5.3-1-6.2 1-3.3z"/>
+          <path class="p" data-i="12" d="M1129.7 374.8l-5.5-1.9-5.3-1.7-7.1.2-1.8 3 1.1 2.7-1.2 3.9 2 5.1 1.3 22.7 1 23.4h65.3l-1-1.3-6.8-5.7-.4-4.2 1-1.1-5.3-7-2-3.6-2.3-3.5-4.8-9.9-3.9-6.4-2.8-6.7.5-.6 4.6 9.1 2.7 2.9 2 2 1.2-1.1 1.2-3.3.7-4.8 1.3-2.5-.7-1.7-3.9-9.2-2.5 1.6-4.2-.4-4.4-1.5-1.1 2.1-1.7-3.2-3.9-.8-4.7.6-2.1 1.8-3.9 2-2.6-1z"/>
+          <path class="p" data-i="13" d="M1198.1 474l-3.2-3.1-1.8-5.9-3.7-7.3-2.6 3.6-4 1-1.6 2-.4 4.2-1.9 9.4.7 2.5 6.5 1.3 1.5-4.7 3.5 2.9 3.2-1.5 1.4 1.3 3.9.1 4.9 2.5 1.6 2.2 2.5 2.1 2.5 3.7 2 2.1 2.4.5 1.6-1.5-2.8-1.9-1.9-2.2-3.2-3.7-3.2-3.6-7.9-6z"/>
+          <path class="p" data-i="14" d="M1187.6 477l-1.5 4.7-6.5-1.3-.7 5.5-2.1 6.2-3.2 3.2-2.3 4.8-.5 2.6-2.6 1.8-1.4 6.7v.7l.2 5-.8 2-3 .1-1.8 3.6 3.4.5 2.9 3.1 1 2.5 2.6 1.5 3.5 6.9 2.9 1.1v3.6l2 2.1h3.9l7.2 5.4h1.8l1.3-.1 1.2.7 3.8.5 1.6-2.7 5.1-2.6 2.3 2.1h3.8l1.5-2 3.6-.1 4.9-4.5 7.4-.3 15.4-19.1-4.8.1-18.5-7.6-2.2-2.2-2.1-3.1-2.2-3.5 1.1-2.3-1.3-1.1-1.3.5-3.1-.1-.2-2-.5-1.7 1.8-3 1.9-2.8-2-2.1-2.5-3.7-2.5-2.1-1.6-2.2-4.9-2.5-3.9-.1-1.4-1.3-3.2 1.5-3.5-2.9z"/>
+          <path class="m" data-i="15" d="M1050.2 557.7l-.7-.3-3.4.8-3.4-.8-2.6.4v7.6h-8.2l-1.9.3-1.1 4.8-1.3 4.6-1.3 2-.2 2.1 3.4 6.6 3.7 5.3 5.8 6.4 4.3-3.5-2.1-4.2 1.9-1.6 3.8-.8.5-2.8 3 3 4.9.3 1.7-3 .8-4.3-.6-4.9-2.7-3.8 2.4-7.4-1.4-1.2-4.2.5-1.5-3.3.4-2.8z"/>
+          <path class="p" data-i="16" d="M976.8 502.1l-2.6-.5-1.8 1-2.4-.5-9.7.3-.2 3.6.8 4.8 1.4 9.1-2.3 5.3-1.5 7.2 2.4 5.5-.2 2.5 5 1.8 5-1.9 3.2-2.1 8.7-3.8-1.2-2.2-1.5-4-.4-3.2 1.2-5.7-1.4-2.3-.6-5.1.1-4.6-2.4-3.3.4-1.9z"/>
+          <path class="p" data-i="17" d="M882.8 488.5l5 .1 1.4-.9h1l2.1-1.5 2.4 1.4 2.4.1 2.4-1.5-1.1-1.8-1.8 1.1-1.8-.1-2.1-1.5-1.8.1-1.3 1.5-6.1.2-.7 2.8z"/>
+          <path class="m" data-i="18" d="M912.4 493l-.8.4-3-.5-.4.7-1.3.1-4-1.5-2.7-.1-.1 2.1-.6.7.4 2.1-.8.9h-1.3l-1.4 1-1.7-.1-2.6 3.1 1.6 1.1.8 1.4.7 2.8 1.3 1.2 1.5.9 2.1 2.5 2.4 3.7 3-2.8.7-1.7 1-1.4 1.5-.2 1.3-1.2h4.5l1.5 2.3 1.2 2.7-.2 1.8.9 1.7v2.3l1.5-.3 1.2-.2 1.5-.7 2.3 3.9-.4 2.6 1.1 1.3 1.6.1 1.1-2.6 1.6.2h.9l.3-2.8-.4-1.2.6-.9 2-.8-1.3-5.1-1.3-2.6.5-2.2 1.1-.5-1.7-1.8.3-1.9-.7-.7-1.2.6.2-2.1 1.2-1.6-2.3-2.7-.6-1.7-1.3-1.4-1.1-.2-1.3.9-1.8.8-1.6 1.4-2.4-.5-1.5-1.6-.9-.2-1.5.8h-.9l-.3-2.3z"/>
+          <path class="m" data-i="19" d="M1040.1 557.8l-9.2-.2-1.9 7.2 1 .9 1.9-.3h8.2v-7.6z"/>
+          <path class="m" data-i="20" d="M900.2 492.1l-10.3-.3-1.5.7-1.8-.2-3 1.1.3 1.3 1.7 1.4v.9l1.2 1.8 2.4.5 2.9 2.6 2.6-3.1 1.7.1 1.4-1h1.3l.8-.9-.4-2.1.6-.7.1-2.1z"/>
+          <path class="p" data-i="21" d="M1211.7 547.2h-3.8l-2.3-2.1-5.1 2.6-1.6 2.7-3.8-.5-1.2-.7-1.3.1h-1.8l-7.2-5.4h-3.9l-2-2.1v-3.6l-2.9-1.1-3.8 4.2-3.4 3.8 2.7 4.4.7 3.2 2.6 7.3-2.1 4.7-2.7 4.2-1.6 2.6v.3l1.4 2.4-.4 4.7 20.2 13 .4 3.7 8 6.3 2.2-2.1 1.2-4.2 1.8-2.6.9-4.5 2.1-.4 1.4-2.7 4-2.5-3.3-5.3-.2-23.2 4.8-7.2z"/>
+          <path class="p" data-i="22" d="M929.4 523.3l-1.6-.2-1.1 2.6-1.6-.1-1.1-1.3.4-2.6-2.3-3.9-1.5.7-1.2.2-2.6 3-2.6 3.4-.3 1.9-1.3 2 3.7 4.1 4.8 3.5 5.1 4.8 5.7 3.1 1.5-.1.5-5.2.5-.8-.2-2.5-2.3-2.7-1.8-.4-1.6-1.8 1.2-2.8-.6-3.1.3-1.8z"/>
+          <path class="p" data-i="23" d="M1128.1 766.5l1.1-2 3.1-1 1.1-2.1 1.9-3.1-1.7-1.9-2.3-2-2.6 1.3-3.1 2.5-3.2 4 3.7 4.9 2-.6z"/>
+          <path class="p" data-i="24" d="M1111.8 371.4l-1.5-2.1-5.4-.8-1.8-1.1h-2l-2-2.8-7.3-1.3-3.6.8-3.7 3-1.5 3.1 1.5 4.8-2.4 3-2.5 1.6-5.9-3.1-7.7-2.7-4.9-1.2-2.8-5.7-7.2-2.8-4.5-1.1-2.2.6-6.4-2.2-.1 4.9-2.6 1.8-1.5 2-3.7 2.5.7 2.6-.4 2.7-2.6 1.4 1.9 5.6.4 3-.9 5.2.5 2.9-.6 3.5.5 4-2.1 2.6 3.4 4.7.2 2.7 2 3.6 2.6-1.2 4.3 2.9 2.5 4 8.8 2.8 3.1 3.5 3.9-2.4 5.4-3.5 22.3 12.2 22.4 12.2v-2.7h6.3l-.5-12.7-1-23.4-1.3-22.7-2-5.1 1.2-3.9-1.1-2.7 1.8-3z"/>
+          <path class="p" data-i="25" d="M965.2 348.4l-2.3-.1-5.5-1.4-5 .4-3.1-2.7h-3.9l-1.8 3.9-3.7 6.7-4 2.6-5.4 2.9-3.5 4.3-.9 3.4-2.1 5.4 1.1 7.9-4.7 5.3-2.7 1.7-4.4 4.4-5.1.7-2.8 2.4-.1.1-3.6 6.5-3.7 2.3-2.1 4-.2 3.3-1.6 3.8-1.9 1-3.1 4-2 4.5.3 2.2-1.9 3.3-2.2 1.7-.3 3h.1l12.4-.5.7-2.3 2.3-2.9 2-8.8 7.8-6.8 2.8-8.1 1.7-.4 1.9-5 4.6-.7 1.9.9h2.5l1.8-1.5 3.4-.2-.1-3.4h.8l.1-7.5 8.9-4.7 5.4-1 4.4-1.7 2.1-3.2 6.3-2.5.3-4.7 3.1-.5 2.5-2.4 7-1 1-2.5-1.4-1.4-1.8-6.7-.3-3.9-2-4.1z"/>
+          <path class="p" data-i="26" d="M1255.7 658.4l-1.1-4.2-1.4-2.7-1.8-2.7-2 2.8-.3 3.8-3.3 4.5-2.3-.8.6 2.7-1.8 3.2-4.8 3.9-3.4 3.7h-2.4l-2.2 1.2-3.1 1.3-2.8.2-1 4.1-2.2 3.5.1 5.9.8 4 1.1 3-.8 4.1-2.9 4.8-.2 2.1-2.6 1.1-1.3 4.6.2 4.6 1.6 5-.1 5.7 1.2 3.3 4.2 2.3 3 1.7 5-2.7 4.6-1.5 3.1-7.4 2.8-8.9 4.3-12 3.3-8.8 2.7-7.4.8-5.4 1.6-1.5.7-2.7-.8-4.7 1.2-1.9 1.6 3.8 1.1-1.9.8-3.1-1.3-2.9-.5-7.7z"/>
+          <path class="m" data-i="27" d="M1000.3 450.3l-6.1.6-.1-4-2.6-1.1-3.4-1.8-1.3-3-18.6-13.8-18.4-13.9-8.4.1 2.4 27.4 2.4 27.5 1 .8-1.3 4.4-22.3.1-.9 1.4-2.1-.4-3.2 1.3-3.8-1.8-1.8.2-1 3.7-1.9 1.2.2 3.9 1.1 3.7 2.1 1.8.4 2.4-.3 2 .3 2.3h.9l1.5-.8.9.2 1.5 1.6 2.4.5 1.6-1.4 1.8-.8 1.3-.9 1.1.2 1.3 1.4.6 1.7 2.3 2.7-1.2 1.6-.2 2.1 1.2-.6.7.7-.3 1.9 1.7 1.8.7-.6 1.6 1 4.3.1 1-1.9 1 .1 1.6-.7.9 2.7 1.3-.8 2.3-.9-.4-3.7 1.6-2.7-.2-2.2 4.5-5.2.8-4.4 1.6-1.6 2.7.9 2.3-1.3.8-1.6 4.3-2.9 1.1-2 5.2-2.6 3-.9 1.4 1.2h3.6l3.6-.3 2-2.2 7.6-.6 4.9-1 .5-3.9 3-4.3-.1-14.6z"/>
+          <path class="p" data-i="28" d="M949.8 413.3l-20.3-15.5-.2 9.7-17.9-.3-.2 16.3-5.2.5-1.4 3.3.9 9.2-21.6-.1-1.2 2.2 2.8 2.7 1.4 3-.7 3.2.6 3.2.5 6.3-.8 5.9-1.7 3.2.4 3.4 2-2 2.7.5 2.8-1.4h3.1l2.6 1.8 3.7 1.7 3.2 4.7 3.6 4.4 1.9-1.2 1-3.7 1.8-.2 3.8 1.8 3.2-1.3 2.1.4.9-1.4 22.3-.1 1.3-4.4-1-.8-2.4-27.5-2.4-27.4 8.4-.1z"/>
+          <path class="p" data-i="29" d="M1169.2 661.5l.1-2.3-1.2-1.9.1-2.8-1.5-4.7 1.7-3.5-.1-7.7-1.9-4.1.2-.7-1.1-1.7-5.4-1.2 2.6 2.8 1.2 5.4-1 1.8-1.2 5.1.9 5.3-1.8 2.2-1.9 5.9 2.9 1.7 3 3 1.6-.6 2.1 1.6.3 2.6-1.3 2.9.2 4.5 3.4 4 1.9-4.5 2.5-1.3-.1-8.2-2.2-4.6-1.9-2h-.3v.8l1.1.3 1 3.4-.2.8-1.9-2.5-1 1.6-.8-1.4z"/>
+          <path class="p" data-i="30" d="M1203 640.7l-.8-2.9-4.6 3.7-6.2 2.5-3.3-.1-2.1 1.9-3.9.1-1.4.8-6.7-1.8-2.1.3-1.6 6 .7 7.3h.3l1.9 2 2.2 4.6.1 8.2-2.5 1.3-1.9 4.5-3.4-4-.2-4.5 1.3-2.9-.3-2.6-2.1-1.6-1.6.6-3-3-17.1 5.2.3 4.5.3 2.4 4.6-.1 2.6 1.3 1.1 1.6 2.6.5 2.8 2-.3 8.1-1.3 4.4-.5 4.7.8 1.9-.8 3.7-.9.6-1.6 4.6-6.2 7.2 2.2 9 1.1 4.5-1.4 7.1.4 2.3.6 2.9.3 2.8h4.1l.7-3.3-1.4-.5-.3-2.6 2.6-2.4 6.8-3.4 4.6-2.2 2.5-2.3.9-2.6-1.2-1.1 1.1-3 .5-6.2-1 .3v-1.9l-.8-3.7-2.4-4.8.7-4.6 2.3-1.4 4.1-4.6 2.2-1.1 6.7-6.8 6.4-3.1 5.2-2.5 3.7-3.9 2.4-4.4 1.9-4.6-.9-3.1.2-9.9-.4-5.6.4-6.3z"/>
+          <path class="p" data-i="31" d="M1105.4 683.7l-10.3 2.5-13.4-.9-3.7-3-22.5.3-.9.4-3.2-2.9-3.6-.1-3.3 1-2.7 1.2.2 4.9 4.4 6.2 1.1 4 2.8 7.7 2.7 5.2 2.1 2.6.6 3.5v7.6l1.6 9.8 1.2 4.6 1 6.2 1.9 4.7 3.9 4.8 2.7-3.2 2.1 1.8.8 2.7 2.4.5 3.3 1.2 2.9-.5 5-3.2 1.1-23.6.6-18.5 5.4-.2.9-22.7 4.1-.2 8.6-2.2 2 2.6 3.7-2.5h1.6l3.2-1.5v-.5l-2.1-1.4-3.6-.4-4.6 1.5z"/>
+          <path class="m" data-i="32" d="M1051.3 425.6l-8.8-2.8-18.6 12.2-15.8 12.5-7.8 2.8.1 14.6-3 4.3-.5 3.9-4.9 1-7.6.6-2 2.2-3.6.3-.5 3.1.8 2.9 3.1 4.1.2 3.1 6.4 1.4-.1 4.4 1.9-1.9h2l4.3 3.7.3-5.7 1.6-2.6.8-3.6 1.4-1.4 6-.8 5.6 2.4 2.1 2.4 2.9.1 2.6-1.5 6.8 3.3 2.8-.2 3.3-2.7 3.3.2 1.6-.9 3 .4 4.3 1.8 4.3-3.5 1.3.2 3.9 7 1-.2.2-2 1.6-.4.5-2.9-3.6-.2v-4.1l-2.4-2.3 2.3-8.4 6.9-6 .2-8.3 1.8-12.9 1.1-2.7-2.3-2.2-.2-2.1-2-1.6-1.6-9.9-3.9 2.4-3.1-3.5z"/>
+          <path class="p" data-i="33" d="M1055.8 492.7l-1 .2-3.9-7-1.3-.2-4.3 3.5-4.3-1.8-3-.4-1.6.9-3.3-.2-3.3 2.7-2.8.2-6.8-3.3-2.6 1.5-2.9-.1-2.1-2.4-5.6-2.4-6 .8-1.4 1.4-.8 3.6-1.6 2.6-.3 5.7-.2 2.1 1.2 3.8-1.1 2.5.6 1.7-2.7 4-1.7 1.9-1 4 .1 4.1-.3 10.2h9.2l3.9 4.2 1.9 4.6 3 3.9 4.5.2 2.2-1.4 2.1.3 5.8-2.3 1.4-4.5 2.7-6.1 1.6-.1 3.3-3.7 2.1-.1 3.2 2.6 3.9-2.2.5-2.6 1.2-2.6.8-3.2 3-2.6 1.1-4.5 1.2-1.4.7-3.3 1.5-4 4.6-5 .3-2.1.6-1.1-2.3-2.6z"/>
+          <path class="p" data-i="34" d="M1147.6 579.4l-3.3 1.9-1.4-.6-1.6 1.8-.2 3.8-.8.4-.6 3.5 3.5.5 1.7-3.6 3 .4 1.6-.8.4-3.7-2.3-3.6z"/>
+          <path class="p" data-i="35" d="M1180.8 468.5l.4-4.2 1.6-2 4-1 2.6-3.6-3.1-2.4-2.2-1.6-2.5-7.6-1.1-6.5 1.1-1.2-2.1-6.2H1114.2l.5 12.7h-6.3v2.7l1.1 25.2-4.8-.4-2.4 4.7-1.4 3.9 1.2 1.5-1.8 1.9.7 2.7-1.4 2.6-.5 2.4 2-.4 1.2 2.5.1 3.7 2.1 1.8v1.6l.7 2.7 3.3 4v2.6l-.8 2.6.3 2 2 1.8.5.3 1.7-.7 1.9-1.2 1.3-5.7 1.5-2.9 4-.9 1 1.8 3 3.7 1.5.5 2-1.1 4.1.3.8 1.3h5.5l.2-1.3 2.9-1.2.5-1.9 2.1-1.3 4.8 3.7 2.8-.7 2.7-4.5 3-3.5-.6-3.9-1.4-1.8 3.4-.3.3-1.5 2.6.5-.5 4.7.8 4.6 2.9 2.5.7 2.2v3.1l.8.1v-.7l1.4-6.7 2.6-1.8.5-2.6 2.3-4.8 3.2-3.2 2.1-6.2.7-5.5-.7-2.5 1.9-9.4z"/>
+          <path class="p" data-i="36" d="M919.4 518.7l-1.5.3v-2.3l-.9-1.7.2-1.8-1.2-2.7-1.5-2.3H910l-1.3 1.2-1.5.2-1 1.4-.7 1.7-3 2.8.7 4.7.9 2.3 2.9 3.5 4.1 2.5 1.5.5 1.3-2 .3-1.9 2.6-3.4 2.6-3z"/>
+          <path class="m" data-i="37" d="M908.9 479.2l-3.6-4.4-3.2-4.7-3.7-1.7-2.6-1.8h-3.1l-2.8 1.4-2.7-.5-2 2-1.3 3.3-2.8 4.4-2.5 1.2 2.7 2.3 2.2 5 6.1-.2 1.3-1.5 1.8-.1 2.1 1.5 1.8.1 1.8-1.1 1.1 1.8-2.4 1.5-2.4-.1-2.4-1.4-2.1 1.5h-1l-1.4.9-5-.1.8 4.9 3-1.1 1.8.2 1.5-.7 10.3.3 2.7.1 4 1.5 1.3-.1.4-.7 3 .5.8-.4.3-2-.4-2.4-2.1-1.8-1.1-3.7-.2-3.9z"/>
+          <path class="p" data-i="38" d="M1223.4 505.7l-2.6-2.7-1.2-2.6-1.8-1.2-2 3.4-1.1 2.3 2.2 3.5 2.1 3.1 2.2 2.2 18.5 7.6 4.8-.1-15.4 19.1-7.4.3-4.9 4.5-3.6.1-1.5 2-4.8 7.2.2 23.2 3.3 5.3 1.3-1.5 1.3-3.4 6.1-7.7 5.3-4.8 8.3-6.4 5.6-5.1 6.4-8.7 4.7-7.1 4.6-9.3 3.2-8.2 2.5-7.1 1.3-6.8 1.1-2.3-.2-3.4.4-3.7-.2-1.7h-2.1l-2.6 2.2-2.9.6-2.5.9-1.8.2-3.2.2-1.9 1.1-2.8.5-4.8 1.9-6.1.8-5.2 1.6h-2.8z"/>
+          <path class="p" data-i="39" d="M1166 508.7l-.7-2.2-2.9-2.5-.8-4.6.5-4.7-2.6-.5-.3 1.5-3.4.3 1.4 1.8.6 3.9-3 3.5-2.7 4.5-2.8.7-4.8-3.7-2.1 1.3-.5 1.9-2.9 1.2-.2 1.3h-5.5l-.8-1.3-4.1-.3-2 1.1-1.5-.5-3-3.7-1-1.8-4 .9-1.5 2.9-1.3 5.7-1.9 1.2-1.7.7 3.8 2.5 3.1 2.6.1 2 3.8 3.4 2.4 2.7 1.5 3.8 4.2 2.5.9 2.1 3.5 5.2 2.5.8 1.5-1.1 2.6.4 3.1-1.3 1.4 2.7 5 4.2 2.3-1.7 3.5 1.4 4.5-1.5 4 .1 3.4-3 3.4-3.8 3.8-4.2-3.5-6.9-2.6-1.5-1-2.5-2.9-3.1-3.4-.5 1.8-3.6 3-.1.8-2-.2-5-.8-.1v-3.1z"/>
+          <path class="p" data-i="40" d="M1150.5 736.6l-2.7-1.2-1.6.5-.7 1.8-1.6 2.4-.1 2.2 3 3.5 3.3-.7 1.3-2.8-.3-2.8-.6-2.9z"/>
+          <path class="m" data-i="41" d="M1108.4 447.6l-22.4-12.2-22.3-12.2-5.4 3.5 1.6 9.9 2 1.6.2 2.1 2.3 2.2-1.1 2.7-1.8 12.9-.2 8.3-6.9 6-2.3 8.4 2.4 2.3v4.1l3.6.2-.5 2.9 2.2 4.1.5 4.2-.2 4.3 3.1 5.8-3.1-.1-1.6.4-2.5-.6-1.2 3 3.3 3.7 2.5 1.1.8 2.6 1.8 4.4-.9 1.7 4.7-.4 1-1.7.9.2 1.4 1.4 7.1-2.4 2.3-2.5 2.9-2.2-.6-2.3 1.6-.6 5.4.4 5.2-2.9 4-7 2.8-2.5 3.5-1.1v-1.6l-2.1-1.8-.1-3.7-1.2-2.5-2 .4.5-2.4 1.4-2.6-.7-2.7 1.8-1.9-1.2-1.5 1.4-3.9 2.4-4.7 4.8.4-1.1-25.2z"/>
+          <path class="m" data-i="42" d="M981.7 502.2l-4.9-.1-.4 1.9 2.4 3.3-.1 4.6.6 5.1 1.4 2.3-1.2 5.7.4 3.2 1.5 4 1.2 2.2 4.6-1.3-1.4-4.4.2-14.6-1.1-1.3-.2-3.1-2-2.3-1.7-1.9.7-3.3z"/>
+          <path class="p" data-i="43" d="M1038 361.4l-2-1-1.5-3-2.8-.1-1.1-3.5 3.4-3.2.5-5.6-1.9-1.6-.1-3 2.5-3.2-.4-1.3-4.4 2.4.1-3.3-3.7-.7-5.6 2.6-1 3.3 1 6.2-1.1 5.3-3.2 3.6.6 4.8 4.5 3.8v1.5l3.4 2.6 2.6 11.3 2.6-1.4.4-2.7-.7-2.6 3.7-2.5 1.5-2 2.6-1.8.1-4.9z"/>
+          <path class="p" data-i="44" d="M1149.6 578.6l-2 .8 2.3 3.6-.4 3.7-1.6.8.3 2.5 1.2 1.5v2l-1.4 1.4-2.2 3.3-2.1 2.3-.6.1-.3 2.7 1.1.9-.2 2.7 1 2.6-1.3 2.4 4.5 4.3.3 3.9 2.7 6.5.3.2 2.2 1.1 3.5 1.1 3.2 1.9 5.4 1.2 1.1 1.7.4-1.2 2.8 3.4.3 6.7 1.8 2.4v.1l2.1-.3 6.7 1.8 1.4-.8 3.9-.1 2.1-1.9 3.3.1 6.2-2.5 4.6-3.7-2-1.4-2.2-6.3-1.8-3.9.4-3.1-.3-1.9 1.7-3.9-.2-1.6-3.5-2.3-.3-3.6 2.8-7.9-8-6.3-.4-3.7-20.2-13-2.8 2.8-1.9 2.9 2.2 2.2-3.2 1.6-.7-.8-3.2.4-2.5 1.4-1.6-2.4 1.1-4.5.2-3.8-6.2-.1z"/>
+          <path class="p" data-i="45" d="M1167.6 545.1l-3.4 3-4-.1-4.5 1.5-3.5-1.4-2.3 1.7-.3 7.5 2.3.8-1.8 2.3-2.2 1.7-2.1 3.3-1.2 3-.3 5.1-1.3 2.4-.1 4.8 1.4.6 3.3-1.9 2-.8 6.2.1-.3-2.5 2.6-3.7 3.5-.9 2.4-1.5 2.9 1.2.3.5v-.3l1.6-2.6 2.7-4.2 2.1-4.7-2.6-7.3-.7-3.2-2.7-4.4z"/>
+          <path class="p" data-i="46" d="M1148.2 713.7l-2.9-.6-1.9.8-2.6-1.1-2.2-.1-8 4.7-5.2 4.7-2 4.3-1.7 2.4-3 .5-1.2 3-.6 2-3.6 1.5-4.4-.3-2.5-1.8-2.3-.8-2.7 1.5-1.5 3.1-2.7 1.9-2.8 2.8-4 .7-1.1-2.3.7-3.8-3-6.1-1.4-1-1.1 23.6-5 3.2-2.9.5-3.3-1.2-2.4-.5-.8-2.7-2.1-1.8-2.7 3.2 3.5 8.2v.1l2.5 5.3 3.2 6-.2 4.8-1.7 1.2 1.4 4.2-.2 3.8.6 1.7.3-.9 2.1 2.9 1.8.1 2.1 2.3 2.4-.2 3.5-2.4 4.6-1 5.6-2.5 2.2.3 3.3-.8 5.7 1.2 2.7-1.2 3.2 1 .8-1.8 2.7-.3 5.8-2.5 4.3-2.9 4.1-3.8 6.7-6.5 3.4-4.6 1.8-3.2 2.5-3.3 1.2-.9 3.9-3.2 1.6-2.9 1.1-5.2 1.7-4.7h-4.1l-1.3 2.8-3.3.7-3-3.5.1-2.2 1.6-2.4.7-1.8 1.6-.5 2.7 1.2-.4-2.3 1.4-7.1-1.1-4.5-2.2-9zm-20.1 52.8l-2 .6-3.7-4.9 3.2-4 3.1-2.5 2.6-1.3 2.3 2 1.7 1.9-1.9 3.1-1.1 2.1-3.1 1-1.1 2z"/>
+          <path class="p" data-i="47" d="M1149.2 626.7l-1.9-.5.4-1.3-1-.3-7.5 1.1-1.6.7-1.6 4.1 1.2 2.8-1.2 7.5-.8 6.4 1.4 1.1 3.9 2.5 1.5-1.2.3 6.9h-4.3l-2.1-3.5-2-2.8-4.3-.8-1.2-3.4-3.4 2-4.5-.9-1.8-2.8-3.5-.6-2.6.1-.3-2-1.9-.1.5 2-.7 3 .9 3-.9 2.4.5 2.2-11.6-.1-.8 20.3 3.6 5.2 3.5 4 4.6-1.5 3.6.4 2.1 1.4v.5l1 .5 6.2.7 1.7.7 1.9-.1 3.2-4.1 5.1-5.3 2-.5.7-2.2 3.3-2.5 4.2-.9-.3-4.5 17.1-5.2-2.9-1.7 1.9-5.9 1.8-2.2-.9-5.3 1.2-5.1 1-1.8-1.2-5.4-2.6-2.8-3.2-1.9-3.5-1.1-2.2-1.1-.3-.2.5 1.1-1 .4-1.2-1.4z"/>
+          <path class="p" data-i="48" d="M1148.2 713.7l6.2-7.2 1.6-4.6.9-.6.8-3.7-.8-1.9.5-4.7 1.3-4.4.3-8.1-2.8-2-2.6-.5-1.1-1.6-2.6-1.3-4.6.1-.3-2.4-4.2.9-3.3 2.5-.7 2.2-2 .5-5.1 5.3-3.2 4.1-1.9.1-1.7-.7-6.2-.7 1.9 5.1 1.1 1.1 1.6 3.7 6 7 2.3.7-.1 2.2 1.5 4.1 4.2.9 3.4 2.9 2.2.1 2.6 1.1 1.9-.8 2.9.6z"/>
+                </g>
+                <image class="pirogue" href="img2/gravure-pirogue.svg" x="921" y="566" width="46" height="17.3" aria-hidden="true" />
+                <path class="meridien" d="M985.5 531 C 986 440, 990 340, 990 262" />
+                <circle class="pt com" data-i="com" cx="1219" cy="648" r="3.2" />
+                <text class="s" x="1226" y="652">Comores</text>
+                <circle class="pt" cx="990" cy="258" r="3.4" /><text x="997" y="262">Paris</text>
+                <circle class="pt" cx="981" cy="533" r="3.1" /><text x="975" y="547" text-anchor="end">Lomé</text>
+                <circle class="pt" cx="990.5" cy="533" r="3.1" /><text x="997" y="547">Cotonou</text>
+              </svg>
+              <p class="legende" aria-live="polite">Dix-sept États membres</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec nuit" id="distinctions">
+        <div class="wrap art plein">
+          <p class="manchette"><b>Distinctions</b><span>Cinq reconnaissances, de 2010 à 2019</span></p>
+          <div class="dist3">
+            <div class="ds-tete">
+              <div data-stagger>
+                <h2>Une exigence reconnue</h2>
+                <p>Prix d’excellence, distinctions internationales, certification qualité : le travail du cabinet est évalué par d’autres que lui.</p>
+              </div>
+              <figure class="ds-photo" data-fade>
+                <div class="coin"><img src="img2/prix.webp" width="1600" height="746" alt="Un associé du cabinet reçoit le trophée World Quality Commitment, entouré de quatre représentants de l’organisation." loading="lazy" decoding="async" /></div>
+                <figcaption>Paris, remise du trophée World Quality Commitment.</figcaption>
+              </figure>
+            </div>
+            <ol class="ds-frise" data-stagger>
+              <li><span class="ds-an">2010</span><div class="ds-plaque coin"><img src="img2/distinctions/uemoa.jpg" width="300" height="185" alt="Emblème de l’UEMOA" loading="lazy" decoding="async" /></div><b>Prix d’excellence qualité du Togo et de l’UEMOA</b><i>UEMOA</i></li>
+              <li><span class="ds-an">2016</span><div class="ds-plaque coin"><img src="img2/distinctions/bid-world-quality-commitment.jpg" width="300" height="185" alt="World Quality Commitment, Business Initiative Directions" loading="lazy" decoding="async" /></div><b>World Quality Commitment, catégorie Or</b><i>Business Initiative Directions, Paris</i></li>
+              <li><span class="ds-an">2017</span><div class="ds-plaque coin"><img src="img2/distinctions/lawyer-monthly-2017.jpg" width="300" height="185" alt="Lawyer Monthly, Legal Awards 2017" loading="lazy" decoding="async" /></div><b>Meilleure société d’avocats d’affaires au Togo</b><i>Lawyer Monthly Legal Awards</i></li>
+              <li><span class="ds-an">2019</span><div class="ds-plaque coin"><img src="img2/distinctions/global-law-experts-2019.jpg" width="300" height="186" alt="Global Law Experts 2019, Annual Awards Winner" loading="lazy" decoding="async" /></div><b>Première société d’avocats en propriété intellectuelle au Togo</b><i>Global Law Experts</i></li>
+              <li><span class="ds-an">2019</span><div class="ds-plaque coin"><img src="img2/distinctions/afaq-iso-9001.jpg" width="300" height="185" alt="AFAQ ISO 9001 Qualité, AFNOR Certification" loading="lazy" decoding="async" /></div><b>Certification ISO 9001:2015</b><i>AFAQ, AFNOR Certification</i></li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec" id="equipe">
+        <div class="wrap art plein">
+          <figure class="gravure g-transmission">
+            <div class="g-rev"><span class="g-encre" role="img" aria-label="Gravure : un avocat aux cheveux blancs ajuste le rabat de la robe d’une jeune consœur, un code sous le bras."></span></div>
+            <figcaption>Puis transmettre.</figcaption>
+          </figure>
+          <p class="manchette"><b>Équipe</b><span>Quatorze avocats et juristes</span></p>
+          <div class="assoc2">
+            <div class="ombre" data-fade>
+              <div class="plaque2 coin" data-lum>
+                <h2>Les associés</h2>
+                <div class="pl-liste" role="tablist" aria-label="Les associés du cabinet" aria-orientation="vertical">
+                  <button type="button" role="tab" id="pl-coffi-alexis-aquereburu" data-s="coffi-alexis-aquereburu" aria-controls="fiche" aria-selected="false" tabindex="-1"><span class="pl-n grave">Coffi Alexis Aquereburu</span><span class="pl-r">Associé fondateur</span></button>
+                  <button type="button" role="tab" id="pl-claude-folly-adama" data-s="claude-folly-adama" aria-controls="fiche" aria-selected="false" tabindex="-1"><span class="pl-n grave">Claude Folly Adama</span><span class="pl-r">Associé, banque, finance et fiscalité</span></button>
+                  <button type="button" role="tab" id="pl-kossi-apow-bakoh" data-s="kossi-apow-bakoh" aria-controls="fiche" aria-selected="false" tabindex="-1"><span class="pl-n grave">Kossi Apow Bakoh</span><span class="pl-r">Associé, droit social et pénal</span></button>
+                </div>
+                <p class="pl-b">Société civile professionnelle d’avocats, inscrite au Barreau du Togo.</p>
+                <a class="lien" href="#">Toute l’équipe <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+              </div>
+            </div>
+            <div class="fiche" id="fiche" role="tabpanel" tabindex="-1"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="fondation" id="fondation">
+        <div class="wrap">
+          <div class="fd-haut">
+            <div class="fd-texte" data-stagger>
+              <p class="fd-sur"><span>La Fondation Aquereburu &amp; Partners</span></p>
+              <h2>Demain se construit aussi <em>hors du prétoire.</em></h2>
+              <p class="fd-ch">La Fondation agit pour le développement social, éducatif et environnemental du Togo, par des actions concrètes et durables.</p>
+              <div class="fd-acts">
+                <a class="btn blanc" href="https://fondationaquereburu.org/" rel="noopener">Découvrir la Fondation <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+              </div>
+            </div>
+            <figure class="fd-gravure">
+              <div class="fd-voile"><div class="fd-rev"><div class="fd-encre" role="img" aria-label="Gravure : un grand arbre à palabres, des cocotiers au loin."></div></div></div>
+              <div class="fd-photo" data-fade>
+                <div class="fd-cadre"><img src="img2/fondation/formation-informatique.jpg" width="1024" height="486" alt="Des jeunes et leurs formateurs, attestation en main, derrière la banderole de la Fondation Aquereburu and Partners." loading="lazy" decoding="async" /></div>
+                <p>Formation des jeunes à l’informatique.</p>
+              </div>
+            </figure>
+          </div>
+          <ul class="fd-axes" data-stagger>
+            <li><b>Éducation</b><span>Formation des jeunes à l’informatique, bibliothèque numérique d’Aného, fournitures scolaires à Sada (Atakpamé).</span></li>
+            <li><b>Santé</b><span>Matériel médical remis au dispensaire de Kabou, dans la préfecture de Bassar.</span></li>
+            <li><b>Environnement et cadre de vie</b><span>Reboisement des îles d’Aného, toilettes publiques à Aného, bâtiments à Adjido.</span></li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer class="pied" id="contact">
+      <div class="wrap acte2">
+        <form class="feuille coin" id="rdv" novalidate>
+          <h2>Prendre rendez-vous</h2>
+          <p class="phrase">
+            Je soussigné(e) <span class="nb"><input name="nom" type="text" autocomplete="name" aria-label="Prénom et nom" placeholder="prénom et nom" required />,</span> agissant pour
+            <span class="nb"><input name="org" type="text" autocomplete="organization" aria-label="Société ou organisation (facultatif)" placeholder="ma société, ou moi-même" />,</span> souhaite m’entretenir avec un avocat du cabinet. Objet :
+            <span class="nb"><select name="objet" aria-label="Objet de la demande">
+              <option value="">un domaine à préciser</option>
+              <option value="droit-aerien">Aérien</option>
+              <option value="arbitrage">Arbitrage</option>
+              <option value="assurances">Assurances</option>
+              <option value="banque-finance">Banque et finance</option>
+              <option value="contentieux-des-affaires">Contentieux des affaires</option>
+              <option value="droit-de-la-famille">Droit de la famille et du patrimoine</option>
+              <option value="droit-de-l-environnement">Droit de l’environnement</option>
+              <option value="corporate">Droit des sociétés et corporate</option>
+              <option value="droit-du-travail">Droit du travail et relations sociales</option>
+              <option value="droit-penal">Droit pénal et pénal des affaires</option>
+              <option value="droit-public">Droit public et marchés publics</option>
+              <option value="energie-ressources-naturelles">Énergie et ressources naturelles</option>
+              <option value="procedures-collectives">Entreprises en difficulté</option>
+              <option value="financement-de-projets">Financement de projets</option>
+              <option value="fintech">Fintech et numérique</option>
+              <option value="droit-social-fiscalite">Fiscalité des entreprises</option>
+              <option value="fonds-d-investissement">Fonds d’investissement</option>
+              <option value="hotellerie-tourisme">Hôtellerie et tourisme</option>
+              <option value="immobilier-construction">Immobilier et construction</option>
+              <option value="partenariats-public-prive">Partenariats public-privé</option>
+              <option value="privatisations">Privatisations et entreprises publiques</option>
+              <option value="propriete-intellectuelle">Propriété intellectuelle</option>
+              <option value="restructurations">Restructurations</option>
+              <option value="droit-du-sport">Sport</option>
+              <option value="autre">une autre question</option>
+            </select>.</span> Je peux être joint(e) à <input name="mel" type="email" autocomplete="email" aria-label="Adresse e-mail" placeholder="mon adresse e-mail" required /> ou au
+            <span class="nb"><input name="tel" type="tel" autocomplete="tel" aria-label="Téléphone (facultatif)" placeholder="téléphone, facultatif" />.</span>
+          </p>
+          <div class="marge">
+          <label class="precis"><span>Précisions utiles (facultatif). N’indiquez rien de confidentiel à ce stade.</span><textarea name="precisions" rows="2"></textarea></label>
+          <label class="accord"><input type="checkbox" name="accord" required /><span>J’accepte que le cabinet utilise ces informations pour répondre à ma demande. Elle est lue par un avocat, sous le sceau du secret professionnel.</span></label>
+          </div>
+          <div class="signe">
+            <p class="fait" data-fait>Fait ce jour.</p>
+            <button class="btn" type="submit">Signer et envoyer <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></button>
+            <a class="lien" href="tel:+22822210505">ou par téléphone&nbsp;: +228&nbsp;22&nbsp;21&nbsp;05&nbsp;05</a>
+            <p class="retour" role="status"></p>
+          </div>
+          <svg class="sceau" viewBox="0 0 300 340" aria-hidden="true">
+            <defs><path id="arc-sceau" d="M 35 148 Q 150 55 265 148" /></defs>
+            <g filter="url(#relief-papier)"><use href="#pays" transform="translate(-342.2, -91.9) scale(0.46)" /></g>
+            <g filter="url(#relief-papier)"><g fill="#7B8DB5" stroke="none"> <path d=" M 112,260 L 109,260 L 142,120 L 146,118 L 148,120 L 116,260 Z "/> <path d=" M 148,120 L 150,118 L 170,260 L 167,260 L 148,124 Z "/> <path d=" M 122,213 L 122,210 L 162,210 L 162,213 Z "/> </g> <g fill="#1B2A4A" stroke="none"> <path d=" M 150,96 L 157,96 L 157,266 L 162,266 L 162,270 L 145,270 L 145,266 L 150,266 Z "/> <path d=" M 150,100 L 157,100 C 162,98 170,96 180,98 C 195,102 205,118 203,138 C 201,158 188,170 174,172 C 165,173 157,168 157,168 L 157,160 C 157,160 164,165 172,164 C 184,162 194,152 196,138 C 198,122 190,110 180,106 C 172,103 164,106 157,112 L 150,112 Z "/> </g> <text font-family="'Georgia','Times New Roman',serif" font-size="12" font-weight="700" fill="#1B2A4A" letter-spacing="2.5"> <textPath href="#arc-sceau" startOffset="50%" text-anchor="middle">AQUEREBURU &amp; PARTNERS</textPath> </text> <text x="150" y="298" text-anchor="middle" font-family="'Georgia','Times New Roman',serif" font-size="14" font-style="italic" fill="#1B2A4A" letter-spacing="1">Société d'Avocats</text></g>
+          </svg>
+          <p class="tampon" aria-hidden="true"><b>Reçu</b><br /><span data-tampon></span></p>
+        </form>
+      </div>
+      <div class="wrap bureaux2">
+        <div><h3>Lomé</h3><p class="r">Siège</p><address>777, avenue Kléber Dadjo<br />08 BP 8989<br />Lomé, Togo</address></div>
+        <div><h3>Paris</h3><p class="r">Bureau</p><address>23, rue de la Victoire<br />75009 Paris<br />France</address></div>
+        <div><h3>Cotonou</h3><p class="r">Bureau</p><p>Bénin<br />Sur rendez-vous</p></div>
+      </div>
+      <div class="bas">
+        <div class="wrap">
+          <p>© Aquereburu &amp; Partners. Société civile professionnelle d’avocats inscrite au Barreau du Togo. Exercice conforme au règlement UEMOA relatif à la profession d’avocat.</p>
+          <ul><li><a href="#">Mentions légales</a></li><li><a href="#">Confidentialité</a></li><li><a href="#">Déontologie</a></li></ul>
+        </div>
+      </div>
+    </footer>
+
+    <a class="back" href="index.html">← Toutes les maquettes</a>
+
+    <script src="vendor/gsap.min.js"></script>
+    <script src="vendor/ScrollTrigger.min.js"></script>
+    <script src="vendor/lenis.min.js"></script>
+    <script src="shared.js"></script>
+    <script type="application/json" id="donnees">{"domaines":[{"s":"droit-aerien","n":"Aérien","p":"Stratégique et internationalisé, le transport aérien relève de normes complexes. Nous accompagnons compagnies aériennes, aéroports, assureurs, régulateurs et industriels dans leurs opérations, leurs litiges et leurs projets.","sv":["Contrats de transport aérien et contrats commerciaux","Réglementation aérienne et conformité","Responsabilité civile et pénale des transporteurs","Contentieux aérien national et international","Assurances et sinistres aériens"],"rel":["assurances","droit-public","contentieux-des-affaires"],"ref":[],"l":"A"},{"s":"arbitrage","n":"Arbitrage","p":"L’arbitrage offre aux entreprises et aux institutions une voie rapide, confidentielle et efficace pour régler leurs différends nationaux et internationaux. Nous intervenons à tous les stades, de la rédaction de la clause à l’exécution de la sentence.","sv":["Arbitrage institutionnel (CATO, CCJA, CCI, CIRDI) et ad hoc","Rédaction et négociation de clauses compromissoires","Représentation dans les procédures arbitrales","Recours en annulation et exécution des sentences","Médiation, conciliation et autres modes alternatifs"],"rel":["contentieux-des-affaires","partenariats-public-prive","energie-ressources-naturelles"],"ref":["claude-folly-adama"],"l":"A"},{"s":"assurances","n":"Assurances","p":"Au carrefour de la finance et du droit, l’assurance obéit à une réglementation technique et mouvante. Nous assistons compagnies d’assurance, réassureurs, entreprises et assurés dans leurs questions contractuelles, réglementaires et contentieuses.","sv":["Rédaction et analyse des contrats d’assurance et de réassurance","Régulation et conformité (CIMA, autorités de contrôle)","Contentieux liés à l’exécution ou au refus de garantie","Restructurations dans le secteur assurantiel","Gestion des risques et sinistres complexes"],"rel":["banque-finance","contentieux-des-affaires","restructurations"],"ref":[],"l":"A"},{"s":"banque-finance","n":"Banque et finance","p":"Le secteur bancaire exige une expertise qui allie technicité juridique et compréhension des marchés. Nous accompagnons banques, institutions financières, fonds et entreprises dans leurs opérations de financement et leurs obligations réglementaires.","sv":["Structuration et sécurisation des financements (prêts syndiqués, crédit-bail, financements structurés)","Opérations de marché et produits dérivés","Rédaction de sûretés et garanties","Réglementation bancaire et conformité (lutte anti-blanchiment, gouvernance)","Restructuration et financement d’entreprises en difficulté"],"rel":["financement-de-projets","fintech","fonds-d-investissement"],"ref":["claude-folly-adama","moamar-tidjani"],"l":"B"},{"s":"contentieux-des-affaires","n":"Contentieux des affaires","p":"Les litiges commerciaux et financiers engagent souvent l’avenir d’une entreprise. Nous traitons les contentieux d’affaires les plus complexes en privilégiant l’anticipation, devant les juridictions nationales et internationales.","sv":["Conflits entre associés ou actionnaires","Litiges commerciaux et contractuels","Responsabilité civile et pénale des dirigeants","Contentieux financiers et bancaires","Procédures collectives liées aux litiges d’affaires"],"rel":["arbitrage","droit-penal","procedures-collectives"],"ref":["kossi-apow-bakoh","pierrette-guillaume-gayibor"],"l":"C"},{"s":"droit-de-la-famille","n":"Droit de la famille et du patrimoine","p":"Le droit de la famille touche aux moments les plus personnels de la vie. Nous accompagnons particuliers, couples et familles avec la même rigueur technique et l’attention humaine qu’exigent ces situations, en recherchant d’abord l’accord.","sv":["Mariage, divorce et séparation de corps","Régimes matrimoniaux et successions","Autorité parentale, adoption et filiation","Protection des personnes vulnérables","Litiges familiaux et patrimoniaux"],"rel":["droit-penal","immobilier-construction"],"ref":[],"l":"D"},{"s":"droit-de-l-environnement","n":"Droit de l’environnement","p":"Le droit de l’environnement conditionne aujourd’hui la faisabilité des projets. Nous aidons entreprises, investisseurs et autorités publiques à concilier impératifs économiques et exigences environnementales.","sv":["Études d’impact environnemental et autorisations","Réglementation environnementale et conformité","Contentieux liés à la pollution, aux déchets et aux nuisances","Projets énergétiques et ressources naturelles","Politiques RSE des entreprises"],"rel":["energie-ressources-naturelles","droit-public","partenariats-public-prive"],"ref":["coffi-alexis-aquereburu"],"l":"D"},{"s":"corporate","n":"Droit des sociétés et corporate","p":"Le droit des sociétés structure toute activité économique. Nous accompagnons entreprises locales, multinationales, investisseurs et fonds à chaque étape de la vie sociale, dans le cadre du droit OHADA.","sv":["Constitution et structuration de sociétés (filiales, holdings, joint-ventures)","Gouvernance, pactes d’actionnaires, conventions de management","Fusions, scissions, restructurations et haut de bilan","Conformité réglementaire et responsabilité des dirigeants","Private equity et opérations transfrontalières"],"rel":["fonds-d-investissement","restructurations","droit-social-fiscalite"],"ref":["coffi-alexis-aquereburu","moamar-tidjani"],"l":"D"},{"s":"droit-du-travail","n":"Droit du travail et relations sociales","p":"Les relations de travail sont au cœur de la vie des entreprises. Nous conseillons et défendons entreprises, institutions et salariés sur l’ensemble des questions individuelles et collectives.","sv":["Rédaction et négociation des contrats de travail","Relations individuelles et collectives","Restructurations et plans de sauvegarde de l’emploi","Santé, sécurité et conditions de travail","Contentieux du travail et de la sécurité sociale"],"rel":["droit-social-fiscalite","restructurations","contentieux-des-affaires"],"ref":["kossi-apow-bakoh","yvette-gamisso-yevenou"],"l":"D"},{"s":"droit-penal","n":"Droit pénal et pénal des affaires","p":"Dirigeants, entreprises et particuliers peuvent être confrontés à une enquête ou à des poursuites. Nous les défendons et les conseillons, de la première audition jusqu’au procès.","sv":["Défense pénale des particuliers et des dirigeants","Abus de biens sociaux, fraude, corruption","Enquêtes et procédures devant les juridictions pénales","Programmes de conformité et prévention du risque pénal","Responsabilité pénale des personnes morales"],"rel":["contentieux-des-affaires","corporate","banque-finance"],"ref":["kossi-apow-bakoh"],"l":"D"},{"s":"droit-public","n":"Droit public et marchés publics","p":"Les contrats publics sont un levier majeur de l’action économique. Nous conseillons administrations, entreprises et investisseurs dans leurs relations contractuelles et réglementaires avec les personnes publiques.","sv":["Passation et exécution des marchés publics","Délégations de service public et concessions","Contrats de partenariat public-privé","Contentieux administratif et de la commande publique","Conseil aux autorités publiques et aux investisseurs"],"rel":["partenariats-public-prive","privatisations","financement-de-projets"],"ref":["pierrette-guillaume-gayibor"],"l":"D"},{"s":"energie-ressources-naturelles","n":"Énergie et ressources naturelles","p":"L’énergie et les mines se situent au croisement du droit public, du droit des affaires et du financement de projets. Nous accompagnons gouvernements, investisseurs, producteurs et institutions financières dans leurs projets énergétiques et miniers.","sv":["Projets pétroliers, gaziers et renouvelables","Droit minier et exploitation des ressources","Financement et structuration de projets énergétiques","Contrats de concession et de partage de production","Réglementation environnementale et conformité"],"rel":["financement-de-projets","droit-de-l-environnement","partenariats-public-prive"],"ref":[],"l":"E"},{"s":"procedures-collectives","n":"Entreprises en difficulté","p":"Une entreprise en difficulté a besoin d’un conseil rapide et stratégique. Nous accompagnons dirigeants, créanciers et investisseurs à chaque étape des procédures collectives OHADA et des restructurations.","sv":["Détection et prévention des difficultés","Sauvegarde, redressement et liquidation judiciaire","Négociation avec les créanciers et autorités de contrôle","Acquisition d’actifs en difficulté","Restructurations financières et sociales"],"rel":["restructurations","banque-finance","contentieux-des-affaires"],"ref":[],"l":"E"},{"s":"financement-de-projets","n":"Financement de projets","p":"Le financement de projets réunit droit des affaires, finance et partenariats public-privé. Nous accompagnons investisseurs, institutions financières et autorités publiques dans la conception et la mise en œuvre de projets complexes.","sv":["Structuration juridique et financière des projets","Documentation contractuelle","Financements syndiqués et garanties","Partenariats public-privé et concessions","Infrastructures, énergie, transport et télécommunications"],"rel":["partenariats-public-prive","banque-finance","energie-ressources-naturelles"],"ref":[],"l":"F"},{"s":"fintech","n":"Fintech et numérique","p":"Les technologies financières transforment les services financiers en Afrique de l’Ouest. Nous accompagnons start-up, investisseurs, banques et acteurs technologiques en conciliant innovation et conformité.","sv":["Paiements électroniques et mobile money","Régulation bancaire et financière des fintech","Contrats technologiques et partenariats","Cybersécurité et protection des données","Levées de fonds et capital-risque"],"rel":["banque-finance","propriete-intellectuelle","fonds-d-investissement"],"ref":["moamar-tidjani"],"l":"F"},{"s":"droit-social-fiscalite","n":"Fiscalité des entreprises","p":"La gestion fiscale et sociale conditionne la performance et la conformité des entreprises. Nous sécurisons les politiques fiscales et sociales des entreprises, des groupes et des investisseurs.","sv":["Fiscalité des entreprises et des groupes","Traitement social et fiscal des rémunérations","Structuration des politiques sociales et fiscales","Contentieux fiscal et social","Conformité déclarative"],"rel":["droit-du-travail","corporate","fonds-d-investissement"],"ref":["claude-folly-adama","yvette-gamisso-yevenou"],"l":"F"},{"s":"fonds-d-investissement","n":"Fonds d’investissement","p":"Les fonds d’investissement financent la croissance des entreprises. Nous accompagnons fonds, investisseurs institutionnels et entreprises dans la structuration, la levée et la gestion des fonds, et dans leurs opérations d’investissement.","sv":["Structuration juridique et fiscale des fonds","Levées de fonds et capital-risque","Private equity et capital-développement","Pactes et conventions d’investissement","Sorties stratégiques"],"rel":["corporate","banque-finance","fintech"],"ref":[],"l":"F"},{"s":"hotellerie-tourisme","n":"Hôtellerie et tourisme","p":"L’hôtellerie et le tourisme contribuent à l’attractivité des territoires. Nous accompagnons investisseurs, exploitants, groupes hôteliers et institutions publiques dans la structuration et le financement de leurs projets.","sv":["Développement et financement de projets hôteliers","Baux commerciaux et gestion immobilière","Partenariats public-privé et concessions","Réglementation touristique et conformité","Contentieux des contrats hôteliers"],"rel":["immobilier-construction","partenariats-public-prive","financement-de-projets"],"ref":[],"l":"H"},{"s":"immobilier-construction","n":"Immobilier et construction","p":"L’immobilier et la construction portent le développement des villes et des économies. Nous sécurisons les projets des promoteurs, investisseurs, institutions financières et autorités publiques.","sv":["Promotion immobilière et baux commerciaux","Contrats de construction et maîtrise d’ouvrage","Financement immobilier et sûretés réelles","Contentieux de la construction et de la copropriété","Urbanisme et réglementation foncière"],"rel":["financement-de-projets","hotellerie-tourisme","droit-public"],"ref":[],"l":"I"},{"s":"partenariats-public-prive","n":"Partenariats public-privé","p":"Les partenariats public-privé permettent de réaliser les grandes infrastructures et les services publics. Nous accompagnons États, institutions publiques, investisseurs et opérateurs dans la négociation, la structuration et l’exécution de leurs projets.","sv":["Structuration et négociation des contrats de PPP","Concessions et délégations de service public","Financement et garanties des projets","Suivi et exécution contractuelle","Résolution des litiges liés aux PPP"],"rel":["financement-de-projets","droit-public","privatisations"],"ref":[],"l":"P"},{"s":"privatisations","n":"Privatisations et entreprises publiques","p":"La transformation des entreprises publiques est un chantier majeur de réforme économique. Nous conseillons États, autorités publiques et investisseurs dans la structuration et la conduite de ces opérations.","sv":["Structuration juridique des privatisations","Audit des entreprises publiques","Contrats de cession","Relations avec les autorités publiques et les investisseurs","Contentieux liés aux privatisations"],"rel":["partenariats-public-prive","droit-public","corporate"],"ref":[],"l":"P"},{"s":"propriete-intellectuelle","n":"Propriété intellectuelle","p":"Marques, brevets et droits d’auteur sont des actifs à part entière. Mandataire agréé auprès de l’OAPI, le cabinet protège, valorise et défend les actifs immatériels des créateurs, start-up, multinationales et investisseurs.","sv":["Marques, brevets, dessins et modèles (OAPI)","Droits d’auteur et droits voisins","Contrats de licence, cession et franchise","Contrefaçon et concurrence déloyale","Stratégies de protection et de valorisation"],"rel":["fintech","contentieux-des-affaires","droit-du-sport"],"ref":["coffi-alexis-aquereburu"],"l":"P"},{"s":"restructurations","n":"Restructurations","p":"Une restructuration bien conduite accompagne le développement, prévient les difficultés ou facilite la transmission. Nous sécurisons ces opérations pour les entreprises, les investisseurs et les créanciers.","sv":["Fusions, scissions et apports partiels d’actifs","Réorganisations internes","Restructurations financières et sociales","Acquisitions et cessions d’actifs","Contentieux liés aux restructurations"],"rel":["procedures-collectives","corporate","droit-du-travail"],"ref":[],"l":"R"},{"s":"droit-du-sport","n":"Sport","p":"Le sport est devenu un secteur économique et médiatique à part entière. Nous accompagnons sportifs, clubs, fédérations, sponsors et investisseurs, du contrat à la défense devant les instances disciplinaires.","sv":["Contrats de travail et de transfert des sportifs","Sponsoring, droits à l’image et partenariats commerciaux","Contentieux disciplinaires devant les fédérations","Structuration juridique des clubs et associations","Conseil aux investisseurs et institutions du sport"],"rel":["propriete-intellectuelle","droit-du-travail","contentieux-des-affaires"],"ref":[],"l":"S"}],"personnes":{"coffi-alexis-aquereburu":{"n":"Coffi Alexis Aquereburu","t":"Associé fondateur","role":"associe","ph":"c-aquereburu.webp","bar":"Barreau du Togo","an":null,"bio":"Me Aquereburu fonde le cabinet en 1987. Pionnier de la lutte contre la contrefaçon au Togo, il est spécialiste de la propriété intellectuelle et mandataire agréé auprès de l’OAPI. Très actif en droit OHADA et en législation UEMOA, il est membre de la commission nationale OHADA et intervient régulièrement lors de séminaires et conférences en Afrique de l’Ouest et en Europe.","etu":["DEA en droit et fiscalité de l’environnement"],"pr":[{"s":"propriete-intellectuelle","n":"Propriété intellectuelle"},{"s":"corporate","n":"Droit des sociétés et corporate"},{"s":"droit-de-l-environnement","n":"Droit de l’environnement"}],"lg":["fr"],"act":["Membre de la commission nationale OHADA"]},"claude-folly-adama":{"n":"Claude Folly Adama","t":"Associé, banque, finance et fiscalité","role":"associe","ph":"c-adama.webp","bar":"Barreau du Togo","an":null,"bio":"Bâtonnier de l’Ordre des avocats du Togo, Me Adama exerce depuis plus de vingt ans. Inspecteur des impôts de formation (ENA), il est arbitre auprès de la CCJA et dirige le pôle audits et conseils du cabinet.","etu":["Maîtrise ès sciences juridiques","Inspecteur des impôts, ENA","DEA en droit et fiscalité de l’environnement"],"pr":[{"s":"banque-finance","n":"Banque et finance"},{"s":"droit-social-fiscalite","n":"Fiscalité des entreprises"},{"s":"arbitrage","n":"Arbitrage"}],"lg":["fr"],"act":["Arbitre auprès de la CCJA"]},"kossi-apow-bakoh":{"n":"Kossi Apow Bakoh","t":"Associé, droit social et pénal","role":"associe","ph":"c-bakoh.webp","bar":"Barreau du Togo","an":2006,"bio":"Inscrit au barreau depuis 2006, Me Bakoh dirige le département droit social et pénal. Il intervient en droit civil, commercial et maritime, en conseil comme en contentieux.","etu":["Maîtrise de droit privé, carrières judiciaires"],"pr":[{"s":"droit-du-travail","n":"Droit du travail et relations sociales"},{"s":"droit-penal","n":"Droit pénal et pénal des affaires"},{"s":"contentieux-des-affaires","n":"Contentieux des affaires"}],"lg":["fr"],"act":[]},"pierrette-guillaume-gayibor":{"n":"Pierrette Guillaume Gayibor","t":"Avocate, requêtes devant la Cour suprême","role":"collaborateur","ph":"c-gayibor.webp","bar":"Barreau du Togo","an":null,"bio":"Ancienne présidente de la chambre judiciaire de la Cour suprême du Togo, Me Guillaume Gayibor a exercé plus de trente-six ans dans la magistrature. Diplômée de l’École nationale de la magistrature (Paris), elle est formatrice à l’ERSUMA et traite les requêtes devant la Cour suprême et les procédures administratives.","etu":["École nationale de la magistrature, Paris","DES de droit des affaires, Paris 1","Formation IDLI, Rome"],"pr":[{"s":"droit-public","n":"Droit public et marchés publics"},{"s":"contentieux-des-affaires","n":"Contentieux des affaires"}],"lg":["fr"],"act":["Formatrice à l’ERSUMA"]},"moamar-tidjani":{"n":"Moamar Tidjani","t":"Avocat, droit commercial","role":"collaborateur","ph":null,"bar":"Barreau du Togo","an":null,"bio":"Ancien membre des barreaux du Québec et de Paris, Me Tidjani a exercé aux États-Unis, au Canada, au Luxembourg, en France et au Portugal. Il apporte au cabinet une pratique internationale du droit commercial, de la conformité et de la gestion des risques.","etu":["Droit civil","Administration des affaires","Gestion des risques et conformité"],"pr":[{"s":"corporate","n":"Droit des sociétés et corporate"},{"s":"banque-finance","n":"Banque et finance"},{"s":"fintech","n":"Fintech et numérique"}],"lg":["fr","en"],"act":[]},"yvette-gamisso-yevenou":{"n":"Yvette Gamisso-Yevenou","t":"Avocate, fiscalité et droit social","role":"collaborateur","ph":"c-gamisso.webp","bar":"Barreau du Togo","an":null,"bio":"Expert fiscal agréé près la cour d’appel de Lomé, Me Gamisso-Yevenou dirige le département formations et la section fiscalité et social du cabinet.","etu":["DESS de droit des affaires et fiscalité"],"pr":[{"s":"droit-social-fiscalite","n":"Fiscalité des entreprises"},{"s":"droit-du-travail","n":"Droit du travail et relations sociales"}],"lg":["fr"],"act":["Expert fiscal agréé près la cour d’appel de Lomé"]},"essi-sossoe":{"n":"Essi D. Mansan Sossoe","t":"Juriste, commande publique, santé et sport","role":"juriste","ph":null,"bar":null,"an":null,"bio":"Spécialiste de la commande publique, Mlle Sossoe est titulaire d’un master en marchés publics et financement de projets et certifiée en propriété intellectuelle par l’OMPI. Elle assure la veille législative et juridique du cabinet depuis 2012.","etu":["Maîtrise de droit public","Master marchés publics et financement de projets","Certification en propriété intellectuelle, OMPI"],"pr":[{"s":"droit-public","n":"Droit public et marchés publics"},{"s":"partenariats-public-prive","n":"Partenariats public-privé"},{"s":"droit-du-sport","n":"Sport"}],"lg":["fr"],"act":[]},"israel-dzoka":{"n":"Israël Eli K. Dzoka","t":"Avocat collaborateur","role":"collaborateur","ph":null,"bar":"Barreau du Togo","an":null,"bio":"Me Dzoka a rejoint le cabinet en 2023.","etu":[],"pr":[],"lg":["fr"],"act":[]},"sephora-ayim":{"n":"Séphora P. Magnim Ayim","t":"Avocate collaboratrice","role":"collaborateur","ph":null,"bar":"Barreau du Togo","an":null,"bio":"Me Ayim est avocate collaboratrice au sein du cabinet.","etu":[],"pr":[],"lg":["fr"],"act":[]}}}</script>
+    <script>
+      const FIN = matchMedia('(hover: hover) and (pointer: fine)').matches;
+      const D = JSON.parse(document.getElementById('donnees').textContent);
+      const parSlug = Object.fromEntries(D.domaines.map((d) => [d.s, d]));
+      const plier = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[’']/g, ' ');
+      const ech = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+      const FLECHE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>';
+      const aller = (cible) => {
+        const el = typeof cible === 'string' ? document.querySelector(cible) : cible;
+        if (!el) return;
+        if (lenis) lenis.scrollTo(el, { offset: -100, duration: 1.1 });
+        else el.scrollIntoView({ behavior: REDUCE ? 'auto' : 'smooth', block: 'start' });
+      };
+      const initiales = (n) => {
+        const m = n.split(/\s+/).filter((w) => /^[A-ZÀ-Ý]/.test(w) && !w.endsWith('.'));
+        return (m[0]?.[0] ?? '') + (m.length > 1 ? m[m.length - 1][0] : '');
+      };
+      D.domaines.forEach((d) => (d.cle = plier([d.n, d.p, ...d.sv].join(' '))));
+
+      // ——— Une seule lumière pour tous les reliefs : sceau, médailles et noms gravés suivent le curseur
+      const Lum = { x: -0.707, y: -0.707, tx: -0.707, ty: -0.707 };
+      {
+        const decalages = [...document.querySelectorAll('feOffset[data-l]')].map((o) => ({ o, s: +o.dataset.l * +o.dataset.m }));
+        const porteurs = [...document.querySelectorAll('[data-lum]')];
+        const poser = () => {
+          decalages.forEach(({ o, s }) => { o.setAttribute('dx', (Lum.x * s).toFixed(2)); o.setAttribute('dy', (Lum.y * s).toFixed(2)); });
+          porteurs.forEach((p) => { p.style.setProperty('--lx2', Lum.x.toFixed(3)); p.style.setProperty('--ly2', Lum.y.toFixed(3)); });
+        };
+        if (FIN && !REDUCE) {
+          addEventListener('mousemove', (e) => {
+            const x = (e.clientX / innerWidth - 0.5) * 2;
+            const y = (e.clientY / innerHeight - 0.5) * 2;
+            const n = Math.max(Math.hypot(x, y), 0.35);
+            Lum.tx = x / n;
+            Lum.ty = y / n;
+          }, { passive: true });
+          gsap.ticker.add(() => {
+            const dx = Lum.tx - Lum.x, dy = Lum.ty - Lum.y;
+            if (Math.abs(dx) + Math.abs(dy) < 0.004) return;
+            Lum.x += dx * 0.08;
+            Lum.y += dy * 0.08;
+            poser();
+          });
+        }
+      }
+
+      // ——— Liens d'ancre : défilement accompagné
+      document.addEventListener('click', (e) => {
+        const a = e.target.closest('a[href^="#"]');
+        if (!a || a.getAttribute('href').length < 2) return;
+        const el = document.querySelector(a.getAttribute('href'));
+        if (!el) return;
+        e.preventDefault();
+        aller(el);
+      });
+
+      // ——— Hero : le dessin à la plume. L'encre apparaît depuis le cœur de la scène, puis le dessin vit :
+      // le trait tremble à peine, comme repassé à la main, et l'image glisse un peu avec le curseur.
+      const hero = document.querySelector('.hero');
+      {
+        const dessin = hero.querySelector('.hero-dessin');
+        const cadre = dessin.querySelector('.hd-cadre'), vie = dessin.querySelector('.hd-vie');
+        if (!REDUCE) {
+          dessin.classList.add('pret');
+          window.addEventListener('intro', () => {
+            dessin.classList.add('trace');
+            gsap.from('.hero h1 .wi', { yPercent: 115, duration: 1.2, ease: 'expo.out', stagger: 0.06, delay: 0.1 });
+            gsap.from('.hero .sur, .hero .orn, .hero .ch, .hero .ch2, .hero .acts', { opacity: 0, y: 14, duration: 0.9, ease: 'expo.out', stagger: 0.08, delay: 0.45 });
+            gsap.from('.hero-mentions li', { y: 12, opacity: 0, duration: 0.9, ease: 'expo.out', stagger: 0.07, delay: 0.9 });
+          });
+          let visible = true, tirage = 0, rythme = () => {};
+          new IntersectionObserver(([e]) => { visible = e.isIntersecting; rythme(); }).observe(hero);
+          // le trait ne tremble que sur grand écran, et s'arrête si la fenêtre rétrécit
+          const large = matchMedia('(min-width: 1081px)');
+          const trembler = () => dessin.classList.toggle('tremble', large.matches);
+          trembler();
+          large.addEventListener('change', trembler);
+          setInterval(() => {
+            if (!visible || document.hidden || !large.matches) return;
+            tirage = (tirage + 1) % 3;
+            dessin.dataset.main = tirage;
+          }, 240);
+          // Le dessin vit par une touche rare : toutes les 90 s, le trait du soleil s'efface en suivant son cercle, puis se retrace.
+          const soleil = dessin.querySelector('.hd-soleil');
+          if (hero.dataset.dessin === 'wharf' && soleil) {
+            const cycleSoleil = () => gsap.timeline()
+              .to(soleil, { '--sb': '208deg', duration: 3.4, ease: 'sine.inOut' })
+              .set(soleil, { '--sa': '0deg', '--sb': '0deg' }, '+=1.1')
+              .to(soleil, { '--sa': '208deg', duration: 4.2, ease: 'sine.inOut' });
+            const vie = gsap.timeline({ repeat: -1, paused: true });
+            vie.add(cycleSoleil(), 41).set({}, {}, 90);
+            const depart = location.search.match(/[?&]vie=([\d.]+)/); // pour la relecture : i.html?vie=36 saute à la 36e seconde, 5 s avant le soleil
+            if (depart) vie.time(+depart[1]);
+            rythme = () => (visible && !document.hidden ? vie.play() : vie.pause());
+            document.addEventListener('visibilitychange', rythme);
+            rythme();
+            window.vieDessin = vie;
+          }
+          if (FIN) {
+            const glisse = [[cadre, 0.014], [vie, 0.034]].map(([el, p]) => ({ p, x: gsap.quickTo(el, 'x', { duration: 1.4, ease: 'power3.out' }), y: gsap.quickTo(el, 'y', { duration: 1.4, ease: 'power3.out' }) }));
+            hero.addEventListener('mousemove', (e) => {
+              const r = hero.getBoundingClientRect();
+              const dx = e.clientX - r.left - r.width / 2, dy = e.clientY - r.top - r.height / 2;
+              glisse.forEach((g) => { g.x(-dx * g.p); g.y(-dy * g.p * 0.6); });
+            });
+            hero.addEventListener('mouseleave', () => glisse.forEach((g) => { g.x(0); g.y(0); }));
+          }
+        }
+      }
+
+      // ——— Répertoire : filtre, liste par lettre, fiche du domaine
+      const rep = {
+        q: document.getElementById('r-q'),
+        liste: document.querySelector('.r-liste'),
+        detail: document.getElementById('r-detail'),
+        compte: document.querySelector('.r-compte'),
+        vide: document.querySelector('.r-vide'),
+        boutons: [...document.querySelectorAll('.r-liste button[data-s]')],
+        onglets: [...document.querySelectorAll('.rep2 .tabs button')],
+        courant: null,
+      };
+      const referent = (slug) => {
+        const p = D.personnes[slug];
+        if (!p) return '';
+        const visage = p.ph ? `<img src="img2/${p.ph}" alt="" width="54" height="64" loading="lazy" />` : `<span class="ini" aria-hidden="true">${ech(initiales(p.n))}</span>`;
+        return `<div class="r-ref">${visage}<p><b>${ech(p.n)}</b><span>${ech(p.t)}</span></p></div>`;
+      };
+      const ficheDomaine = (d) => `
+        <div class="r-d">
+          <div>
+            <h3 id="r-titre">${ech(d.n)}</h3>
+            <p class="acc">${ech(d.p)}</p>
+            <h4>Nous intervenons sur</h4>
+            <ul class="sv">${d.sv.map((s) => `<li>${ech(s)}</li>`).join('')}</ul>
+          </div>
+          <div class="r-cote">
+            <h4>${d.ref.length > 1 ? 'Vos interlocuteurs' : 'Votre interlocuteur'}</h4>
+            ${d.ref.length ? d.ref.map(referent).join('') : '<p class="r-orient">Dès votre premier message, le cabinet vous oriente vers l’avocat qui suivra votre dossier.</p>'}
+            <h4>Voir aussi</h4>
+            <div class="r-voir">${d.rel.filter((s) => parSlug[s]).map((s) => `<button type="button" class="puce" data-dom="${s}">${ech(parSlug[s].n)}</button>`).join('')}</div>
+            <div class="r-actions"><a class="btn" href="#contact" data-rdv="${d.s}">Prendre rendez-vous ${FLECHE}</a><a class="lien" href="#">Consulter la page ${FLECHE}</a></div>
+          </div>
+        </div>`;
+      const ouvrirDomaine = (slug, opts = {}) => {
+        const d = parSlug[slug];
+        if (!d) return;
+        if (opts.defiler && rep.q.value) { rep.q.value = ''; filtrer(); }
+        const bouton = rep.boutons.find((b) => b.dataset.s === slug);
+        if (rep.courant !== slug) {
+          rep.courant = slug;
+          rep.boutons.forEach((b) => (b === bouton ? b.setAttribute('aria-current', 'true') : b.removeAttribute('aria-current')));
+          const lettre = bouton.closest('section').dataset.l;
+          rep.onglets.forEach((o) => o.setAttribute('aria-pressed', String(o.dataset.l === lettre)));
+          rep.detail.innerHTML = ficheDomaine(d);
+          rep.detail.scrollTop = 0;
+          if (!REDUCE) gsap.fromTo(rep.detail.querySelectorAll('.r-d > div > *'), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.45, ease: 'expo.out', stagger: 0.03, overwrite: true });
+        }
+        if (!opts.garderListe) {
+          // on recale la liste sans faire défiler la page
+          const haut = bouton.offsetTop - rep.liste.offsetTop, bas = haut + bouton.offsetHeight;
+          if (haut < rep.liste.scrollTop + 46) rep.liste.scrollTop = Math.max(haut - 46, 0);
+          else if (bas > rep.liste.scrollTop + rep.liste.clientHeight) rep.liste.scrollTop = bas - rep.liste.clientHeight + 12;
+        }
+        if (opts.defiler) {
+          aller('#expertises');
+          rep.detail.focus({ preventScroll: true });
+        }
+      };
+      const surligner = (nom, termes) => {
+        const base = plier(nom);
+        const marques = [];
+        termes.forEach((t) => { const i = base.indexOf(t); if (i > -1) marques.push([i, i + t.length]); });
+        if (!marques.length || base.length !== nom.length) return ech(nom);
+        marques.sort((a, b) => a[0] - b[0]);
+        let out = '', pos = 0;
+        marques.forEach(([a, b]) => { if (a < pos) return; out += ech(nom.slice(pos, a)) + '<mark>' + ech(nom.slice(a, b)) + '</mark>'; pos = b; });
+        return out + ech(nom.slice(pos));
+      };
+      const visibles = () => rep.boutons.filter((b) => !b.parentElement.hidden);
+      function filtrer() {
+        const termes = plier(rep.q.value).split(/\s+/).filter(Boolean);
+        let n = 0;
+        rep.liste.querySelectorAll('section').forEach((g) => {
+          let vus = 0;
+          g.querySelectorAll('button[data-s]').forEach((b) => {
+            const d = parSlug[b.dataset.s];
+            const ok = termes.every((t) => d.cle.includes(t));
+            b.parentElement.hidden = !ok;
+            b.innerHTML = surligner(d.n, termes);
+            if (ok) { vus++; n++; }
+          });
+          g.hidden = !vus;
+          const onglet = rep.onglets.find((o) => o.dataset.l === g.dataset.l);
+          if (onglet) onglet.disabled = !vus;
+        });
+        rep.compte.textContent = termes.length ? `${n} domaine${n > 1 ? 's' : ''} sur ${D.domaines.length}` : `${D.domaines.length} domaines`;
+        rep.vide.hidden = n > 0;
+        const v = visibles();
+        if (v.length && !v.some((b) => b.dataset.s === rep.courant)) ouvrirDomaine(v[0].dataset.s);
+        rep.liste.scrollTop = 0;
+      }
+      rep.q.addEventListener('input', filtrer);
+      rep.q.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown') { e.preventDefault(); visibles()[0]?.focus(); }
+        else if (e.key === 'Escape' && rep.q.value) { rep.q.value = ''; filtrer(); }
+      });
+      let intention = null;
+      rep.boutons.forEach((b) => {
+        b.addEventListener('click', () => ouvrirDomaine(b.dataset.s));
+        b.addEventListener('focus', () => ouvrirDomaine(b.dataset.s));
+        if (FIN) {
+          b.addEventListener('mouseenter', () => { clearTimeout(intention); intention = setTimeout(() => ouvrirDomaine(b.dataset.s, { garderListe: true }), 140); });
+          b.addEventListener('mouseleave', () => clearTimeout(intention));
+        }
+        b.addEventListener('keydown', (e) => {
+          const v = visibles();
+          const i = v.indexOf(b);
+          let j = null;
+          if (e.key === 'ArrowDown') j = Math.min(i + 1, v.length - 1);
+          else if (e.key === 'ArrowUp') j = i - 1;
+          else if (e.key === 'Home') j = 0;
+          else if (e.key === 'End') j = v.length - 1;
+          if (j === null) return;
+          e.preventDefault();
+          if (j < 0) rep.q.focus();
+          else v[j].focus({ preventScroll: true });
+        });
+      });
+      rep.onglets.forEach((o) => o.addEventListener('click', () => {
+        const g = rep.liste.querySelector(`section[data-l="${o.dataset.l}"]`);
+        const premier = g && [...g.querySelectorAll('button[data-s]')].find((b) => !b.parentElement.hidden);
+        if (!premier) return;
+        ouvrirDomaine(premier.dataset.s, { garderListe: true });
+        rep.liste.scrollTop = g.offsetTop - rep.liste.offsetTop;
+        o.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      }));
+      ouvrirDomaine('arbitrage', { garderListe: true });
+
+      // ——— Associés : la plaque du cabinet, la fiche de l'avocat
+      const LANGUES = { fr: 'Français', en: 'Anglais' };
+      const plaque = { onglets: [...document.querySelectorAll('.pl-liste [role=tab]')], fiche: document.getElementById('fiche'), courant: null };
+      const ficheAssocie = (p) => {
+        const lignes = [
+          ['Barreau', ech(p.bar || 'Barreau du Togo') + (p.an ? `, depuis ${p.an}` : '')],
+          ['Domaines', `<span class="dom">${p.pr.map((x) => `<button type="button" class="puce" data-dom="${x.s}" data-loin>${ech(x.n)}</button>`).join('')}</span>`],
+          p.etu?.length ? ['Formation', p.etu.map(ech).join('<br />')] : null,
+          p.act?.length ? ['Fonctions', p.act.map(ech).join('<br />')] : null,
+          ['Langues', p.lg.map((l) => LANGUES[l] || l).join(', ')],
+        ].filter(Boolean);
+        return `
+          <div class="pp coin"><img src="img2/${p.ph}" alt="${ech(p.n)}" loading="lazy" /></div>
+          <div>
+            <h3>${ech(p.n)}</h3>
+            <p class="role">${ech(p.t)}</p>
+            <p class="bio">${ech(p.bio)}</p>
+            <dl>${lignes.map(([t, v]) => `<div><dt>${t}</dt><dd>${v}</dd></div>`).join('')}</dl>
+            <a class="lien" href="#">Consulter la fiche complète ${FLECHE}</a>
+          </div>`;
+      };
+      const ouvrirAssocie = (slug, opts = {}) => {
+        const onglet = plaque.onglets.find((o) => o.dataset.s === slug);
+        if (!onglet) return;
+        if (plaque.courant !== slug) {
+          plaque.courant = slug;
+          plaque.onglets.forEach((o) => { const on = o === onglet; o.setAttribute('aria-selected', String(on)); o.tabIndex = on ? 0 : -1; });
+          plaque.fiche.setAttribute('aria-labelledby', onglet.id);
+          plaque.fiche.innerHTML = ficheAssocie(D.personnes[slug]);
+          if (!REDUCE && !opts.muet) {
+            gsap.fromTo(plaque.fiche.querySelector('.pp'), { clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0% 0)', duration: 0.8, ease: 'expo.out', clearProps: 'clipPath' });
+            gsap.fromTo(plaque.fiche.querySelectorAll(':scope > div:last-child > *'), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5, ease: 'expo.out', stagger: 0.04 });
+          }
+        }
+        if (opts.focus) onglet.focus();
+        if (opts.defiler) { aller('#equipe'); plaque.fiche.focus({ preventScroll: true }); }
+      };
+      plaque.onglets.forEach((o, i) => {
+        o.addEventListener('click', () => ouvrirAssocie(o.dataset.s));
+        o.addEventListener('keydown', (e) => {
+          const pas = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+          let j = null;
+          if (pas) j = (i + pas + plaque.onglets.length) % plaque.onglets.length;
+          else if (e.key === 'Home') j = 0;
+          else if (e.key === 'End') j = plaque.onglets.length - 1;
+          if (j === null) return;
+          e.preventDefault();
+          ouvrirAssocie(plaque.onglets[j].dataset.s, { focus: true });
+        });
+      });
+      {
+        // la fiche garde la hauteur de la plus longue : rien ne saute quand on change d'associé
+        const mesurer = () => {
+          const garde = plaque.courant;
+          plaque.fiche.style.minHeight = '';
+          let max = 0;
+          plaque.onglets.forEach((o) => { plaque.fiche.innerHTML = ficheAssocie(D.personnes[o.dataset.s]); max = Math.max(max, plaque.fiche.offsetHeight); });
+          plaque.fiche.style.minHeight = max + 'px';
+          plaque.courant = null;
+          ouvrirAssocie(garde || plaque.onglets[0].dataset.s, { muet: true });
+        };
+        mesurer();
+        let t = null;
+        addEventListener('resize', () => { clearTimeout(t); t = setTimeout(mesurer, 200); });
+        document.fonts?.ready.then(mesurer);
+      }
+
+      // ——— Puces de domaine, où qu'elles soient : elles ouvrent la fiche dans le répertoire
+      document.addEventListener('click', (e) => {
+        const puce = e.target.closest('[data-dom]');
+        if (puce) return ouvrirDomaine(puce.dataset.dom, { defiler: !puce.closest('.rep2') });
+        const rdv = e.target.closest('[data-rdv]');
+        if (rdv) document.querySelector('#rdv [name=objet]').value = rdv.dataset.rdv;
+      });
+
+      // ——— Carte de l'espace OHADA : liste et carte se répondent
+      const legende = document.querySelector('.legende');
+      const formes = [...document.querySelectorAll('.carte [data-i]')].filter((el) => el.classList.contains('m') || el.classList.contains('com'));
+      const boutons = [...document.querySelectorAll('.etats button')];
+      const precision = { 42: ', siège du cabinet à Lomé', 3: ', bureau de Cotonou' };
+      const allumer = (i) => {
+        formes.forEach((f) => f.classList.toggle('on', f.dataset.i === i));
+        boutons.forEach((b) => b.classList.toggle('on', b.dataset.i === i));
+        const b = boutons.find((x) => x.dataset.i === i);
+        legende.textContent = b ? (b.dataset.nom || b.textContent) + (precision[i] || '') : 'Dix-sept États membres';
+      };
+      formes.forEach((f) => { f.addEventListener('mouseenter', () => allumer(f.dataset.i)); f.addEventListener('mouseleave', () => allumer(null)); });
+      boutons.forEach((b) => {
+        b.addEventListener('mouseenter', () => allumer(b.dataset.i));
+        b.addEventListener('focus', () => allumer(b.dataset.i));
+        b.addEventListener('mouseleave', () => allumer(null));
+        b.addEventListener('blur', () => allumer(null));
+      });
+      if (!REDUCE) {
+        const membres = [...document.querySelectorAll('.carte .m')].sort((a, b) => a.getBBox().x - b.getBBox().x);
+        const mer = document.querySelector('.meridien');
+        const long = mer.getTotalLength();
+        gsap.timeline({ scrollTrigger: { trigger: '.carte', start: 'top 72%' } })
+          .from(membres, { fill: '#e4eaf2', duration: 0.5, stagger: 0.045, ease: 'power1.out', clearProps: 'fill' })
+          .from('.carte .pt, .carte text', { opacity: 0, duration: 0.5, stagger: 0.05 }, '-=0.3')
+          .fromTo(mer, { strokeDasharray: long, strokeDashoffset: long }, { strokeDashoffset: 0, duration: 1.1, ease: 'power2.inOut', onComplete: () => gsap.set(mer, { clearProps: 'strokeDasharray,strokeDashoffset' }) }, '-=0.5');
+      }
+
+      // ——— Petites gravures et Fondation : l'encre apparaît quand on arrive dessus
+      {
+        const cibles = [...document.querySelectorAll('.gravure, .fondation')];
+        if ('IntersectionObserver' in window && !REDUCE) {
+          cibles.forEach((el) => el.classList.add('attend'));
+          const io = new IntersectionObserver((es) => es.forEach((e) => {
+            if (!e.isIntersecting) return;
+            e.target.classList.replace('attend', 'vu');
+            io.unobserve(e.target);
+          }), { rootMargin: '0px 0px -14% 0px' });
+          cibles.forEach((el) => io.observe(el));
+        }
+      }
+
+      // ——— Rendez-vous : la demande se remplit comme un acte ; en la signant, le cabinet y appose son tampon
+      {
+        const form = document.getElementById('rdv');
+        const retour = form.querySelector('.retour');
+        const tampon = form.querySelector('.tampon');
+        const jour = (opts) => new Intl.DateTimeFormat('fr-FR', { timeZone: 'Africa/Lome', ...opts }).format(new Date());
+        form.querySelector('[data-fait]').textContent = 'Fait le ' + jour({ day: 'numeric', month: 'long', year: 'numeric' }).replace(/^1 /, '1er ') + '.';
+        form.querySelector('[data-tampon]').textContent = 'le ' + jour({ day: '2-digit', month: '2-digit', year: 'numeric' });
+        if (!CSS.supports('field-sizing', 'content')) {
+          // repli : la largeur du champ suit ce qu'on y écrit
+          const ajuster = (el) => (el.style.width = Math.max((el.value || el.placeholder).length, 7) + 2 + 'ch');
+          form.querySelectorAll('.phrase input').forEach((el) => { ajuster(el); el.addEventListener('input', () => ajuster(el)); });
+        }
+        const controles = [
+          ['nom', (v) => v.trim().length > 1, 'votre nom'],
+          ['mel', (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()), 'une adresse e-mail valide'],
+        ];
+        form.addEventListener('input', (e) => { e.target.removeAttribute?.('aria-invalid'); });
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const manque = [];
+          let premier = null;
+          controles.forEach(([nom, ok, libelle]) => {
+            const el = form.elements[nom];
+            const bon = ok(el.value);
+            bon ? el.removeAttribute('aria-invalid') : el.setAttribute('aria-invalid', 'true');
+            if (!bon) { manque.push(libelle); premier ??= el; }
+          });
+          const accord = form.elements.accord;
+          accord.checked ? accord.removeAttribute('aria-invalid') : accord.setAttribute('aria-invalid', 'true');
+          if (!accord.checked) { manque.push('votre accord'); premier ??= accord; }
+          if (manque.length) {
+            retour.className = 'retour err';
+            retour.textContent = 'Il manque ' + manque.join(manque.length > 2 ? ', ' : ' et ').replace(/, ([^,]*)$/, ' et $1') + '.';
+            premier.focus();
+            return;
+          }
+          tampon.classList.remove('pose');
+          void tampon.offsetWidth;
+          tampon.classList.add('pose');
+          retour.className = 'retour';
+          retour.textContent = 'Maquette : rien n’a été envoyé. Sur le site, la demande part au cabinet, qui en accuse réception par e-mail.';
+        });
+      }
+    </script>
+  </body>
+</html>

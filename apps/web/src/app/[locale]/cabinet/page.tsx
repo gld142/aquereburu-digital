@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
-import { Missing, PageHead } from '@/components/ui';
+import { Fleche, Missing, PageHead, Section } from '@/components/ui';
 import { distinctions, firm, offices, type Locale } from '@/content/site';
 import { people } from '@/content/people';
 import associes from '../../../../public/images/photo-associes.jpg';
@@ -51,13 +51,9 @@ export default async function FirmPage({ params }: { params: Promise<{ locale: s
         crumbs={[{ label: fr ? 'Cabinet' : 'Firm' }]}
       />
 
-      <section aria-labelledby="devise" className="shell grid gap-x-10 gap-y-10 py-16 md:grid-cols-12 md:py-24">
-        <div className="md:col-span-5">
-          <h2 id="devise" className="t-h2">
-            {firm.motto[locale]}
-          </h2>
-        </div>
-        <div className="t-body measure md:col-span-6 md:col-start-7">
+      <Section id="devise" label={fr ? 'Devise' : 'Motto'} gloss={fr ? `Depuis ${firm.founded}` : `Since ${firm.founded}`}>
+        <h2 className="t-h2 max-w-[18ch]">{firm.motto[locale]}</h2>
+        <div className="prose mt-6">
           <p>
             {fr
               ? 'Hier, c’est près de quarante ans de dossiers, de jurisprudence et de pratiques éprouvées devant les juridictions togolaises, régionales et internationales. C’est aussi l’héritage d’un fondateur qui a fait de la propriété intellectuelle et du droit OHADA des spécialités du cabinet avant qu’elles ne deviennent des évidences.'
@@ -69,34 +65,38 @@ export default async function FirmPage({ params }: { params: Promise<{ locale: s
               : 'Tomorrow means the questions our clients already face: fintech and data, the energy transition, public-private partnerships, regional integration. We answer them with the same rigour, drawing on what experience has taught us.'}
           </p>
         </div>
-      </section>
+      </Section>
 
-      <section aria-labelledby="mission" className="bg-paper-2">
-        <div className="shell grid gap-x-10 gap-y-12 py-16 md:grid-cols-12 md:py-24">
-          <figure className="relative aspect-[4/3] overflow-hidden bg-haze md:col-span-5">
-            <Image
-              src={associes}
-              alt={fr ? 'Deux associés du cabinet' : 'Two of the firm’s partners'}
-              fill
-              sizes="(min-width: 768px) 40vw, 100vw"
-              placeholder="blur"
-              className="portrait object-cover"
-            />
+      <Section
+        id="mission"
+        tone="brume"
+        label={fr ? 'Mission et vision' : 'Mission and vision'}
+        gloss={fr ? 'Ce qui guide le cabinet' : 'What guides the firm'}
+      >
+        <div className="cab">
+          <figure>
+            <div className="ph coin">
+              <Image
+                src={associes}
+                alt={fr ? 'Deux associés du cabinet' : 'Two of the firm’s partners'}
+                sizes="(min-width: 1081px) 40vw, (min-width: 861px) 50vw, 100vw"
+                placeholder="blur"
+              />
+            </div>
+            <figcaption>{fr ? 'Les associés du cabinet' : 'Partners of the firm'}</figcaption>
           </figure>
-          <div className="grid gap-10 sm:grid-cols-2 md:col-span-6 md:col-start-7 md:self-center">
-            <div>
-              <h2 id="mission" className="t-h3">
-                {fr ? 'Mission' : 'Mission'}
-              </h2>
-              <p className="t-body mt-3 text-[1.0625rem] text-ink-2">
+          <div className="grid gap-8">
+            <div className="filet pt-3">
+              <h2 className="t-h3">{fr ? 'Mission' : 'Mission'}</h2>
+              <p className="mt-2">
                 {fr
                   ? 'Sécuriser les projets de nos clients et défendre leurs intérêts avec des conseils clairs, applicables et rendus dans les délais.'
                   : 'To secure our clients’ projects and defend their interests with clear, practical advice delivered on time.'}
               </p>
             </div>
-            <div>
+            <div className="filet pt-3">
               <h2 className="t-h3">{fr ? 'Vision' : 'Vision'}</h2>
-              <p className="t-body mt-3 text-[1.0625rem] text-ink-2">
+              <p className="mt-2">
                 {fr
                   ? 'Être, depuis Lomé, un cabinet de référence pour les opérations qui traversent l’Afrique de l’Ouest et la relient au reste du monde.'
                   : 'To be, from Lomé, a firm of reference for transactions that cross West Africa and connect it with the rest of the world.'}
@@ -104,67 +104,61 @@ export default async function FirmPage({ params }: { params: Promise<{ locale: s
             </div>
           </div>
         </div>
-      </section>
+      </Section>
 
-      <section aria-labelledby="identite" className="shell grid gap-x-10 gap-y-10 py-16 md:grid-cols-12 md:py-24">
-        <h2 id="identite" className="t-h2 md:col-span-4">
-          {fr ? 'Fiche d’identité' : 'Key facts'}
-        </h2>
-        <dl className="border-t border-ink md:col-span-8">
+      <Section id="identite" heading label={fr ? 'Fiche d’identité' : 'Key facts'} gloss={fr ? 'Mentions institutionnelles' : 'Institutional details'}>
+        <dl className="fiche max-w-[52rem]">
           {identity.map((f) => (
-            <div key={f.label} className="grid gap-1 border-b border-rule py-4 sm:grid-cols-3 sm:gap-6">
-              <dt className="t-small text-slate">{f.label}</dt>
-              <dd className="t-ui sm:col-span-2">{f.value}</dd>
+            <div key={f.label}>
+              <dt>{f.label}</dt>
+              <dd>{f.value}</dd>
             </div>
           ))}
         </dl>
-      </section>
+      </Section>
 
-      <section aria-labelledby="distinctions" className="border-t border-rule">
-        <div className="shell grid gap-x-10 gap-y-10 py-16 md:grid-cols-12 md:py-24">
-          <h2 id="distinctions" className="t-h2 md:col-span-4">
-            {fr ? 'Distinctions' : 'Recognition'}
-          </h2>
-          <ol className="border-t border-ink md:col-span-8">
-            {distinctions.map((d) => (
-              <li key={d.title.fr} className="grid grid-cols-[4.5rem_1fr] gap-x-6 border-b border-rule py-4 sm:grid-cols-[6rem_1fr_auto]">
-                <span className="semiwide font-sans text-[1.125rem] tabular-nums">{d.year}</span>
-                <span className="t-ui">{d.title[locale]}</span>
-                <span className="t-small col-start-2 text-slate sm:col-start-3">{d.source}</span>
-              </li>
-            ))}
-          </ol>
+      <Section id="distinctions" heading label={fr ? 'Distinctions' : 'Recognition'} gloss={fr ? 'Datées et sourcées' : 'Dated and sourced'}>
+        <ol className="rangs max-w-[52rem]">
+          {distinctions.map((d) => (
+            <li key={d.title.fr} className="grid grid-cols-[4.25rem_minmax(0,1fr)] items-baseline gap-x-5 sm:grid-cols-[5.5rem_minmax(0,1fr)_auto]">
+              <span className="font-serif text-[22px] font-semibold text-bleu [font-variant-numeric:lining-nums]">{d.year}</span>
+              <span className="text-marine">{d.title[locale]}</span>
+              <span className="t-glose col-start-2 sm:col-start-3">{d.source}</span>
+            </li>
+          ))}
+        </ol>
+      </Section>
+
+      <Section id="suite" tone="brume" label={fr ? 'Pour aller plus loin' : 'Further reading'} gloss={fr ? 'Règles et engagements' : 'Rules and commitments'}>
+        <div className="grid gap-5 md:grid-cols-2">
+          {[
+            {
+              href: '/cabinet/deontologie' as const,
+              title: fr ? 'Déontologie et conformité UEMOA' : 'Ethics and WAEMU compliance',
+              body: fr
+                ? 'Indépendance, secret professionnel, conflits d’intérêts, activités déclarées : les règles qui encadrent notre exercice.'
+                : 'Independence, professional secrecy, conflicts of interest, declared activities: the rules that govern our practice.',
+              cta: fr ? 'Lire nos engagements' : 'Read our commitments',
+            },
+            {
+              href: '/cabinet/engagement' as const,
+              title: fr ? 'Fondation et responsabilité sociétale' : 'Foundation and social responsibility',
+              body: fr
+                ? 'Pro bono, accès au droit, éducation et environnement : ce que le cabinet et sa Fondation font au Togo.'
+                : 'Pro bono, access to justice, education and the environment: what the firm and its Foundation do in Togo.',
+              cta: fr ? 'Découvrir notre engagement' : 'See our commitment',
+            },
+          ].map((c) => (
+            <div key={c.href} className="panneau flex flex-col">
+              <h2 className="t-h3">{c.title}</h2>
+              <p className="mt-3">{c.body}</p>
+              <Link href={c.href} className="lien mt-6 self-start">
+                {c.cta} <Fleche />
+              </Link>
+            </div>
+          ))}
         </div>
-      </section>
-
-      <section aria-label={fr ? 'Pour aller plus loin' : 'Further reading'} className="shell grid gap-4 pb-20 md:grid-cols-2 md:pb-28">
-        {[
-          {
-            href: '/cabinet/deontologie' as const,
-            title: fr ? 'Déontologie et conformité UEMOA' : 'Ethics and WAEMU compliance',
-            body: fr
-              ? 'Indépendance, secret professionnel, conflits d’intérêts, activités déclarées : les règles qui encadrent notre exercice.'
-              : 'Independence, professional secrecy, conflicts of interest, declared activities: the rules that govern our practice.',
-            cta: fr ? 'Lire nos engagements' : 'Read our commitments',
-          },
-          {
-            href: '/cabinet/engagement' as const,
-            title: fr ? 'Fondation et responsabilité sociétale' : 'Foundation and social responsibility',
-            body: fr
-              ? 'Pro bono, accès au droit, éducation et environnement : ce que le cabinet et sa Fondation font au Togo.'
-              : 'Pro bono, access to justice, education and the environment: what the firm and its Foundation do in Togo.',
-            cta: fr ? 'Découvrir notre engagement' : 'See our commitment',
-          },
-        ].map((c) => (
-          <div key={c.href} className="flex flex-col rounded-[10px] bg-paper-2 p-8 md:p-10">
-            <h2 className="t-h3">{c.title}</h2>
-            <p className="t-body mt-3 text-[1.0625rem] text-ink-2">{c.body}</p>
-            <Link href={c.href} className="btn btn-primary mt-8 self-start">
-              {c.cta}
-            </Link>
-          </div>
-        ))}
-      </section>
+      </Section>
     </>
   );
 }

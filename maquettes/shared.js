@@ -80,6 +80,16 @@ function initMotion() {
     gsap.fromTo(el, { yPercent: -p }, { yPercent: p, ease: 'none', scrollTrigger: { trigger: el.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } });
   });
 
+  // Filets qui se tracent
+  document.querySelectorAll('[data-rule]').forEach((el) => {
+    gsap.from(el, { scaleX: 0, transformOrigin: 'left center', duration: 1.4, ease: 'expo.inOut', scrollTrigger: { trigger: el, start: 'top 92%' } });
+  });
+
+  // Groupes : les enfants apparaissent l'un après l'autre
+  document.querySelectorAll('[data-stagger]').forEach((el) => {
+    gsap.from(el.children, { y: 26, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.07, scrollTrigger: { trigger: el, start: 'top 87%' } });
+  });
+
   // Image dévoilée par un masque
   document.querySelectorAll('[data-unmask]').forEach((el) => {
     gsap.fromTo(
@@ -125,10 +135,35 @@ function runLoader(onDone) {
         if (lenis) lenis.start();
       },
     })
-    .to(o, { v: end, duration: 1.7, ease: 'power2.inOut', onUpdate: () => (n.textContent = Math.round(o.v)) })
-    .to(bar, { scaleX: 1, duration: 1.7, ease: 'power2.inOut' }, 0)
+    .to(o, { v: end, duration: n ? 1.7 : 1.1, ease: 'power2.inOut', onUpdate: () => n && (n.textContent = Math.round(o.v)) })
+    .to(bar || {}, { scaleX: 1, duration: n ? 1.7 : 1.1, ease: 'power2.inOut' }, 0)
     .to(L, { yPercent: -100, duration: 1.05, ease: 'expo.inOut' })
     .add(onDone, '-=0.6');
+}
+
+// ——— Menu mobile et en-tête qui se solidifie après le hero
+document.querySelectorAll('[data-menu]').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const open = document.body.classList.toggle('menu-open');
+    document.querySelectorAll('[data-menu]').forEach((b) => b.setAttribute('aria-expanded', String(open)));
+    if (lenis) open ? lenis.stop() : lenis.start();
+  });
+});
+document.querySelectorAll('.mnav a').forEach((a) => a.addEventListener('click', () => document.body.classList.remove('menu-open')));
+addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && document.body.classList.contains('menu-open')) {
+    document.body.classList.remove('menu-open');
+    if (lenis) lenis.start();
+  }
+});
+const solidAfter = document.querySelector('[data-solid-after]');
+if (solidAfter) {
+  ScrollTrigger.create({
+    trigger: solidAfter,
+    start: 'bottom top+=80',
+    onEnter: () => document.body.classList.add('scrolled'),
+    onLeaveBack: () => document.body.classList.remove('scrolled'),
+  });
 }
 
 window.addEventListener('load', () => {

@@ -3,63 +3,66 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Trois directions — Aquereburu &amp; Partners</title>
+    <title>Maquettes — Aquereburu &amp; Partners</title>
     <style>
       * { box-sizing: border-box; }
-      body { margin: 0; background: #111; color: #f3f1ea; font: 16px/1.5 system-ui, -apple-system, 'Segoe UI', sans-serif; -webkit-font-smoothing: antialiased; }
-      header { padding: 40px clamp(20px, 4vw, 56px) 26px; }
-      h1 { margin: 0; font-size: clamp(24px, 3vw, 38px); font-weight: 600; letter-spacing: -0.02em; }
-      header p { margin: 8px 0 0; color: #a5a399; max-width: 62ch; }
-      main { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; padding: 0 clamp(20px, 4vw, 56px) 60px; }
-      a { color: inherit; text-decoration: none; display: flex; flex-direction: column; background: #1b1b1b; border: 1px solid #2c2c2c; border-radius: 16px; overflow: hidden; transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s; }
-      a:hover { transform: translateY(-6px); border-color: #6b6b6b; }
-      .th { aspect-ratio: 4 / 3; overflow: hidden; position: relative; }
-      .th img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
-      a:hover .th img { transform: scale(1.06); }
-      .th span { position: absolute; left: 16px; bottom: 12px; font-size: clamp(26px, 2.6vw, 40px); line-height: 1; }
-      .a .th span { font-family: 'Bodoni Moda', Didot, serif; color: #eee9dd; }
-      .b .th { background: #f2ecdf; }
-      .b .th span { font-family: Fraunces, Georgia, serif; font-style: italic; color: #1e3d2e; }
-      .c .th span { font-family: Syne, system-ui, sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: -0.04em; color: #d8f36a; }
-      .tx { padding: 18px 18px 22px; display: grid; gap: 8px; }
-      .tx b { font-size: 18px; }
-      .tx p { margin: 0; color: #a5a399; font-size: 14.5px; }
-      .sw { display: flex; gap: 6px; margin-top: 6px; }
-      .sw i { width: 26px; height: 26px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.18); }
-      @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
+      body { margin: 0; background: #0f1d2b; color: #f3f6fa; font: 16px/1.55 system-ui, -apple-system, 'Segoe UI', sans-serif; -webkit-font-smoothing: antialiased; }
+      .w { max-width: 1180px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 56px); }
+      header { padding: 44px 0 26px; }
+      h1 { margin: 0; font-size: clamp(24px, 3vw, 36px); font-weight: 600; letter-spacing: -0.02em; }
+      header p, .side p { margin: 10px 0 0; color: #b9c6d6; max-width: 70ch; }
+      a { color: inherit; }
+      .main { display: block; text-decoration: none; background: #16293c; border: 1px solid #2b4460; border-radius: 10px; overflow: hidden; transition: border-color 0.3s, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+      .main:hover, .main:focus-visible { border-color: #7fa3c9; transform: translateY(-4px); outline: none; }
+      .main img { display: block; width: 100%; height: auto; }
+      .main div { padding: 20px 22px 24px; }
+      .main b { font-size: 20px; }
+      .main p { margin: 6px 0 0; color: #b9c6d6; }
+      dl { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 26px 0 0; }
+      dl div { border-top: 2px solid #466c93; padding-top: 12px; }
+      dt { font-size: 13px; color: #9db7d3; }
+      dd { margin: 4px 0 0; font-size: 15px; }
+      .sw { display: inline-block; width: 14px; height: 14px; border-radius: 50%; vertical-align: -2px; margin-right: 6px; border: 1px solid rgba(255, 255, 255, 0.3); }
+      h2 { margin: 54px 0 10px; font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #9db7d3; }
+      ul { margin: 0; padding: 0 0 70px; list-style: none; display: flex; flex-wrap: wrap; gap: 8px 22px; color: #b9c6d6; font-size: 15px; }
+      @media (max-width: 800px) { dl { grid-template-columns: 1fr 1fr; } }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz@6..96&family=Fraunces:ital,opsz@1,9..144&family=Syne:wght@800&display=swap" rel="stylesheet" />
   </head>
   <body>
-    <header>
-      <h1>Trois directions pour le site Aquereburu &amp; Partners</h1>
-      <p>Chaque maquette est une vraie page d’accueil animée : ouvre-la, fais défiler jusqu’en bas, survole les éléments. Seule celle que tu choisis sera développée.</p>
-    </header>
-    <main>
-      <a class="a" href="a.html">
-        <div class="th"><img src="img/a1.jpg" alt="" /><span>Nocturne</span></div>
-        <div class="tx">
-          <b>A. Nocturne</b>
-          <p>Immersif et cinématographique. Base nuit, lumière ambrée, grain de pellicule, grande serif Bodoni, image plein écran qui se resserre au défilement.</p>
-          <div class="sw"><i style="background: #06080b"></i><i style="background: #0c141a"></i><i style="background: #eee9dd"></i><i style="background: #e7a44c"></i></div>
-        </div>
+    <div class="w">
+      <header>
+        <h1>Site Aquereburu &amp; Partners : version 2</h1>
+        <p>L’ouverture est le frontispice d’un cabinet, sur un dessin à la plume du wharf de Lomé fondu dans le blanc. Puis la devise sert de fil à toute la page, en trois temps : hier (l’arbre à palabres, l’histoire du cabinet, ses distinctions), aujourd’hui (la robe, les expertises, l’espace OHADA, l’équipe), demain (le soleil sur l’océan, la Fondation, le rendez-vous).</p>
+      </header>
+      <a class="main" href="i.html">
+        <img src="apercus/i-hero.jpg" width="1440" height="900" alt="Aperçu de la page d’accueil, version 2" />
+        <div><b>Ouvrir la page d’accueil</b><p>Regarde l’encre apparaître, cherche l’arbre à palabres au loin, puis fais défiler : trois intertitres rythment la page. Filtre le répertoire, parcours les médailles, choisis un associé, remplis la demande de rendez-vous.</p></div>
       </a>
-      <a class="b" href="b.html">
-        <div class="th"><img src="img/b1.jpg" alt="" /><span>Éditorial</span></div>
-        <div class="tx">
-          <b>B. Éditorial</b>
-          <p>Magazine de luxe. Ivoire, vert bouteille et ocre, serif Fraunces en italique, mise en page asymétrique, sceau tournant, images dévoilées par un masque.</p>
-          <div class="sw"><i style="background: #f2ecdf"></i><i style="background: #17201a"></i><i style="background: #1e3d2e"></i><i style="background: #b5822b"></i></div>
-        </div>
-      </a>
-      <a class="c" href="c.html">
-        <div class="th"><img src="img/c1.jpg" alt="" /><span>Institution</span></div>
-        <div class="tx">
-          <b>C. Institution</b>
-          <p>Couleur forte et graphique. Émeraude saturé, typographie géante qui glisse au défilement, cartes empilées, heure locale des trois bureaux.</p>
-          <div class="sw"><i style="background: #0f8b45"></i><i style="background: #06140d"></i><i style="background: #d8f36a"></i><i style="background: #f7f7f2"></i></div>
-        </div>
-      </a>
-    </main>
+      <dl>
+        <div><dt>Couleur de marque</dt><dd><span class="sw" style="background: #466c93"></span>Bleu acier du cabinet</dd></div>
+        <div><dt>Fondation</dt><dd><span class="sw" style="background: #462768"></span>Son violet, à elle seule</dd></div>
+        <div><dt>Images</dt><dd>Dessin à la plume pour l’ouverture, portraits réels en couleur</dd></div>
+        <div><dt>Logo</dt><dd>Emblème Afrique, nom en capitales, mention en italique</dd></div>
+      </dl>
+      <h2>Deux autres dessins à la plume, même mise en page</h2>
+      <ul>
+        <li><a href="hero-robe.html">« La robe » : un avocat âgé ajuste le rabat de la robe d’une jeune consœur</a></li>
+        <li><a href="hero-arbre.html">« L’arbre à palabres » : un ancien parle, un avocat en robe l’écoute, au bord de l’océan</a></li>
+      </ul>
+      <h2>Ouvertures mises de côté, à proposer</h2>
+      <ul>
+        <li><a href="hero-chantier.html">Ouverture « chantier » : des avocats bâtissent sur de grands livres de droit (dessin au trait, animé)</a></li>
+        <li><a href="hero-cinema.html">Ouverture « cinéma » : l’avocat en robe face à la ville, à l’heure bleue</a></li>
+        <li><a href="h.html">Ouverture « bibliothèque » : la photo du cabinet sous un voile bleu</a></li>
+      </ul>
+      <h2>Étapes précédentes</h2>
+      <ul>
+        <li><a href="g.html">G. La base validée, avant les composants propres</a></li>
+        <li><a href="a.html">A. Nocturne</a></li>
+        <li><a href="d.html">D. Prétoire</a></li>
+        <li><a href="e.html">E. Édifice</a></li>
+        <li><a href="f.html">F. Associés</a></li>
+      </ul>
+    </div>
   </body>
 </html>

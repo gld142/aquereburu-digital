@@ -1,0 +1,77 @@
+/* Accueil — répertoire du cabinet, trois volets.
+   Porté depuis maquettes/i.html. Importé dans la couche « maquette » (voir globals.css). */
+
+/* ——— Puce de domaine (répertoire et fiche d'associé) : un petit onglet à coin coupé */
+.puce { --c: 7px; padding: 7px 13px 7px 11px; font-size: 14.5px; text-align: left; cursor: pointer; clip-path: polygon(0 0, calc(100% - var(--c)) 0, 100% var(--c), 100% 100%, 0 100%); transition: background 0.2s, color 0.2s; }
+.puce:focus-visible { outline: none; box-shadow: inset 0 0 0 2px currentColor; }
+
+/* ——— Répertoire : trois volets, comme une base de consultation (filtre, liste par lettre, fiche du domaine) */
+.rep2 { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; }
+.r-feuille { background: #fff; display: flex; flex-direction: column; height: 676px; min-width: 0; }
+.r-barre { flex: none; display: flex; align-items: center; gap: 12px; height: 62px; padding: 0 clamp(18px, 2.4vw, 34px); border-bottom: 3px double var(--marine); }
+.r-barre > svg { width: 18px; height: 18px; flex: none; color: var(--bleu); }
+.r-barre input { flex: 1; min-width: 0; height: 100%; padding: 0; border: 0; border-radius: 0; outline: 0; background: transparent; font: 400 17px var(--sans); color: var(--marine); }
+.r-barre input::placeholder { color: var(--gris); opacity: 1; }
+.r-barre input::-webkit-search-cancel-button { display: none; }
+.r-barre:focus-within { box-shadow: inset 0 -2px 0 var(--bleu); }
+.r-compte { font: italic 400 15px var(--serif); color: var(--gris); white-space: nowrap; }
+.r-corps { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(230px, 304px) minmax(0, 1fr); }
+.r-liste { overflow-y: auto; border-right: 1px solid var(--trait); padding-bottom: 22px; scrollbar-width: thin; }
+.r-liste h3 { position: sticky; top: 0; z-index: 1; background: #fff; padding: 14px clamp(18px, 2.4vw, 34px) 6px; font: 600 26px/1 var(--serif); color: var(--bleu); }
+.r-liste button { position: relative; display: block; width: 100%; text-align: left; padding: 9px clamp(18px, 2.4vw, 34px); font: 400 16.5px/1.35 var(--sans); color: var(--texte); cursor: pointer; transition: background 0.15s, color 0.15s, padding-left 0.3s var(--ease); }
+.r-liste button:hover { background: #f4f7fb; color: var(--marine); }
+.r-liste button[aria-current='true'] { background: var(--brume); color: var(--marine); font-weight: 600; padding-left: calc(clamp(18px, 2.4vw, 34px) + 16px); }
+.r-liste button[aria-current='true']::before { content: ''; position: absolute; left: clamp(18px, 2.4vw, 34px); top: 50%; width: 8px; height: 8px; margin-top: -4px; background: var(--bleu); clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
+.r-liste button:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--bleu); }
+.r-liste mark { background: #d7e3f1; color: inherit; }
+.r-vide { padding: 26px clamp(18px, 2.4vw, 34px); color: var(--gris); }
+.r-detail { overflow-y: auto; padding: clamp(22px, 2.8vw, 40px) clamp(22px, 3vw, 46px); scrollbar-width: thin; container-type: inline-size; }
+.r-detail:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--bleu); }
+.r-detail h3 { font-size: clamp(24px, 2.4vw, 34px); line-height: 1.12; margin-bottom: 12px; }
+.r-detail .acc { font: 400 17px/1.55 var(--serif); color: var(--texte); max-width: 58ch; }
+.r-detail h4 { margin: 22px 0 8px; font: 600 14px var(--sans); color: var(--bleu-f); }
+.r-detail .sv li { position: relative; padding: 7px 0 7px 20px; border-bottom: 1px solid var(--trait); font-size: 16px; line-height: 1.45; }
+.r-detail .sv li::before { content: ''; position: absolute; left: 2px; top: 15px; width: 7px; height: 7px; background: var(--bleu); clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
+.r-ref { display: flex; align-items: center; gap: 14px; margin-top: 8px; }
+.r-ref img, .r-ref .ini { --c: 10px; width: 54px; height: 64px; flex: none; object-fit: cover; object-position: 50% 12%; background: #e8eef5; clip-path: polygon(0 0, calc(100% - var(--c)) 0, 100% var(--c), 100% 100%, 0 100%); }
+.r-ref .ini { display: grid; place-items: center; font: 600 18px var(--serif); color: var(--bleu-f); }
+.r-ref b { display: block; font: 600 17px var(--serif); color: var(--marine); }
+.r-ref span { font-size: 14.5px; color: var(--gris); }
+.r-d { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px clamp(24px, 3.4vw, 52px); }
+@container (min-width: 600px) {
+  .r-d { grid-template-columns: minmax(0, 1fr) minmax(200px, 250px); }
+  .r-cote > h4:first-child { margin-top: 6px; }
+  .r-voir, .r-actions { flex-direction: column; align-items: flex-start; }
+  .r-actions { gap: 16px; }
+}
+.r-orient { font: italic 400 16px var(--serif); color: var(--gris); }
+.r-voir, .dom { display: flex; flex-wrap: wrap; gap: 6px 8px; }
+.r-voir .puce, .dom .puce { color: var(--bleu-f); background: var(--brume); }
+.r-voir .puce:hover, .dom .puce:hover { background: var(--bleu); color: #fff; }
+.r-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin-top: 26px; }
+
+/* les onglets : la tranche du répertoire, une lettre par onglet */
+.rep2 .tabs { display: flex; flex-direction: column; gap: 3px; padding-top: 20px; }
+.rep2 .tabs button {
+  --c: 10px; position: relative; width: 52px; height: 44px; font: 600 18px/1 var(--serif); color: var(--marine); cursor: pointer;
+  background: color-mix(in srgb, #bccbde calc(var(--k) * 7%), #f6f8fb);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--c)), calc(100% - var(--c)) 100%, 0 100%);
+  transition: width 0.4s var(--ease), background 0.25s, color 0.25s;
+}
+.rep2 .tabs button:hover { background: #dbe5f0; width: 58px; }
+.rep2 .tabs button[aria-pressed='true'] { background: var(--bleu); color: #fff; width: 68px; }
+.rep2 .tabs button:disabled { opacity: 0.35; cursor: default; }
+.rep2 .tabs button:disabled:hover { background: color-mix(in srgb, #bccbde calc(var(--k) * 7%), #f6f8fb); width: 52px; }
+.rep2 .tabs button:focus-visible { outline: none; box-shadow: inset 0 0 0 2px #fff, inset 0 0 0 4px var(--marine); }
+
+@media (max-width: 860px) {
+  .rep2 { grid-template-columns: minmax(0, 1fr); }
+  .r-feuille { height: auto; }
+  .r-corps { grid-template-columns: minmax(0, 1fr); }
+  .r-liste { max-height: 264px; border-right: 0; border-bottom: 3px double var(--marine); }
+  .r-detail { overflow: visible; }
+  /* les onglets passent en rangée défilante au-dessus de la feuille */
+  .rep2 .tabs { order: -1; flex-direction: row; gap: 3px; padding: 0; min-width: 0; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+  .rep2 .tabs::-webkit-scrollbar { display: none; }
+  .rep2 .tabs button, .rep2 .tabs button:hover, .rep2 .tabs button[aria-pressed='true'], .rep2 .tabs button:disabled:hover { flex: 1 0 44px; width: auto; height: 46px; clip-path: polygon(0 0, calc(100% - var(--c)) 0, 100% var(--c), 100% 100%, 0 100%); }
+}

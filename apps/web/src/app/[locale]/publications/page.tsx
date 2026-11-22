@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
-import { PageHead } from '@/components/ui';
+import { PageHead, Section } from '@/components/ui';
+import { NewsletterForm } from '@/components/newsletter-form';
 import { InsightsList, type InsightRow } from '@/components/insights-list';
 import { insights, insightTypes, type InsightType } from '@/content/insights';
 import type { Locale } from '@/content/site';
@@ -53,9 +54,26 @@ export default async function InsightsPage({ params }: { params: Promise<{ local
         }
         crumbs={[{ label: fr ? 'Publications' : 'Insights' }]}
       />
-      <div className="shell py-12 md:py-16">
+      <Section
+        id="liste"
+        label={fr ? 'Notes et briefings' : 'Notes and briefings'}
+        gloss={fr ? 'Les plus récentes d’abord' : 'Most recent first'}
+      >
         <InsightsList rows={rows} types={types} practiceOptions={practiceOptions} locale={locale} />
-      </div>
+      </Section>
+      <Section
+        id="lettre"
+        tone="brume"
+        label={fr ? 'Recevoir nos publications' : 'Receive our insights'}
+        gloss={fr ? 'Un message par mois au plus' : 'One email a month at most'}
+      >
+        <p className="max-w-[52ch]">
+          {fr
+            ? 'Notes juridiques et alertes OHADA, UEMOA et fiscalité, envoyées par le cabinet.'
+            : 'Legal notes and OHADA, WAEMU and tax alerts, sent by the firm.'}
+        </p>
+        <NewsletterForm locale={locale} />
+      </Section>
     </>
   );
 }

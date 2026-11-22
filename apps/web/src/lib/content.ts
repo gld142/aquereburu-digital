@@ -35,3 +35,13 @@ export function formatDate(iso: string, locale: Locale) {
     year: 'numeric',
   }).format(new Date(iso));
 }
+
+/** Première phrase d'un texte, pour les descriptions courtes du répertoire. */
+export function premierePhrase(s: string) {
+  return s.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? s;
+}
+
+/** Initiale sans accent, en capitale : « Énergie » se range à E. */
+export function initiale(s: string) {
+  return fold(s).charAt(0).toUpperCase();
+}

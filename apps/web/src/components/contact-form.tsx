@@ -4,6 +4,7 @@ import { useId, useState } from 'react';
 import { Link } from '@/i18n/routing';
 import type { Locale } from '@/content/site';
 import { useSubmit } from '@/lib/submit';
+import { Fleche } from './ui';
 
 export function ContactForm({
   locale,
@@ -22,21 +23,21 @@ export function ContactForm({
 
   if (state.status === 'sent') {
     return (
-      <div role="status" className="rounded-[10px] bg-paper-2 p-8">
+      <div role="status" className="panneau">
         <p className="t-h3">{fr ? 'Message envoyé' : 'Message sent'}</p>
-        <p className="t-body mt-3 text-[1.0625rem] text-ink-2">
+        <p className="mt-3">
           {fr
             ? 'Le cabinet a bien reçu votre message. Un avocat vous répondra à l’adresse indiquée.'
             : 'The firm has received your message. A lawyer will reply to the address you gave.'}
         </p>
-        <button type="button" onClick={reset} className="link t-ui mt-6">
+        <button type="button" onClick={reset} className="lien mt-6">
           {fr ? 'Écrire un autre message' : 'Write another message'}
         </button>
       </div>
     );
   }
 
-  const label = 't-small mb-1.5 block text-ink-2';
+  const label = 'etiq';
 
   return (
     <form
@@ -71,7 +72,7 @@ export function ContactForm({
               ['candidature', fr ? 'Candidature' : 'Application'],
             ] as const
           ).map(([value, text]) => (
-            <button key={value} type="button" className="chip" aria-pressed={kind === value} onClick={() => setKind(value)}>
+            <button key={value} type="button" className="filtre" aria-pressed={kind === value} onClick={() => setKind(value)}>
               {text}
             </button>
           ))}
@@ -133,19 +134,19 @@ export function ContactForm({
           required
           rows={6}
           maxLength={5000}
-          className="field min-h-40 resize-y"
+          className="field min-h-44 resize-y"
           aria-invalid={invalid('message')}
           aria-describedby={`${id}-message-hint`}
         />
-        <p id={`${id}-message-hint`} className="t-small mt-1.5 text-slate">
+        <p id={`${id}-message-hint`} className="t-small mt-2">
           {fr
             ? 'N’indiquez pas d’informations confidentielles à ce stade : un avocat vous recontactera pour en parler.'
             : 'Do not include confidential information at this stage: a lawyer will contact you to discuss it.'}
         </p>
       </div>
       <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
-      <label className="t-small flex items-start gap-2.5 text-ink-2 sm:col-span-2">
-        <input type="checkbox" name="consent" required className="mt-[3px] size-4 accent-[var(--color-ink)]" />
+      <label className="flex items-start gap-3 text-[16px] sm:col-span-2">
+        <input type="checkbox" name="consent" required className="coche" />
         <span>
           {fr
             ? 'J’accepte que le cabinet utilise ces informations pour répondre à ma demande. '
@@ -157,14 +158,15 @@ export function ContactForm({
       </label>
 
       {state.status === 'error' && (
-        <p role="alert" className="t-ui rounded-md bg-[#fdecea] px-4 py-3 text-[#8a1c12] sm:col-span-2">
+        <p role="alert" className="alerte sm:col-span-2">
           {state.message}
         </p>
       )}
 
       <div className="sm:col-span-2">
-        <button type="submit" className="btn btn-primary" disabled={state.status === 'sending'}>
+        <button type="submit" className="btn" disabled={state.status === 'sending'}>
           {state.status === 'sending' ? (fr ? 'Envoi en cours…' : 'Sending…') : fr ? 'Envoyer le message' : 'Send message'}
+          {state.status !== 'sending' && <Fleche />}
         </button>
       </div>
     </form>

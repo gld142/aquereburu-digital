@@ -1,0 +1,49 @@
+/* Accueil — équipe : la plaque du cabinet et la fiche qui s'ouvre à côté.
+   Porté depuis maquettes/i.html. Importé dans la couche « maquette » (voir globals.css).
+   La fiche s'appelle ici .fiche2 (dans la maquette : .fiche) : le vrai site a déjà une classe .fiche
+   pour les pages de lecture. */
+
+.assoc2 { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(22px, 3.4vw, 56px); align-items: stretch; }
+
+/* ——— La plaque : les noms sont gravés, leur ombre suit la lumière du curseur (--lx2, --ly2) */
+.plaque2 { --c: 34px; --lx2: -0.707; --ly2: -0.707; display: flex; flex-direction: column; padding: clamp(26px, 3vw, 46px); background: linear-gradient(158deg, #1d3753 0%, #132739 52%, #0f1d2b 100%); color: #e9f0f7; }
+.plaque2 h2 { color: #fff; font-size: clamp(26px, 2.6vw, 38px); }
+.plaque2 .grave { text-shadow: calc(var(--lx2) * 1.1px) calc(var(--ly2) * 1.1px) 0 rgba(2, 8, 14, 0.8), calc(var(--lx2) * -1.1px) calc(var(--ly2) * -1.1px) 0 rgba(150, 185, 222, 0.3); }
+.pl-liste { margin: clamp(20px, 2.6vw, 34px) 0; border-top: 3px double rgba(159, 187, 216, 0.42); }
+.pl-liste button { position: relative; display: block; width: 100%; text-align: left; padding: 18px 0; border-bottom: 1px solid rgba(159, 187, 216, 0.22); color: #b9c9da; cursor: pointer; transition: padding-left 0.45s var(--ease), color 0.25s; }
+.pl-liste button::before { content: ''; position: absolute; left: 0; top: 50%; width: 9px; height: 9px; margin-top: -5px; background: #9fbbd8; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); opacity: 0; transition: opacity 0.3s; }
+.pl-liste button:hover { color: #fff; }
+.pl-liste button[aria-selected='true'] { padding-left: 24px; color: #fff; }
+.pl-liste button[aria-selected='true']::before { opacity: 1; }
+.pl-liste button:focus-visible { outline: none; box-shadow: inset 0 0 0 2px #9fbbd8; }
+.pl-n { display: block; font: 600 clamp(20px, 2vw, 28px) / 1.2 var(--serif); letter-spacing: 0.012em; }
+.pl-r { display: block; margin-top: 3px; font-size: 15px; color: #9db7d3; text-shadow: none; }
+.pl-b { margin-top: auto; font: italic 400 16px var(--serif); color: #9db7d3; }
+.plaque2 .lien { align-self: flex-start; margin-top: 14px; color: #dbe6f2; }
+.plaque2 .lien:hover { color: #fff; }
+
+/* ——— Les fiches : empilées dans la même case, la zone garde la hauteur de la plus longue,
+   rien ne saute quand on change d'associé */
+.fiches { display: grid; min-width: 0; }
+.fiches > .fiche2 { grid-area: 1 / 1; }
+.fiches > .fiche2[inert] { visibility: hidden; }
+.fiche2 { display: grid; grid-template-columns: minmax(0, 236px) minmax(0, 1fr); gap: clamp(18px, 2.6vw, 40px); align-items: start; min-width: 0; }
+.fiche2:focus-visible { outline: none; }
+.fiche2 .pp { --c: 26px; aspect-ratio: 4 / 5; overflow: hidden; background: #e8eef5; }
+.fiche2 .pp img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 12%; }
+.fiche2 h3 { font-size: clamp(24px, 2.3vw, 32px); line-height: 1.14; }
+.fiche2 .role { margin: 4px 0 14px; font: italic 400 17px var(--serif); color: var(--bleu-f); }
+.fiche2 .bio { font: 400 16.5px/1.6 var(--serif); }
+.fiche2 dl { margin: 18px 0 20px; border-top: 3px double var(--marine); }
+.fiche2 dl > div { display: grid; grid-template-columns: 8.6em minmax(0, 1fr); gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--trait); font-size: 16px; }
+.fiche2 dt { color: var(--gris); }
+.fiche2 dd { margin: 0; }
+
+@media (max-width: 1080px) {
+  .assoc2 { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 620px) {
+  .fiche2 { grid-template-columns: minmax(0, 1fr); }
+  .fiche2 .pp { max-width: 220px; }
+  .fiche2 dl > div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+}

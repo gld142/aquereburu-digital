@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
-import { PageHead } from '@/components/ui';
+import { PageHead, Section } from '@/components/ui';
 import { ContactForm } from '@/components/contact-form';
 import { firm, type Locale } from '@/content/site';
 
@@ -54,59 +54,59 @@ export default async function CareersPage({ params }: { params: Promise<{ locale
         crumbs={[{ label: fr ? 'Carrières' : 'Careers' }]}
       />
 
-      <section aria-labelledby="profils" className="shell grid gap-x-10 gap-y-8 py-16 md:grid-cols-12 md:py-24">
-        <h2 id="profils" className="t-h2 md:col-span-4">
-          {fr ? 'Qui nous recrutons' : 'Who we recruit'}
-        </h2>
-        <ul className="border-t border-ink md:col-span-8">
+      <Section
+        id="profils"
+        heading
+        label={fr ? 'Qui nous recrutons' : 'Who we recruit'}
+        gloss={fr ? 'Candidatures étudiées toute l’année' : 'Applications reviewed all year round'}
+      >
+        <ul className="rangs max-w-[52rem]">
           {profiles.map(([t, d]) => (
-            <li key={t} className="grid gap-2 border-b border-rule py-5 sm:grid-cols-3 sm:gap-6">
-              <p className="t-h3 text-[1.125rem]">{t}</p>
-              <p className="t-body text-[1.0625rem] text-ink-2 sm:col-span-2">{d}</p>
+            <li key={t} className="grid gap-x-6 gap-y-1 sm:grid-cols-3">
+              <p className="t-h3">{t}</p>
+              <p className="sm:col-span-2">{d}</p>
             </li>
           ))}
         </ul>
-        <p className="t-small text-slate md:col-span-8 md:col-start-5">
+        <p className="t-small mt-5">
           {fr
             ? 'Aucune offre n’est publiée en ce moment. Les candidatures spontanées sont étudiées toute l’année.'
             : 'No vacancies are advertised at the moment. Speculative applications are reviewed all year round.'}
         </p>
-      </section>
+      </Section>
 
-      <section aria-labelledby="processus" className="bg-paper-2">
-        <div className="shell py-16 md:py-24">
-          <h2 id="processus" className="t-h2">
-            {fr ? 'Le processus de recrutement' : 'How we recruit'}
-          </h2>
-          <ol className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-            {steps.map(([t, d], i) => (
-              <li key={t} className="border-t border-ink pt-5">
-                <p className="semiwide font-sans text-[2rem] font-[300] leading-none tabular-nums text-slate">{i + 1}</p>
-                <p className="t-h3 mt-5">{t}</p>
-                <p className="t-body mt-2 text-[1.0625rem] text-ink-2">{d}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
+      <Section
+        id="processus"
+        heading
+        tone="brume"
+        label={fr ? 'Le processus de recrutement' : 'How we recruit'}
+        gloss={fr ? 'Quatre étapes' : 'Four steps'}
+      >
+        <ol className="etapes">
+          {steps.map(([t, d], i) => (
+            <li key={t}>
+              <span className="num" aria-hidden="true">
+                {i + 1}
+              </span>
+              <p className="t-h3 mt-4">{t}</p>
+              <p className="mt-2 text-[16px]">{d}</p>
+            </li>
+          ))}
+        </ol>
+      </Section>
 
-      <section aria-labelledby="postuler" className="shell grid gap-x-10 gap-y-10 py-16 md:grid-cols-12 md:py-24">
-        <div className="md:col-span-4">
-          <h2 id="postuler" className="t-h2">
-            {fr ? 'Postuler' : 'Apply'}
-          </h2>
-          <p className="t-body mt-4 text-[1.0625rem] text-ink-2">
-            {fr ? 'Envoyez votre CV en pièce jointe à ' : 'Send your CV as an attachment to '}
-            <a className="link" href={`mailto:${firm.email}?subject=${encodeURIComponent(fr ? 'Candidature' : 'Application')}`}>
-              {firm.email}
-            </a>
-            {fr ? ', ou présentez-vous ici.' : ', or introduce yourself here.'}
-          </p>
-        </div>
-        <div className="md:col-span-7 md:col-start-6">
+      <Section id="postuler" heading label={fr ? 'Postuler' : 'Apply'} gloss={fr ? 'Candidature spontanée' : 'Speculative application'}>
+        <p className="mb-8 max-w-[62ch]">
+          {fr ? 'Envoyez votre CV en pièce jointe à ' : 'Send your CV as an attachment to '}
+          <a className="link" href={`mailto:${firm.email}?subject=${encodeURIComponent(fr ? 'Candidature' : 'Application')}`}>
+            {firm.email}
+          </a>
+          {fr ? ', ou présentez-vous ici.' : ', or introduce yourself here.'}
+        </p>
+        <div className="max-w-[46rem]">
           <ContactForm locale={locale} practiceOptions={[]} defaultKind="candidature" />
         </div>
-      </section>
+      </Section>
     </>
   );
 }

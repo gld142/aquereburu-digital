@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>F. Associés — Aquereburu &amp; Partners</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Newsreader:ital,opsz,wght@1,6..72,400&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="shared.css" />
+    <style>
+      :root {
+        --ink: #0b0e13;
+        --slate: #111721;
+        --card: #161d29;
+        --white: #f4f5f7;
+        --mute: #98a2b3;
+        --line: rgba(244, 245, 247, 0.12);
+        --accent: #b4c2de;
+        --sans: 'Hanken Grotesk', system-ui, sans-serif;
+        --serif: 'Newsreader', Georgia, serif;
+        --pad: clamp(20px, 4.2vw, 68px);
+        --mnav-bg: var(--ink);
+        --mnav-fg: var(--white);
+        --focus: var(--accent);
+      }
+      body { background: var(--ink); color: var(--white); font-family: var(--sans); font-size: 16.5px; line-height: 1.55; }
+      .cap { font: 500 12.5px/1.3 var(--sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute); }
+
+      .top { position: sticky; top: 0; z-index: 60; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 16px var(--pad); background: rgba(11, 14, 19, 0.9); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+      .logo { font: 600 17px/1 var(--sans); letter-spacing: -0.02em; white-space: nowrap; padding-block: 10px; }
+      .logo span { color: var(--accent); font-weight: 400; }
+      .top nav { display: flex; gap: clamp(16px, 2.2vw, 34px); font-size: 14.5px; color: #c9d0db; }
+      .top nav a { padding: 6px 0; transition: color 0.2s; }
+      .top nav a:hover { color: var(--white); }
+      .top .r { display: flex; align-items: center; gap: 18px; font-size: 14.5px; }
+      .top .r > a:not(.btn) { padding: 8px 4px; }
+      .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 20px; border-radius: 6px; font: 500 14.5px var(--sans); background: var(--white); color: var(--ink); transition: background 0.25s; white-space: nowrap; }
+      .btn:hover { background: var(--accent); }
+      .btn.o { background: transparent; color: var(--white); border: 1px solid rgba(244, 245, 247, 0.3); }
+      .btn.o:hover { border-color: var(--white); background: transparent; }
+      .menu-btn { font: 500 14.5px var(--sans); }
+
+      .hero { display: grid; grid-template-columns: repeat(12, 1fr); gap: clamp(20px, 2.6vw, 44px); padding: clamp(44px, 6vw, 96px) var(--pad) clamp(40px, 5vw, 80px); align-items: center; }
+      .ht { grid-column: 1 / 7; }
+      h1 { font: 600 clamp(36px, 4.7vw, 80px) / 1 var(--sans); letter-spacing: -0.04em; margin: 20px 0 26px; }
+      .ht p.i { font-size: clamp(16.5px, 1.3vw, 19.5px); line-height: 1.55; color: #c9d0db; max-width: 50ch; }
+      .acts { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+      .hp { grid-column: 7 / 13; margin: 0; }
+      .frame { aspect-ratio: 1266 / 810; overflow: hidden; border-radius: 4px; background: var(--card); }
+      .frame img { width: 100%; height: 106%; object-fit: cover; object-position: 50% 30%; }
+      .hp figcaption { display: flex; justify-content: space-between; gap: 12px; padding-top: 12px; font-size: 13px; color: var(--mute); }
+
+      .facts { display: grid; grid-template-columns: repeat(4, 1fr); margin: 0 var(--pad); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+      .facts li { padding: clamp(20px, 2.4vw, 34px) clamp(14px, 2vw, 28px); }
+      .facts li:first-child { padding-left: 0; }
+      .facts li + li { border-left: 1px solid var(--line); }
+      .facts b { display: block; font: 600 clamp(30px, 3.4vw, 56px) / 1 var(--sans); letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+      .facts span { display: block; margin-top: 8px; font-size: 14px; color: var(--mute); }
+
+      .sec { padding: clamp(80px, 10vw, 150px) var(--pad); }
+      .sec.s { background: var(--slate); }
+      .sh { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 18px 40px; margin-bottom: clamp(34px, 4.6vw, 64px); }
+      .sh h2 { font: 600 clamp(28px, 3.8vw, 60px) / 1.02 var(--sans); letter-spacing: -0.035em; max-width: 16ch; margin-top: 12px; }
+      .sh a { font-size: 14.5px; border-bottom: 1px solid var(--accent); padding-bottom: 3px; }
+
+      .grid { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+      .grid a { display: grid; grid-template-columns: 1fr auto; gap: 6px 20px; padding: clamp(20px, 2.2vw, 32px); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); transition: background 0.3s; }
+      .grid a:hover { background: var(--card); }
+      .grid b { grid-column: 1; font: 600 clamp(18px, 1.6vw, 24px) / 1.2 var(--sans); letter-spacing: -0.02em; }
+      .grid p { grid-column: 1; font-size: 14.5px; color: var(--mute); }
+      .grid svg { grid-column: 2; grid-row: 1 / 3; align-self: center; width: 22px; height: 22px; color: var(--mute); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s; }
+      .grid a:hover svg { transform: translate(4px, -4px); color: var(--accent); }
+
+      .motto { padding: clamp(80px, 11vw, 170px) var(--pad); text-align: center; border-top: 1px solid var(--line); }
+      .motto p { font: italic 400 clamp(30px, 4.6vw, 76px) / 1.1 var(--serif); letter-spacing: -0.015em; max-width: 20ch; margin: 0 auto; }
+      .motto > small { display: block; margin-top: 22px; font-size: 14px; color: var(--mute); }
+
+      .team { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(14px, 1.8vw, 28px); }
+      .team a { display: grid; grid-template-columns: 96px 1fr; gap: 18px; align-items: center; padding: 18px; background: var(--card); border: 1px solid var(--line); border-radius: 6px; transition: border-color 0.3s; }
+      .team a:hover { border-color: var(--accent); }
+      .team img { width: 96px; height: 112px; object-fit: cover; object-position: 50% 10%; border-radius: 3px; background: #2a3342; }
+      .team b { display: block; font: 600 17.5px/1.25 var(--sans); letter-spacing: -0.015em; }
+      .team span { font-size: 14px; color: var(--mute); }
+
+      .tl { display: grid; grid-template-columns: repeat(5, 1fr); border-top: 1px solid var(--accent); }
+      .tl li { padding: 22px clamp(10px, 1.4vw, 22px) 0 0; position: relative; }
+      .tl li::before { content: ''; position: absolute; left: 0; top: -5px; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); }
+      .tl time { font: 600 clamp(24px, 2.4vw, 38px) / 1 var(--sans); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+      .tl p { margin: 12px 0 8px; font-size: 15.5px; line-height: 1.45; }
+      .tl span { font-size: 13.5px; color: var(--mute); }
+
+      .offs { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); }
+      .offs > div { padding: clamp(22px, 2.6vw, 40px) clamp(14px, 2vw, 30px) 0; }
+      .offs > div:first-child { padding-left: 0; }
+      .offs > div + div { border-left: 1px solid var(--line); }
+      .offs h3 { font: 600 clamp(22px, 2.2vw, 32px) / 1.1 var(--sans); letter-spacing: -0.03em; }
+      .offs .t { font-size: 13.5px; color: var(--accent); margin: 6px 0 14px; font-variant-numeric: tabular-nums; }
+      .offs address, .offs p { font-size: 15px; line-height: 1.6; color: #c9d0db; }
+      .foot { margin-top: clamp(60px, 8vw, 120px); padding: 20px 0 70px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 13px; color: var(--mute); }
+
+      @media (max-width: 960px) {
+        .top nav, .top .r .btn, .top .r > a { display: none; }
+        .ht, .hp { grid-column: 1 / -1; }
+        .facts { grid-template-columns: 1fr 1fr; }
+        .facts li { padding-left: 0; }
+        .facts li:nth-child(even) { padding-left: 18px; }
+        .facts li:nth-child(3) { border-left: 0; }
+        .facts li:nth-child(n + 3) { border-top: 1px solid var(--line); }
+        .grid, .team, .offs { grid-template-columns: 1fr; }
+        .tl { grid-template-columns: 1fr; border-top: 0; border-left: 1px solid var(--accent); }
+        .tl li { padding: 0 0 26px 22px; }
+        .tl li::before { left: -5px; top: 6px; }
+        .offs > div { padding-left: 0; }
+        .offs > div + div { border-left: 0; border-top: 1px solid var(--line); margin-top: 24px; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <a class="logo" href="#" aria-label="Aquereburu &amp; Partners, accueil">Aquereburu <span>&amp;</span> Partners</a>
+      <nav aria-label="Navigation principale"><a href="#expertises">Expertises</a><a href="#equipe">Équipe</a><a href="#distinctions">Distinctions</a><a href="#bureaux">Bureaux</a></nav>
+      <div class="r"><a href="#" lang="en">EN</a><a class="btn" href="#bureaux">Prendre rendez-vous</a><button class="menu-btn" data-menu aria-expanded="false" aria-controls="mnav">Menu</button></div>
+    </header>
+    <nav class="mnav" id="mnav" aria-label="Menu">
+      <a href="#expertises">Expertises</a><a href="#equipe">Équipe</a><a href="#distinctions">Distinctions</a><a href="#bureaux">Bureaux</a>
+      <button class="cap" data-menu style="margin-top: 28px; text-align: left">Fermer</button>
+    </nav>
+
+    <main>
+      <section class="hero" data-intro>
+        <div class="ht">
+          <p class="cap">Société d’avocats, depuis 1987</p>
+          <h1 data-split>Construire demain en s’inspirant d’hier.</h1>
+          <p class="i">Nous conseillons et défendons entreprises, investisseurs et États en droit des affaires OHADA, arbitrage, propriété intellectuelle et financement de projets, depuis Lomé, Paris et Cotonou.</p>
+          <div class="acts"><a class="btn" href="#bureaux">Prendre rendez-vous</a><a class="btn o" href="#expertises">Voir nos expertises</a></div>
+        </div>
+        <figure class="hp">
+          <div class="frame"><img src="img2/associes-nb.webp" width="1266" height="810" alt="Deux associés du cabinet" fetchpriority="high" /></div>
+          <figcaption><span>Les associés du cabinet</span><span>Barreau du Togo</span></figcaption>
+        </figure>
+      </section>
+
+      <ul class="facts" data-stagger>
+        <li><b>1987</b><span>Fondation à Lomé</span></li>
+        <li><b>3</b><span>Bureaux : Lomé, Paris, Cotonou</span></li>
+        <li><b>24</b><span>Domaines d’expertise</span></li>
+        <li><b>ISO 9001</b><span>Certification qualité, version 2015</span></li>
+      </ul>
+
+      <section class="sec" id="expertises">
+        <div class="sh"><div><p class="cap">Expertises</p><h2 data-split>Du conseil au contentieux.</h2></div><a href="#">Les 24 domaines</a></div>
+        <div class="grid" data-stagger>
+          <a href="#"><b>Arbitrage</b><p>CCJA, CCI, CIRDI, de la clause à l’exécution</p><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10" /></svg></a>
+          <a href="#"><b>Corporate et droit OHADA</b><p>Sociétés, gouvernance, fusions et acquisitions</p><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10" /></svg></a>
+          <a href="#"><b>Propriété intellectuelle</b><p>Mandataire agréé auprès de l’OAPI</p><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10" /></svg></a>
+          <a href="#"><b>Financement de projets</b><p>Infrastructures, énergie, partenariats public-privé</p><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10" /></svg></a>
+          <a href="#"><b>Contentieux des affaires</b><p>Juridictions nationales et internationales</p><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10" /></svg></a>
+          <a href="#"><b>Banque et finance</b><p>Financements, sûretés, conformité</p><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10" /></svg></a>
+          <a href="#"><b>Énergie et ressources naturelles</b><p>Pétrole, gaz, mines, renouvelables</p><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10" /></svg></a>
+          <a href="#"><b>Droit public et marchés publics</b><p>Concessions, commande publique</p><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10" /></svg></a>
+        </div>
+      </section>
+
+      <div class="motto"><p data-scrubtext>« Le droit se gagne avant l’audience : dans la clause que l’on rédige et dans le risque que l’on voit venir. »</p><small>La conviction du cabinet depuis 1987</small></div>
+
+      <section class="sec s" id="equipe">
+        <div class="sh"><div><p class="cap">Équipe</p><h2 data-split>Trois associés, quatorze professionnels.</h2></div><a href="#">Toute l’équipe</a></div>
+        <div class="team" data-stagger>
+          <a href="#"><img src="img2/p-aquereburu.webp" width="534" height="667" alt="" loading="lazy" /><div><b>Coffi Alexis Aquereburu</b><span>Associé fondateur</span></div></a>
+          <a href="#"><img src="img2/p-adama.webp" width="195" height="222" alt="" loading="lazy" /><div><b>Claude Folly Adama</b><span>Associé, banque, finance et fiscalité</span></div></a>
+          <a href="#"><img src="img2/p-bakoh.webp" width="258" height="342" alt="" loading="lazy" /><div><b>Kossi Apow Bakoh</b><span>Associé, droit social et pénal</span></div></a>
+        </div>
+      </section>
+
+      <section class="sec" id="distinctions">
+        <div class="sh"><div><p class="cap">Distinctions</p><h2 data-split>Reconnu, année après année.</h2></div></div>
+        <ol class="tl" data-stagger>
+          <li><time datetime="2010">2010</time><p>Prix d’excellence qualité du Togo et de l’UEMOA</p><span>UEMOA</span></li>
+          <li><time datetime="2016">2016</time><p>World Quality Commitment, catégorie Or</p><span>BID, Paris</span></li>
+          <li><time datetime="2017">2017</time><p>Meilleure société d’avocats d’affaires au Togo</p><span>Lawyer Monthly</span></li>
+          <li><time datetime="2019">2019</time><p>Première société d’avocats en propriété intellectuelle au Togo</p><span>Global Law Expert</span></li>
+          <li><time datetime="2019">2019</time><p>Certification ISO 9001, version 2015</p><span>AFAQ</span></li>
+        </ol>
+      </section>
+
+      <section class="sec s" id="bureaux">
+        <div class="sh"><div><p class="cap">Bureaux</p><h2 data-split>Trois villes, une équipe.</h2></div><a class="btn" href="#">Écrire au cabinet</a></div>
+        <div class="offs" data-stagger>
+          <div><h3>Lomé</h3><p class="t">Siège, <span data-tz="Africa/Lome">--:--</span> heure locale</p><address>777, avenue Kléber Dadjo<br />08 BP 8989, Lomé, Togo<br /><a href="tel:+22822210505">+228 22 21 05 05</a></address></div>
+          <div><h3>Paris</h3><p class="t">Bureau, <span data-tz="Europe/Paris">--:--</span> heure locale</p><address>23, rue de la Victoire<br />75009 Paris, France</address></div>
+          <div><h3>Cotonou</h3><p class="t">Bureau, <span data-tz="Africa/Porto-Novo">--:--</span> heure locale</p><p>Bénin<br />Sur rendez-vous</p></div>
+        </div>
+        <div class="foot"><span>SCP Aquereburu &amp; Partners, société civile professionnelle d’avocats inscrite au Barreau du Togo.</span><span>Mentions légales · Confidentialité · Déontologie</span></div>
+      </section>
+    </main>
+
+    <a class="back" href="index.html">← Toutes les maquettes</a>
+
+    <script src="vendor/gsap.min.js"></script>
+    <script src="vendor/ScrollTrigger.min.js"></script>
+    <script src="vendor/lenis.min.js"></script>
+    <script src="shared.js"></script>
+    <script>
+      const tick = () => document.querySelectorAll('[data-tz]').forEach((e) => (e.textContent = new Intl.DateTimeFormat('fr-FR', { hour: '2-digit', minute: '2-digit', timeZone: e.dataset.tz }).format(new Date())));
+      tick();
+      setInterval(tick, 20000);
+      window.addEventListener('intro', () => {
+        if (REDUCE) return;
+        gsap.from('.hero h1 .wi', { yPercent: 118, duration: 1.2, ease: 'expo.out', stagger: 0.045 });
+        gsap.fromTo('.frame', { clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0% 0)', duration: 1.5, ease: 'expo.inOut', delay: 0.1 });
+        gsap.from('.frame img', { scale: 1.2, duration: 2.2, ease: 'expo.out', delay: 0.1 });
+        gsap.from('.ht .cap, .ht p.i, .ht .acts, .hp figcaption', { opacity: 0, y: 14, duration: 0.9, ease: 'expo.out', stagger: 0.06, delay: 0.45 });
+      });
+      if (!REDUCE) gsap.to('.frame img', { yPercent: -7, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+    </script>
+  </body>
+</html>

@@ -1,7 +1,6 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Search } from 'lucide-react';
 import { Link } from '@/i18n/routing';
 import type { Locale } from '@/content/site';
 import type { Role } from '@/content/people';
@@ -63,15 +62,18 @@ export function TeamDirectory({
   return (
     <div>
       <div className="grid gap-3 md:grid-cols-12">
-        <label className="relative block md:col-span-5">
+        <label className="champ-icone md:col-span-5">
           <span className="sr-only">{fr ? 'Rechercher une personne' : 'Search people'}</span>
-          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate" aria-hidden />
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+            <circle cx="11" cy="11" r="6.5" />
+            <path d="m16 16 4.5 4.5" />
+          </svg>
           <input
             type="search"
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder={fr ? 'Nom ou domaine' : 'Name or practice'}
-            className="field pl-9"
+            className="field"
           />
         </label>
         <label className="md:col-span-4">
@@ -95,40 +97,42 @@ export function TeamDirectory({
         </label>
       </div>
       <div className="mt-4 flex flex-wrap items-center gap-2" role="group" aria-label={fr ? 'Filtrer par fonction' : 'Filter by role'}>
-        <button type="button" className="chip" aria-pressed={role === null} onClick={() => setRole(null)}>
+        <button type="button" className="filtre" aria-pressed={role === null} onClick={() => setRole(null)}>
           {fr ? 'Tout le monde' : 'Everyone'}
         </button>
         {roleFilters.map((r) => (
-          <button key={r.id} type="button" className="chip" aria-pressed={role === r.id} onClick={() => setRole(r.id)}>
+          <button key={r.id} type="button" className="filtre" aria-pressed={role === r.id} onClick={() => setRole(r.id)}>
             {r[locale]}
           </button>
         ))}
-        <span className="t-small ml-auto text-slate" aria-live="polite">
+        <span className="t-glose ml-auto" aria-live="polite">
           {visible.length} {fr ? (visible.length > 1 ? 'personnes' : 'personne') : visible.length > 1 ? 'people' : 'person'}
         </span>
       </div>
 
       {visible.length === 0 ? (
-        <div className="mt-10 border-t border-rule py-12">
-          <p className="t-ui">{fr ? 'Personne ne correspond à ces critères.' : 'Nobody matches these criteria.'}</p>
-          <button type="button" className="link t-ui mt-2 text-accent" onClick={clear}>
+        <div className="filet mt-10 py-10">
+          <p className="t-h3">{fr ? 'Personne ne correspond à ces critères.' : 'Nobody matches these criteria.'}</p>
+          <button type="button" className="lien mt-4" onClick={clear}>
             {fr ? 'Effacer les filtres' : 'Clear filters'}
           </button>
         </div>
       ) : (
-        <ul className="mt-10 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        <ul className="annuaire mt-10">
           {visible.map((p) => {
             const body = (
               <>
-                <Portrait src={p.photo} name={p.name} sizes="(min-width: 1280px) 18vw, (min-width: 768px) 30vw, 50vw" />
-                <p className="t-ui mt-3 font-medium text-ink group-hover:text-accent">{p.name}</p>
-                <p className="t-small mt-0.5 text-slate">{p.title}</p>
+                <Portrait src={p.photo} name={p.name} sizes="(min-width: 1081px) 220px, (min-width: 861px) 30vw, 45vw" />
+                <div className="plaque">
+                  <b>{p.name}</b>
+                  <span>{p.title}</span>
+                </div>
               </>
             );
             return (
               <li key={p.slug}>
                 {p.hasProfile ? (
-                  <Link href={{ pathname: '/equipe/[slug]', params: { slug: p.slug } }} className="group block">
+                  <Link href={{ pathname: '/equipe/[slug]', params: { slug: p.slug } }} className="block">
                     {body}
                   </Link>
                 ) : (

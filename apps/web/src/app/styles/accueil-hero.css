@@ -1,0 +1,511 @@
+/* Accueil — hero : frontispice et dessin à la plume du wharf.
+   Porté depuis maquettes/i.html. Importé dans la couche « maquette » (voir globals.css). */
+
+/* Rayon de l'apparition de l'encre : déclaré pour pouvoir être animé */
+@property --hd-o {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 140%;
+}
+
+/* ——— Le cadre : le blanc partout, le dessin en fond à droite, le frontispice au centre */
+.hero {
+  /* cadrage du dessin : fichiers, voile de gauche, largeur, débord à droite, foyer de l'apparition, vol des oiseaux */
+  --hd-img: url(/images/dessin/plume-wharf.webp);
+  --hd-img-m: url(/images/dessin/plume-wharf-1280.webp);
+  --hd-voile: linear-gradient(90deg, transparent 0, rgba(0, 0, 0, 0.5) 20%, #000 44%);
+  --hd-w: max(1080px, min(92vw, 152svh));
+  --hd-debord: 0.152;
+  --hd-cx: 62%;
+  --hd-cy: 66%;
+  --hd-m: -55vw;
+  --hd-bas: -44px;
+  --vx0: 960px;
+  --vy0: 400px;
+  --vx1: 1420px;
+  --vy1: 190px;
+  position: relative;
+  color: var(--texte);
+  background: #fff;
+  overflow: clip;
+}
+.hero .shell {
+  position: relative;
+  z-index: 2;
+  padding-top: clamp(28px, 5vh, 58px);
+  padding-bottom: clamp(150px, 13vw, 190px);
+  min-height: clamp(600px, calc(100svh - 125px), 840px);
+}
+.hero-in {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* la ligne d'identité : capitales à empattements, espacées, comme le nom du cabinet dans son logo */
+.hero .sur {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin-bottom: clamp(18px, 2.2vw, 30px);
+  font: 600 clamp(12.5px, 0.98vw, 14.5px) / 1.3 var(--serif);
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  color: var(--marine);
+}
+.hero .sur::before,
+.hero .sur::after {
+  content: '';
+  flex: 0 0 clamp(28px, 4.4vw, 64px);
+  height: 0;
+  border-top: 3px double var(--marine);
+}
+.hero .sur::before {
+  margin-right: 4px;
+}
+.hero .sur::after {
+  margin-left: 4px;
+}
+.hero .sur i,
+.hero .orn i {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  background: var(--bleu);
+  transform: rotate(45deg);
+}
+/* l'ornement : un filet, un losange, un filet */
+.hero .orn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 0 0 clamp(18px, 2.2vw, 28px);
+}
+.hero .orn::before,
+.hero .orn::after {
+  content: '';
+  flex: 0 0 clamp(40px, 6vw, 84px);
+  height: 1px;
+  background: var(--marine);
+  opacity: 0.55;
+}
+
+/* la devise ; sa seconde ligne en italique */
+.hero h1 {
+  color: var(--marine);
+  font-weight: 600;
+  font-size: clamp(38px, 5.6vw, 96px);
+  line-height: 1.04;
+  letter-spacing: -0.024em;
+  margin-bottom: clamp(18px, 2.2vw, 28px);
+}
+.hero h1 em {
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.016em;
+  color: var(--bleu-f);
+}
+/* chaque mot monte derrière son masque (ouverture, plus bas) */
+.hero h1 .w {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+/* l'italique déborde un peu à droite : le masque lui laisse la place */
+.hero h1 em .w {
+  padding-right: 0.08em;
+  margin-right: -0.08em;
+}
+.hero h1 .wi {
+  display: inline-block;
+}
+
+.hero-col {
+  max-width: min(920px, 90vw);
+}
+/* la première phrase, seule ; le nom du cabinet en capitales espacées, comme celui d'une partie dans un acte */
+.hero p.ch {
+  font: 400 clamp(19px, 1.62vw, 23.5px) / 1.4 var(--serif);
+  color: var(--marine);
+  text-wrap: balance;
+}
+.hero p.ch b {
+  font-weight: 600;
+  font-size: 0.8em;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+.hero p.ch2 {
+  max-width: 80ch;
+  margin: 10px auto 0;
+  font: 400 clamp(16px, 1.18vw, 17.5px) / 1.6 var(--sans);
+  color: var(--texte);
+  text-wrap: balance;
+}
+.hero .acts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 18px 34px;
+  margin-top: clamp(24px, 2.8vw, 38px);
+}
+.hero .acts .btn {
+  flex: 0 0 auto;
+  min-height: 58px;
+  font-size: 13.5px;
+}
+
+/* ——— Le dessin à la plume, à l'encre bleu marine */
+.hero-dessin {
+  position: absolute;
+  z-index: 1;
+  right: calc(var(--hd-w) * var(--hd-debord) * -1);
+  bottom: var(--hd-bas, 0px);
+  width: var(--hd-w);
+  margin: 0;
+  pointer-events: none;
+}
+/* le blanc partout, sauf autour de la scène : un lavis bleu qui s'éteint dans le papier, plus dense sur l'horizon */
+.hero-dessin::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -16% -6% 0 -30%;
+  background:
+    radial-gradient(ellipse 46% 15% at calc(var(--hd-cx) * 0.74 + 23%) calc(var(--hd-cy) * 0.86 + 7%), rgba(176, 200, 227, 0.5) 0, rgba(176, 200, 227, 0) 100%),
+    radial-gradient(
+      ellipse 44% 60% at calc(var(--hd-cx) * 0.74 + 27%) calc(var(--hd-cy) * 0.86 + 4%),
+      rgba(203, 219, 237, 0.88) 0,
+      rgba(219, 230, 242, 0.6) 36%,
+      rgba(236, 242, 248, 0.3) 62%,
+      rgba(255, 255, 255, 0) 82%
+    );
+}
+/* le halo blanc du soleil */
+.hero-dessin::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: 44.1%;
+  top: 61.5%;
+  width: 26%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.96) 0, rgba(255, 255, 255, 0.7) 22%, rgba(255, 255, 255, 0) 68%);
+}
+/* le voile : le dessin se fond dans le papier vers la gauche */
+.hd-cadre {
+  position: relative;
+  -webkit-mask-image: var(--hd-voile);
+  mask-image: var(--hd-voile);
+  will-change: transform;
+}
+/* l'apparition : un cercle qui s'ouvre depuis le cœur de la scène */
+.hd-rev {
+  /* même valeur que la déclaration @property : l'encre reste visible là où @property n'est pas pris en charge */
+  --hd-o: 140%;
+  position: relative;
+  -webkit-mask-image: radial-gradient(circle at var(--hd-cx) var(--hd-cy), #000 var(--hd-o), transparent calc(var(--hd-o) + 24%));
+  mask-image: radial-gradient(circle at var(--hd-cx) var(--hd-cy), #000 var(--hd-o), transparent calc(var(--hd-o) + 24%));
+}
+/* l'encre est un masque teinté : soutenue au cœur de la scène, elle s'allège et bleuit en s'éloignant.
+   Le trait du soleil en est sorti (le trou du clip-path) : il est rejoué à part, juste dessous. */
+.hd-encre {
+  width: 100%;
+  aspect-ratio: 2048 / 1152;
+  background: radial-gradient(
+    circle at var(--hd-cx) var(--hd-cy),
+    rgba(27, 42, 74, 0.94) 0,
+    rgba(27, 42, 74, 0.86) 8%,
+    rgba(51, 85, 122, 0.6) 24%,
+    rgba(70, 108, 147, 0.42) 52%,
+    rgba(70, 108, 147, 0.33) 100%
+  );
+  -webkit-mask: var(--hd-img) center / 100% 100% no-repeat;
+  mask: var(--hd-img) center / 100% 100% no-repeat;
+  clip-path: polygon(evenodd, 0 0, 100% 0, 100% 100%, 0 100%, 0 0, 40.918% 56.771%, 40.918% 63.802%, 47.754% 63.802%, 47.754% 56.771%, 40.918% 56.771%);
+}
+/* le soleil : son trait, dans une petite boîte, peut s'effacer puis se retracer en suivant le cercle
+   (--sb efface depuis la gauche, --sa retrace). Mesures prises sur le dessin : centre 908 × 722,5, rayon 54,6 */
+.hd-soleil {
+  --sa: 208deg;
+  --sb: 0deg;
+  position: absolute;
+  left: 40.918%;
+  top: 56.771%;
+  width: 6.836%;
+  height: 7.031%;
+  -webkit-mask-image: conic-gradient(from 258deg at 49.99% 84.61%, transparent 0 var(--sb), #000 calc(var(--sb) + 2deg) calc(var(--sa) - 2deg), transparent var(--sa));
+  mask-image: conic-gradient(from 258deg at 49.99% 84.61%, transparent 0 var(--sb), #000 calc(var(--sb) + 2deg) calc(var(--sa) - 2deg), transparent var(--sa));
+}
+.hd-soleil i {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+      circle at var(--hd-cx) var(--hd-cy),
+      rgba(27, 42, 74, 0.94) 0,
+      rgba(27, 42, 74, 0.86) 8%,
+      rgba(51, 85, 122, 0.6) 24%,
+      rgba(70, 108, 147, 0.42) 52%,
+      rgba(70, 108, 147, 0.33) 100%
+    )
+    43.92% 61.064% / 1462.86% 1422.22% no-repeat;
+  -webkit-mask: var(--hd-img) 43.92% 61.064% / 1462.86% 1422.22% no-repeat;
+  mask: var(--hd-img) 43.92% 61.064% / 1462.86% 1422.22% no-repeat;
+}
+/* le trait qui tremble, comme repassé à la main : sur grand écran seulement (la classe est posée et retirée par le script) */
+.hero-dessin.tremble .hd-rev {
+  filter: url(#hd-main-0);
+}
+.hero-dessin.tremble[data-main='1'] .hd-rev {
+  filter: url(#hd-main-1);
+}
+.hero-dessin.tremble[data-main='2'] .hd-rev {
+  filter: url(#hd-main-2);
+}
+/* ce qui vit au-dessus du dessin : un vol d'oiseaux qui traverse le ciel */
+.hd-vie {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  will-change: transform;
+}
+.hd-vie .oiseau {
+  fill: none;
+  stroke: #5b7da3;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: hd-aile 0.84s steps(2, jump-none) infinite alternate;
+}
+.hd-vie .vol {
+  animation: hd-vol 46s linear infinite;
+}
+@keyframes hd-vol {
+  0% {
+    transform: translate(var(--vx0), var(--vy0));
+    opacity: 0;
+  }
+  7% {
+    opacity: 1;
+  }
+  86% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--vx1), var(--vy1));
+    opacity: 0;
+  }
+}
+@keyframes hd-aile {
+  from {
+    transform: scaleY(1);
+  }
+  to {
+    transform: scaleY(0.5);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* sans animation, les oiseaux restent posés en haut du ciel */
+  .hd-vie .vol {
+    transform: translate(var(--vx1), var(--vy1));
+  }
+}
+
+/* ——— Les repères : la légende de la gravure, à même la page, sous un filet double */
+.hero-mentions {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding-top: 16px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0, #fff 16px);
+}
+.hero-mentions ul {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--pad);
+}
+.hero-mentions ul::before {
+  content: '';
+  grid-column: 1 / -1;
+  border-top: 3px double var(--marine);
+}
+.hero-mentions li {
+  padding: 14px clamp(10px, 1.6vw, 24px) clamp(18px, 2vw, 26px);
+  text-align: center;
+}
+.hero-mentions li + li {
+  border-left: 1px solid rgba(27, 42, 74, 0.16);
+}
+.hero-mentions b {
+  display: block;
+  font: 600 clamp(16.5px, 1.36vw, 19.5px) / 1.25 var(--serif);
+  color: var(--marine);
+}
+.hero-mentions span {
+  display: block;
+  margin-top: 3px;
+  font: italic 400 clamp(14px, 1.06vw, 15.5px) / 1.4 var(--serif);
+  color: var(--gris);
+}
+
+/* ——— Ouverture : jouée en CSS, donc dès le premier affichage, sans attendre le script
+   et sans éclair de contenu à l'hydratation. L'encre s'ouvre depuis le cœur de la scène,
+   les mots de la devise montent, le reste se lève. */
+@keyframes hd-apparait {
+  from {
+    --hd-o: -26%;
+  }
+  to {
+    --hd-o: 140%;
+  }
+}
+@keyframes hero-mot {
+  from {
+    transform: translateY(115%);
+  }
+}
+@keyframes hero-leve {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+@keyframes hero-mention {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hd-rev {
+    animation: hd-apparait 3.4s cubic-bezier(0.3, 0, 0.2, 1) 0.2s both;
+  }
+  .hero h1 .wi {
+    animation: hero-mot 1.2s var(--ease) both;
+    animation-delay: calc(0.1s + var(--i, 0) * 60ms);
+  }
+  .hero .sur,
+  .hero .orn,
+  .hero p.ch,
+  .hero p.ch2,
+  .hero .acts {
+    animation: hero-leve 0.9s var(--ease) 0.45s both;
+  }
+  .hero .orn {
+    animation-delay: 0.53s;
+  }
+  .hero p.ch {
+    animation-delay: 0.61s;
+  }
+  .hero p.ch2 {
+    animation-delay: 0.69s;
+  }
+  .hero .acts {
+    animation-delay: 0.77s;
+  }
+  .hero-mentions li {
+    animation: hero-mention 0.9s var(--ease) 0.9s both;
+  }
+  .hero-mentions li:nth-child(2) {
+    animation-delay: 0.97s;
+  }
+  .hero-mentions li:nth-child(3) {
+    animation-delay: 1.04s;
+  }
+  .hero-mentions li:nth-child(4) {
+    animation-delay: 1.11s;
+  }
+}
+
+/* ——— Tablette et téléphone : le texte, puis le dessin en pleine largeur, puis les repères */
+@media (max-width: 1080px) {
+  .hero {
+    --hd-w: 170vw;
+    --hd-bas: 0px;
+    display: flex;
+    flex-direction: column;
+  }
+  .hero .shell {
+    order: 1;
+    min-height: 0;
+    padding-bottom: 0;
+  }
+  .hero-col {
+    max-width: 620px;
+  }
+  .hero h1 {
+    font-size: clamp(34px, 8.6vw, 64px);
+  }
+  .hero .sur {
+    gap: 4px 10px;
+    letter-spacing: 0.13em;
+  }
+  .hero .sur::before,
+  .hero .sur::after {
+    display: none;
+  }
+  .hero .sur i:last-of-type {
+    display: none;
+  }
+  .hero .sur span:last-child {
+    flex-basis: 100%;
+  }
+  .hero-dessin {
+    order: 2;
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: 170vw;
+    max-width: none;
+    margin: 12px 0 0 var(--hd-m);
+  }
+  /* plus de voile à gauche ; fichier allégé (1280 px) */
+  .hd-cadre {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .hd-encre,
+  .hd-soleil i {
+    -webkit-mask-image: var(--hd-img-m);
+    mask-image: var(--hd-img-m);
+  }
+  .hero-mentions {
+    order: 3;
+    position: relative;
+    padding-top: 0;
+    margin-top: -28px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0, #fff 28px);
+  }
+  .hero-mentions ul {
+    grid-template-columns: 1fr 1fr;
+    padding-top: 28px;
+  }
+  .hero-mentions li:nth-of-type(3) {
+    border-left: 0;
+  }
+  .hero-mentions li:nth-of-type(n + 3) {
+    border-top: 1px solid rgba(27, 42, 74, 0.16);
+  }
+}
+@media (max-width: 420px) {
+  .hero .acts .btn {
+    min-height: 54px;
+    font-size: 12px;
+  }
+}

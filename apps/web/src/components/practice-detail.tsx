@@ -4,8 +4,8 @@ import type { Locale } from '@/content/site';
 import { peopleForPractice, roleLabels } from '@/content/people';
 import { mattersForPractice } from '@/content/matters';
 import { insightsForPractice, insightTypes } from '@/content/insights';
-import { formatDate, getPractice, practiceContent, practiceHref } from '@/lib/content';
-import { PageHead, Portrait } from './ui';
+import { formatDate, getPractice, practiceContent, practiceHref, premierePhrase } from '@/lib/content';
+import { Fleche, PageHead, Portrait, Section, capitale, enLettres } from './ui';
 import { MatterRows } from './matter-rows';
 
 export function PracticeDetail({ practice, locale }: { practice: Practice; locale: Locale }) {
@@ -16,11 +16,13 @@ export function PracticeDetail({ practice, locale }: { practice: Practice; local
   const cases = mattersForPractice(practice.slug);
   const notes = insightsForPractice(practice.slug);
   const related = practice.related.map(getPractice).filter((p): p is Practice => Boolean(p));
+  const n = capitale(enLettres(c.services.length, locale));
 
   return (
     <>
       <PageHead
         locale={locale}
+        meta={isSector ? (fr ? 'Secteur' : 'Sector') : fr ? 'Expertise' : 'Practice'}
         title={c.name}
         lead={c.pitch}
         crumbs={[
@@ -30,103 +32,115 @@ export function PracticeDetail({ practice, locale }: { practice: Practice; local
           { label: c.name },
         ]}
         aside={
-          <Link href="/contact" className="btn btn-primary w-full sm:w-auto">
-            {fr ? 'Consulter le cabinet' : 'Consult the firm'}
+          <Link href="/contact" className="btn">
+            {fr ? 'Consulter le cabinet' : 'Consult the firm'} <Fleche />
           </Link>
         }
       />
 
-      <div className="shell grid gap-x-10 gap-y-16 py-16 md:grid-cols-12 md:py-24">
-        <section aria-labelledby="services" className="md:col-span-7">
-          <h2 id="services" className="t-h3">
-            {fr ? 'Nous intervenons sur' : 'We act on'}
-          </h2>
-          <ul className="mt-5 border-t border-rule">
-            {c.services.map((s) => (
-              <li key={s} className="t-body border-b border-rule py-4 text-[1.125rem]">
-                {s}
-              </li>
-            ))}
-          </ul>
-          <h2 className="t-h3 mt-14">{fr ? 'Notre approche' : 'Our approach'}</h2>
-          <div className="t-body measure mt-4 text-ink-2">
-            <p>{c.approach}</p>
-          </div>
-        </section>
+      <Section
+        id="services"
+        heading
+        label={fr ? 'Nous intervenons sur' : 'We act on'}
+        gloss={fr ? `${n} ${c.services.length > 1 ? 'domaines' : 'domaine'} d’intervention` : `${n} ${c.services.length > 1 ? 'areas' : 'area'} of work`}
+      >
+        <ul className="rangs max-w-[52rem]">
+          {c.services.map((s) => (
+            <li key={s} className="text-[18px] text-marine">
+              {s}
+            </li>
+          ))}
+        </ul>
+      </Section>
 
-        <aside className="space-y-12 md:col-span-4 md:col-start-9" aria-label={fr ? 'Contacts et expertises liées' : 'Contacts and related expertise'}>
+      <Section id="approche" heading label={fr ? 'Notre approche' : 'Our approach'} gloss={fr ? 'Conseil et contentieux' : 'Advice and disputes'}>
+        <div className="prose">
+          <p>{c.approach}</p>
+        </div>
+      </Section>
+
+      {(team.length > 0 || related.length > 0) && (
+        <Section
+          id="contacts"
+          tone="brume"
+          heading={team.length > 0}
+          label={team.length > 0 ? (fr ? 'Vos interlocuteurs' : 'Your contacts') : fr ? 'Expertises voisines' : 'Related expertise'}
+          gloss={team.length > 0 ? (fr ? 'Avocats et juristes référents' : 'Lawyers and counsel in charge') : undefined}
+        >
           {team.length > 0 && (
-            <section aria-labelledby="contacts">
-              <h2 id="contacts" className="t-section">
-                {fr ? 'Vos interlocuteurs' : 'Your contacts'}
-              </h2>
-              <ul className="mt-4 space-y-4">
-                {team.map((p) => (
-                  <li key={p.slug}>
-                    <Link href={{ pathname: '/equipe/[slug]', params: { slug: p.slug } }} className="group flex items-center gap-4">
-                      <Portrait src={p.photo} name={p.name} className="w-16 shrink-0" sizes="64px" />
-                      <span>
-                        <span className="t-ui block font-medium group-hover:text-accent">{p.name}</span>
-                        <span className="t-small block text-slate">{roleLabels[p.role][locale]}</span>
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-          {related.length > 0 && (
-            <section aria-labelledby="voisines">
-              <h2 id="voisines" className="t-section">
-                {fr ? 'Expertises voisines' : 'Related expertise'}
-              </h2>
-              <ul className="mt-3 border-t border-rule">
-                {related.map((r) => (
-                  <li key={r.slug} className="border-b border-rule">
-                    <Link href={practiceHref(r)} className="t-ui flex min-h-12 items-center py-2 hover:text-accent">
-                      {practiceContent(r, locale).name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-        </aside>
-      </div>
-
-      {cases.length > 0 && (
-        <section aria-labelledby="cas" className="border-t border-rule">
-          <div className="shell py-16 md:py-24">
-            <h2 id="cas" className="t-h2">
-              {fr ? 'Dossiers représentatifs' : 'Representative matters'}
-            </h2>
-            <MatterRows locale={locale} items={cases} />
-          </div>
-        </section>
-      )}
-
-      {notes.length > 0 && (
-        <section aria-labelledby="notes" className="bg-paper-2">
-          <div className="shell py-16 md:py-24">
-            <h2 id="notes" className="t-h2">
-              {fr ? 'Publications' : 'Insights'}
-            </h2>
-            <ul className="mt-10 grid gap-10 md:grid-cols-3">
-              {notes.map((i) => (
-                <li key={i.slug} className="border-t border-ink pt-5">
-                  <p className="t-small text-slate">
-                    {insightTypes[i.type][locale]}, <time dateTime={i.date}>{formatDate(i.date, locale)}</time>
-                  </p>
-                  <h3 className="t-h3 mt-3">
-                    <Link href={{ pathname: '/publications/[slug]', params: { slug: i.slug } }} className="hover:text-accent">
-                      {i.title[locale]}
-                    </Link>
-                  </h3>
+            <ul className="contacts">
+              {team.map((p) => (
+                <li key={p.slug}>
+                  <Link href={{ pathname: '/equipe/[slug]', params: { slug: p.slug } }}>
+                    <Portrait src={p.photo} name={p.name} sizes="84px" />
+                    <span className="plaque">
+                      <b>{p.name}</b>
+                      <span>{roleLabels[p.role][locale]}</span>
+                    </span>
+                  </Link>
                 </li>
               ))}
             </ul>
-          </div>
-        </section>
+          )}
+          {related.length > 0 && (
+            <div className={team.length > 0 ? 'mt-14' : undefined}>
+              {team.length > 0 && <h2 className="t-h3 mb-4">{fr ? 'Expertises voisines' : 'Related expertise'}</h2>}
+              <ul className="filet">
+                {related.map((r) => {
+                  const rc = practiceContent(r, locale);
+                  return (
+                    <li key={r.slug}>
+                      <Link href={practiceHref(r)} className="ligne">
+                        <b>{rc.name}</b>
+                        <span>{premierePhrase(rc.pitch)}</span>
+                        <Fleche strokeWidth={1.8} />
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
+        </Section>
+      )}
+
+      {cases.length > 0 && (
+        <Section
+          id="cas"
+          heading
+          label={fr ? 'Dossiers représentatifs' : 'Representative matters'}
+          gloss={fr ? 'Sélection anonymisée' : 'Anonymised selection'}
+        >
+          <MatterRows locale={locale} items={cases} />
+        </Section>
+      )}
+
+      {notes.length > 0 && (
+        <Section
+          id="notes"
+          heading
+          tone={cases.length > 0 ? 'brume' : undefined}
+          label={fr ? 'Publications' : 'Insights'}
+          gloss={fr ? 'Notes du cabinet' : 'Notes from the firm'}
+        >
+          <ul className="pubs">
+            {notes.map((i) => (
+              <li key={i.slug} className="pub">
+                <p className="t-glose">
+                  {insightTypes[i.type][locale]}
+                  <br />
+                  <time dateTime={i.date}>{formatDate(i.date, locale)}</time>
+                </p>
+                <div>
+                  <h3>
+                    <Link href={{ pathname: '/publications/[slug]', params: { slug: i.slug } }}>{i.title[locale]}</Link>
+                  </h3>
+                  <p className="mt-2">{i.summary[locale]}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </Section>
       )}
     </>
   );

@@ -28,8 +28,11 @@ ul {
   margin: 0;
   padding: 0;
 }
-ul {
+ul,
+ol {
   list-style: none;
+  margin: 0;
+  padding: 0;
 }
 .w {
   display: inline-block;
@@ -75,4 +78,67 @@ ul {
   color: #fff;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+/* Accessibilité et menu mobile communs aux maquettes D, E, F */
+:focus-visible {
+  outline: 2px solid var(--focus, currentColor);
+  outline-offset: 3px;
+}
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+address {
+  font-style: normal;
+}
+.menu-btn {
+  display: none;
+}
+.mnav {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 var(--pad);
+  background: var(--mnav-bg, #000);
+  color: var(--mnav-fg, #fff);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s, visibility 0.35s;
+}
+.menu-open .mnav {
+  opacity: 1;
+  visibility: visible;
+}
+.mnav a {
+  font-size: clamp(30px, 8.4vw, 52px);
+  line-height: 1.15;
+  padding: 8px 0;
+}
+@media (max-width: 900px) {
+  .menu-btn {
+    display: inline-flex;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
 }

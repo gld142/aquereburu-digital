@@ -1,6 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="7" fill="#141b26"/>
-  <path d="M6 19h20" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
-  <path d="M6 15v8M26 15v8" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
-  <circle cx="21" cy="19" r="3.5" fill="#2f4fd8" stroke="#ffffff" stroke-width="1.5"/>
+  <!-- Carré marine à coin coupé, monogramme A P de l'emblème du cabinet -->
+  <path d="M0 0h24l8 8v24H0z" fill="#1b2a4a"/>
+  <g transform="translate(-7.9 -11.6) scale(0.15)">
+    <g fill="#9db7d3">
+      <path d="M112 260h-3l33-140 4-2 2 2-32 140z"/>
+      <path d="M148 120l2-2 20 142h-3l-19-136z"/>
+      <path d="M122 213v-3h40v3z"/>
+    </g>
+    <g fill="#fff">
+      <path d="M150 96h7v170h5v4h-17v-4h5z"/>
+      <path d="M150 100h7c5-2 13-4 23-2 15 4 25 20 23 40-2 20-15 32-29 34-9 1-17-4-17-4v-8s7 5 15 4c12-2 22-12 24-26 2-16-6-28-16-32-8-3-16 0-23 6h-7z"/>
+    </g>
+  </g>
 </svg>
