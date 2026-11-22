@@ -261,16 +261,6 @@
   -webkit-mask: var(--hd-img) 43.92% 61.064% / 1462.86% 1422.22% no-repeat;
   mask: var(--hd-img) 43.92% 61.064% / 1462.86% 1422.22% no-repeat;
 }
-/* le trait qui tremble, comme repassé à la main : sur grand écran seulement (la classe est posée et retirée par le script) */
-.hero-dessin.tremble .hd-rev {
-  filter: url(#hd-main-0);
-}
-.hero-dessin.tremble[data-main='1'] .hd-rev {
-  filter: url(#hd-main-1);
-}
-.hero-dessin.tremble[data-main='2'] .hd-rev {
-  filter: url(#hd-main-2);
-}
 /* ce qui vit au-dessus du dessin : un vol d'oiseaux qui traverse le ciel */
 .hd-vie {
   position: absolute;

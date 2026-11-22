@@ -19,7 +19,6 @@ import { Fleche, capitale, enLettres } from '../ui';
  * L'ouverture (encre qui apparaît depuis le cœur de la scène, mots qui montent)
  * est jouée en CSS, donc dès le premier affichage et sans éclair de contenu à
  * l'hydratation. Le script n'ajoute que la vie du dessin :
- *   - le trait tremble à peine, comme repassé à la main, sur grand écran seulement ;
  *   - le dessin glisse un peu avec le curseur ;
  *   - toutes les 90 s, le trait du soleil s'efface en suivant son cercle, puis se retrace.
  */
@@ -61,19 +60,6 @@ export function HomeHero({ locale }: { locale: Locale }) {
       document.addEventListener('visibilitychange', rythme);
       rythme();
 
-      // ——— Le trait qui tremble : trois tirages du même filtre, sur grand écran seulement.
-      // La classe suit la largeur de la fenêtre : l'effet s'arrête si elle rétrécit.
-      const large = window.matchMedia('(min-width: 1081px)');
-      const trembler = () => dessin.classList.toggle('tremble', large.matches);
-      trembler();
-      large.addEventListener('change', trembler);
-      let tirage = 0;
-      const horloge = window.setInterval(() => {
-        if (!visible || document.hidden || !large.matches) return;
-        tirage = (tirage + 1) % 3;
-        dessin.dataset.main = String(tirage);
-      }, 240);
-
       // ——— Le dessin glisse un peu avec le curseur (les oiseaux davantage que la scène).
       let lacher = () => {};
       if (pointeurFin()) {
@@ -112,11 +98,7 @@ export function HomeHero({ locale }: { locale: Locale }) {
       return () => {
         io.disconnect();
         document.removeEventListener('visibilitychange', rythme);
-        large.removeEventListener('change', trembler);
-        window.clearInterval(horloge);
         lacher();
-        dessin.classList.remove('tremble');
-        delete dessin.dataset.main;
       };
     },
     { scope: racine },
@@ -178,15 +160,6 @@ export function HomeHero({ locale }: { locale: Locale }) {
           </div>
         </div>
         <svg className="hd-vie" viewBox="0 0 1600 900" aria-hidden="true">
-          <defs>
-            {/* Trois tirages du même léger déplacement : en passant de l'un à l'autre, le trait tremble. */}
-            {[4, 17, 29].map((graine, i) => (
-              <filter key={graine} id={`hd-main-${i}`} x="-2%" y="-2%" width="104%" height="104%">
-                <feTurbulence type="fractalNoise" baseFrequency="0.014" numOctaves="2" seed={graine} result="n" />
-                <feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G" />
-              </filter>
-            ))}
-          </defs>
           <g className="vol">
             <path className="oiseau" d="M-15 -8Q-7 -12 0 0Q7 -12 15 -8" />
             <path className="oiseau" d="M36 -30Q42 -34 48 -24Q54 -34 60 -30" />
