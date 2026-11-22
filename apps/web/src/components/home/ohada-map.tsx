@@ -29,7 +29,10 @@ const membres = new Set(OHADA_INDICES.map(String));
  * Accessibilité : la carte est une image décrite (role="img") ; son
  * équivalent utilisable au clavier est la liste de boutons. Le survol
  * l'emporte sur le focus, pour qu'un nom resté focalisé ne masque pas ce que
- * la souris désigne.
+ * la souris désigne. Au doigt, un toucher choisit l'État (liste ou carte).
+ *
+ * Écran étroit : la carte passe avant la liste, et la liste devient un jeu de
+ * pastilles sous la carte, pour que les deux tiennent presque dans un écran.
  *
  * Les formes viennent de content/carte-ohada.ts (correspondance indice → pays
  * vérifiée) ; les Comores, absentes du tracé, sont un point. Au large de Lomé,
@@ -50,7 +53,10 @@ export function OhadaMap({
   const carte = useRef<HTMLDivElement>(null);
   const [survol, setSurvol] = useState<string | null>(null);
   const [focus, setFocus] = useState<string | null>(null);
-  const actif = survol ?? focus;
+  // Au doigt, il n'y a ni survol ni focus fiable : un toucher choisit l'État, un second toucher le relâche.
+  const [choisi, setChoisi] = useState<string | null>(null);
+  const actif = survol ?? focus ?? choisi;
+  const choisir = (id: string) => () => setChoisi((c) => (c === id ? null : id));
   const designe = etats.find((e) => e.id === actif);
 
   useGSAP(
@@ -102,6 +108,8 @@ export function OhadaMap({
                 onMouseLeave={survoler(null)}
                 onFocus={() => setFocus(e.id)}
                 onBlur={() => setFocus(null)}
+                onClick={choisir(e.id)}
+                aria-pressed={choisi === e.id}
               >
                 {e.nom}
               </button>
@@ -129,6 +137,7 @@ export function OhadaMap({
                   d={d}
                   onMouseEnter={survoler(id)}
                   onMouseLeave={survoler(null)}
+                  onClick={choisir(id)}
                 />
               ) : (
                 <path key={id} className="p" d={d} />
@@ -147,7 +156,7 @@ export function OhadaMap({
           />
           <path className="meridien" d="M985.5 531 C 986 440, 990 340, 990 262" />
           {/* Comores : un point, avec une zone de survol plus large que lui */}
-          <g onMouseEnter={survoler('com')} onMouseLeave={survoler(null)}>
+          <g onMouseEnter={survoler('com')} onMouseLeave={survoler(null)} onClick={choisir('com')}>
             <circle className="zone" cx="1219" cy="648" r="11" />
             <circle className={actif === 'com' ? 'pt com on' : 'pt com'} cx="1219" cy="648" r="3.2" />
           </g>
@@ -159,16 +168,21 @@ export function OhadaMap({
             Paris
           </text>
           <circle className="pt" cx="981" cy="533" r="3.1" />
-          <text x="975" y="547" textAnchor="end">
+          <text className="large" x="975" y="547" textAnchor="end">
             Lomé
           </text>
           <circle className="pt" cx="990.5" cy="533" r="3.1" />
-          <text x="997" y="547">
+          <text className="large" x="997" y="547">
             Cotonou
+          </text>
+          {/* Écran étroit : les deux villes sur une seule étiquette, côté océan, pour ne plus mordre sur les pays */}
+          <text className="etroit" x="973" y="552" textAnchor="end">
+            Lomé · Cotonou
           </text>
         </svg>
         <p className="legende" aria-live="polite">
           {designe ? designe.legende : fr ? 'Dix-sept États membres' : 'Seventeen member States'}
+          {!designe && <span className="l-aide">{fr ? 'Touchez un État pour le situer' : 'Tap a State to find it'}</span>}
         </p>
       </div>
     </div>

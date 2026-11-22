@@ -28,11 +28,33 @@
 .carte .pirogue { opacity: 0.6; pointer-events: none; }
 .legende { margin-top: 10px; min-height: 1.6em; font: italic 400 16px var(--serif); color: var(--gris); text-align: center; }
 
+.carte text.etroit { display: none; }
+.legende .l-aide { display: none; }
+
+/* ——— Écran étroit : le titre, puis la carte, puis les États en pastilles à toucher.
+   La carte et ses pastilles tiennent presque dans un écran : on touche un nom, le pays s'allume juste au-dessus. */
 @media (max-width: 860px) {
-  .ohada { grid-template-columns: minmax(0, 1fr); }
+  .ohada { display: flex; flex-direction: column; align-items: stretch; gap: 0; }
+  .ohada > div:first-child { display: contents; }
+  .ohada .carte { order: 1; width: 100%; max-width: 440px; margin: clamp(10px, 3vw, 22px) auto 0; }
+  .ohada .etats { order: 2; columns: auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 10px; padding-top: 14px; }
+  .etats button { width: auto; min-height: 36px; gap: 7px; padding: 5px 11px 5px 9px; font-size: 14.5px; color: var(--bleu-f); background: var(--brume); clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%); transition: background 0.2s, color 0.2s; }
+  .etats button::before { width: 7px; height: 7px; }
+  /* pas de changement de graisse : la pastille garde sa largeur, la grille ne saute pas */
+  .etats button:hover, .etats button.on, .etats button:focus-visible { font-weight: 400; color: #fff; background: var(--marine); }
+  .etats button:hover::before, .etats button.on::before, .etats button:focus-visible::before { background: #fff; transform: rotate(45deg); }
+  .etats button:focus-visible { outline: 2px solid var(--bleu); outline-offset: 2px; }
+  .carte text.large { display: none; }
+  .carte text.etroit { display: inline; }
+  .legende { margin-top: 6px; min-height: 0; }
+  .legende .l-aide { display: block; margin-top: 2px; font: 400 13.5px/1.4 var(--sans); color: var(--gris); }
+}
+@media (max-width: 860px) and (hover: hover) {
+  /* tablette avec souris : l'aide « touchez » ne s'adresse pas à elle */
+  .legende .l-aide { display: none; }
 }
 @media (max-width: 560px) {
-  .etats { columns: 1; }
+  .ohada .carte { max-width: 330px; }
   /* La carte rétrécit avec l'écran : les étiquettes grossissent pour rester lisibles (≈ 11 px rendus) */
-  .carte text { font-size: 13.5px; }
+  .carte text { font-size: 14px; }
 }
