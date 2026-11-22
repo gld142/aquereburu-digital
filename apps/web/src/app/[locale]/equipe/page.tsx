@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
-import { PageHead } from '@/components/ui';
+import { PageHead, Section, capitale, enLettres } from '@/components/ui';
 import { TeamDirectory, type DirectoryPerson } from '@/components/team-directory';
 import { people } from '@/content/people';
 import type { Locale } from '@/content/site';
@@ -52,9 +52,17 @@ export default async function TeamPage({ params }: { params: Promise<{ locale: s
         }
         crumbs={[{ label: fr ? 'Équipe' : 'People' }]}
       />
-      <div className="shell py-12 md:py-16">
+      <Section
+        id="annuaire"
+        label={fr ? 'Annuaire' : 'Directory'}
+        gloss={
+          fr
+            ? `${capitale(enLettres(people.length, locale))} avocats et juristes`
+            : `${capitale(enLettres(people.length, locale))} lawyers and legal counsel`
+        }
+      >
         <TeamDirectory people={list} practiceOptions={practiceOptions} locale={locale} />
-      </div>
+      </Section>
     </>
   );
 }

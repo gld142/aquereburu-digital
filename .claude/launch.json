@@ -4,8 +4,24 @@
     {
       "name": "web",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["--filter", "@aqp/web", "dev"],
+      "runtimeArgs": [
+        "--filter",
+        "@aqp/web",
+        "dev"
+      ],
       "port": 3000
+    },
+    {
+      "name": "maquettes",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4321",
+        "--directory",
+        "maquettes"
+      ],
+      "port": 4321
     }
   ]
 }

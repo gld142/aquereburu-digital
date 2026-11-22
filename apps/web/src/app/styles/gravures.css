@@ -1,0 +1,40 @@
+/* Petites gravures qui prolongent le hero (tracé net, encre teintée).
+   Porté depuis maquettes/i.html. Importé dans la couche « maquette » (voir globals.css).
+
+   Une gravure, où qu'elle soit posée :
+     <figure class="gravure" style="--g-img: url(/images/gravures/….svg); --g-r: 1137 / 1405; --g-w: 120px">
+       <div class="g-rev"><span class="g-encre" role="img" aria-label="…"></span></div>
+       <figcaption>…</figcaption>
+     </figure>
+   --g-img : le tracé (sert de masque) ; --g-r : son rapport largeur / hauteur ; --g-w : sa largeur à l'écran.
+   Les classes « attend » puis « vu » sont posées par le script commun (components/motion.tsx) :
+   l'encre apparaît depuis le cœur de la gravure quand on arrive dessus. Sans script, tout est visible. */
+
+@property --g-o { syntax: '<percentage>'; inherits: false; initial-value: 150%; }
+
+.gravure { margin: 0; pointer-events: none; }
+.g-rev { -webkit-mask-image: radial-gradient(circle at 50% 64%, #000 var(--g-o, 150%), transparent calc(var(--g-o, 150%) + 30%)); mask-image: radial-gradient(circle at 50% 64%, #000 var(--g-o, 150%), transparent calc(var(--g-o, 150%) + 30%)); }
+.gravure.attend .g-rev { --g-o: -30%; }
+.gravure.vu .g-rev { --g-o: 150%; transition: --g-o 1.9s cubic-bezier(0.3, 0, 0.2, 1) 0.1s; }
+.g-encre { display: block; width: var(--g-w); aspect-ratio: var(--g-r); background: linear-gradient(180deg, rgba(27, 42, 74, 0.92) 0, rgba(51, 85, 122, 0.84) 100%); -webkit-mask: var(--g-img) center / 100% 100% no-repeat; mask: var(--g-img) center / 100% 100% no-repeat; }
+.gravure figcaption { font: italic 400 clamp(14.5px, 1.12vw, 16px) / 1.35 var(--serif); color: var(--gris); white-space: nowrap; }
+
+/* Variante : la légende à gauche de la gravure, posée sur la même ligne de sol */
+.gravure.pose { display: flex; align-items: flex-end; gap: 18px; }
+.gravure.pose figcaption { order: -1; padding-bottom: 12px; }
+
+/* ——— Accueil : la consultation, debout sur le bord du répertoire */
+.rep-pose { position: relative; }
+.g-palabre { --g-img: url(/images/gravures/gravure-palabre.svg); --g-r: 1137 / 1405; --g-w: clamp(84px, 8.6vw, 124px); position: absolute; z-index: 1; right: clamp(70px, 11vw, 168px); bottom: 100%; display: flex; align-items: flex-end; gap: 18px; margin-bottom: -2px; }
+.g-palabre figcaption { order: -1; padding-bottom: 14px; }
+
+/* ——— Accueil : la transmission, derrière le filet de la section Équipe */
+.sec#equipe { padding-top: clamp(112px, 12.4vw, 178px); }
+#equipe > .shell { position: relative; }
+.g-transmission { --g-img: url(/images/gravures/gravure-transmission.svg); --g-r: 1866 / 1986; --g-w: clamp(84px, 9vw, 130px); position: absolute; right: calc(var(--pad) + clamp(6px, 3vw, 46px)); bottom: 100%; display: flex; align-items: flex-end; gap: 18px; }
+.g-transmission figcaption { order: -1; padding-bottom: 10px; }
+
+@media (max-width: 860px) {
+  .rep-pose { margin-top: clamp(84px, 24vw, 104px); }
+  .g-palabre { right: clamp(28px, 9vw, 70px); }
+}

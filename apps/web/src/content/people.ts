@@ -96,7 +96,7 @@ export const people: Person[] = [
     sortName: 'Bakoh',
     role: 'associe',
     title: { fr: 'Associé, droit social et pénal', en: 'Partner, employment and criminal law' },
-    photo: '/images/team/aquereburu-partners-bakoh.jpg',
+    photo: '/images/team/c-bakoh.webp',
     bio: {
       fr: "Inscrit au barreau depuis 2006, Me Bakoh dirige le département droit social et pénal. Il intervient en droit civil, commercial et maritime, en conseil comme en contentieux.",
       en: 'Admitted to the Bar in 2006, Me Bakoh heads the employment and criminal law department. He advises and litigates in civil, commercial and maritime law.',
@@ -118,7 +118,7 @@ export const people: Person[] = [
     sortName: 'Gayibor',
     role: 'collaborateur',
     title: { fr: 'Avocate, requêtes devant la Cour suprême', en: 'Lawyer, Supreme Court petitions' },
-    photo: '/images/team/gayibor.jpg',
+    photo: '/images/team/c-gayibor.webp',
     bio: {
       fr: "Ancienne présidente de la chambre judiciaire de la Cour suprême du Togo, Me Guillaume Gayibor a exercé plus de trente-six ans dans la magistrature. Diplômée de l'École nationale de la magistrature (Paris), elle est formatrice à l'ERSUMA et traite les requêtes devant la Cour suprême et les procédures administratives.",
       en: 'Former President of the Judicial Chamber of the Supreme Court of Togo, Me Guillaume Gayibor served more than thirty-six years in the judiciary. A graduate of the École nationale de la magistrature (Paris), she trains at ERSUMA and handles Supreme Court petitions and administrative proceedings.',
@@ -252,8 +252,8 @@ export const people: Person[] = [
   },
   ...(
     [
-      ['celifa-agbabozi-akata', 'Célifa Agbabozi-Akata', 'Agbabozi-Akata', '/images/team/AGBABOZI.jpg'],
-      ['tino-hoffer', 'Tino Hoffer', 'Hoffer', '/images/team/HOFFER1.jpg'],
+      ['celifa-agbabozi-akata', 'Célifa Agbabozi-Akata', 'Agbabozi-Akata', '/images/team/c-agbabozi.webp'],
+      ['tino-hoffer', 'Tino Hoffer', 'Hoffer', '/images/team/c-hoffer.webp'],
       ['samuel-segla', 'Samuel Segla', 'Segla', null],
       ['ablavi-devaki-aziandapou', 'Ablavi Devaki Aziandapou', 'Aziandapou', null],
       ['adjete-wilson', 'Adjété Y. H. Wilson', 'Wilson', null],

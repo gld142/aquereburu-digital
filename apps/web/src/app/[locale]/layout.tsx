@@ -2,26 +2,27 @@ import type { Metadata, Viewport } from 'next';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { Archivo, Newsreader } from 'next/font/google';
+import { Source_Sans_3, Source_Serif_4 } from 'next/font/google';
 import { routing } from '@/i18n/routing';
 import { Header } from '@/components/header';
+import { SmoothScroll } from '@/components/motion';
 import { Footer } from '@/components/footer';
 import { JsonLd } from '@/components/json-ld';
 import { buildSearchIndex } from '@/lib/search-index';
 import { firm, offices, type Locale } from '@/content/site';
 
-const archivo = Archivo({
-  subsets: ['latin'],
-  axes: ['wdth'],
-  variable: '--font-archivo',
-  display: 'swap',
-});
-
-const newsreader = Newsreader({
+// Source Serif 4 porte les titres, Source Sans 3 le texte et l'interface.
+const sourceSerif = Source_Serif_4({
   subsets: ['latin'],
   axes: ['opsz'],
   style: ['normal', 'italic'],
-  variable: '--font-newsreader',
+  variable: '--font-source-serif',
+  display: 'swap',
+});
+
+const sourceSans = Source_Sans_3({
+  subsets: ['latin'],
+  variable: '--font-source-sans',
   display: 'swap',
 });
 
@@ -93,16 +94,17 @@ export default async function LocaleLayout({
   };
 
   return (
-    <html lang={l} className={`${archivo.variable} ${newsreader.variable}`}>
+    <html lang={l} className={`${sourceSerif.variable} ${sourceSans.variable}`}>
       <body>
         <a
           href="#contenu"
-          className="t-ui sr-only z-[100] rounded bg-ink px-4 py-3 text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+          className="sr-only z-[100] bg-marine px-5 py-3 font-semibold text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
         >
           {l === 'fr' ? 'Aller au contenu' : 'Skip to content'}
         </a>
         <JsonLd data={organisation} />
         <NextIntlClientProvider locale={l} messages={{}}>
+          <SmoothScroll />
           <Header locale={l} searchIndex={buildSearchIndex(l)} />
           <main id="contenu">{children}</main>
           <Footer locale={l} />

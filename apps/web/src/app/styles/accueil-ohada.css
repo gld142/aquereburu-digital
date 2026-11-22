@@ -1,0 +1,38 @@
+/* Accueil — espace OHADA : la carte.
+   Porté depuis maquettes/i.html. Importé dans la couche « maquette » (voir globals.css). */
+
+/* ——— L'emblème prend vie : la liste des États et la carte se répondent */
+.ohada { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(24px, 4vw, 64px); align-items: center; }
+.ohada h2 { margin-bottom: 16px; }
+.etats { columns: 2; column-gap: 30px; margin-top: 24px; padding-top: 14px; border-top: 3px double var(--marine); }
+.etats li { break-inside: avoid; }
+.etats button { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; padding: 6px 0; font-size: 16px; color: var(--texte); cursor: pointer; transition: color 0.2s; }
+.etats button::before { content: ''; flex: none; width: 9px; height: 9px; background: var(--bleu); transition: transform 0.3s var(--ease), background 0.2s; }
+.etats button:hover, .etats button.on, .etats button:focus-visible { color: var(--marine); font-weight: 600; }
+.etats button:hover::before, .etats button.on::before { background: var(--marine); transform: scale(1.5) rotate(45deg); }
+
+.carte svg { display: block; width: 100%; height: auto; overflow: visible; }
+.carte .p { fill: #e4eaf2; stroke: #fff; stroke-width: 0.7; }
+.carte .m { fill: var(--bleu); stroke: #fff; stroke-width: 0.7; cursor: pointer; transition: fill 0.25s; }
+.carte .m:hover, .carte .m.on { fill: var(--marine); }
+.carte .meridien { fill: none; stroke: var(--marine); stroke-width: 0.9; stroke-dasharray: 2.4 3; }
+.carte .pt { fill: #fff; stroke: var(--marine); stroke-width: 1.3; }
+.carte .pt.com { fill: var(--bleu); stroke: #fff; cursor: pointer; }
+.carte .pt.com.on { fill: var(--marine); }
+/* Comores : la zone de survol est plus large que le point */
+.carte .zone { fill: transparent; cursor: pointer; }
+/* Étiquettes : un liseré blanc les garde lisibles là où elles mordent sur une forme */
+.carte text { font: 600 11px var(--sans); fill: var(--marine); paint-order: stroke; stroke: #fff; stroke-width: 2.4px; stroke-linejoin: round; }
+.carte text.s { font-weight: 400; fill: var(--gris); }
+/* la pirogue, cachée au large de Lomé */
+.carte .pirogue { opacity: 0.6; pointer-events: none; }
+.legende { margin-top: 10px; min-height: 1.6em; font: italic 400 16px var(--serif); color: var(--gris); text-align: center; }
+
+@media (max-width: 860px) {
+  .ohada { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  .etats { columns: 1; }
+  /* La carte rétrécit avec l'écran : les étiquettes grossissent pour rester lisibles (≈ 11 px rendus) */
+  .carte text { font-size: 13.5px; }
+}

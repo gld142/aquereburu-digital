@@ -13,7 +13,7 @@ export function MapEmbed({ query, label, locale }: { query: string; label: strin
   const q = encodeURIComponent(query);
 
   return (
-    <div className="relative aspect-[4/3] overflow-hidden rounded-[10px] bg-paper-2">
+    <div className="plan-acces">
       {on ? (
         <iframe
           title={fr ? `Plan d’accès, ${label}` : `Map, ${label}`}
@@ -23,18 +23,18 @@ export function MapEmbed({ query, label, locale }: { query: string; label: strin
           referrerPolicy="no-referrer-when-downgrade"
         />
       ) : (
-        <div className="absolute inset-0 flex flex-col items-start justify-end gap-3 p-6">
-          <p className="t-small max-w-xs text-ink-2">
+        <div className="absolute inset-0 flex flex-col items-start justify-end gap-3 p-5 sm:p-6">
+          <p className="t-small max-w-xs">
             {fr
               ? 'La carte est fournie par Google Maps, qui peut déposer des cookies.'
               : 'The map is provided by Google Maps, which may set cookies.'}
           </p>
-          <div className="flex flex-wrap gap-2">
-            <button type="button" className="btn btn-primary" onClick={() => setOn(true)}>
+          <div className="flex flex-wrap gap-2.5">
+            <button type="button" className="btn" onClick={() => setOn(true)}>
               {fr ? 'Afficher la carte' : 'Show map'}
             </button>
             <a
-              className="btn btn-ghost bg-paper"
+              className="btn contour"
               href={`https://www.openstreetmap.org/search?query=${q}`}
               target="_blank"
               rel="noopener noreferrer"

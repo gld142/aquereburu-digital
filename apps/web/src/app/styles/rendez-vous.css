@@ -1,0 +1,76 @@
+/* Prendre rendez-vous : la feuille qui se remplit comme un acte.
+   Porté depuis maquettes/i.html. Importé dans la couche « maquette » (voir globals.css). */
+
+/* La demande se remplit comme un acte ; les précisions vont dans la marge, le cabinet y appose son tampon */
+.pied .acte2 { padding-top: clamp(56px, 6.4vw, 92px); }
+.feuille { --c: 34px; position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: clamp(22px, 2.8vw, 40px); align-items: start; background: #fbfcfe; color: var(--texte); padding: clamp(24px, 3.2vw, 46px) clamp(22px, 4vw, 58px) clamp(22px, 2.5vw, 36px); }
+/* la feuille est claire dans un pied de page sombre : le contour du focus clavier redevient bleu */
+.feuille :focus-visible { outline-color: var(--bleu); }
+.feuille h2 { grid-column: 1 / -1; color: var(--marine); font-size: clamp(23px, 2.4vw, 34px); margin-bottom: clamp(8px, 1.3vw, 16px); }
+
+/* la phrase : le texte courant s'efface un peu, ce qu'on écrit ressort ; les champs sont les blancs d'un acte imprimé */
+.phrase { font: 400 clamp(17px, 1.75vw, 20.5px) / 1.9 var(--serif); color: var(--texte); }
+.phrase input, .phrase select { height: 1.52em; min-width: 7ch; max-width: 100%; padding: 0 0.22em; border: 0; border-bottom: 1px solid #9fb1c7; border-radius: 0; background-color: transparent; font: inherit; font-style: italic; line-height: 1.2; color: var(--marine); field-sizing: content; vertical-align: baseline; transition: background-color 0.2s, border-color 0.2s; }
+.phrase input:hover, .phrase select:hover { border-bottom-color: var(--bleu); background-color: rgba(70, 108, 147, 0.06); }
+.phrase select { appearance: none; -webkit-appearance: none; padding-right: 1.15em; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='%237b8ea6' stroke-width='1.5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.26em center; background-size: 0.5em; }
+/* la ponctuation reste collée à son champ : jamais de ligne qui commence par une virgule ou un point */
+.phrase .nb { white-space: nowrap; }
+.phrase input::placeholder { color: #6f8097; opacity: 1; }
+.phrase select:has(option[value='']:checked) { color: #6f8097; }
+.phrase input:focus-visible, .phrase select:focus-visible { outline: none; background-color: #e9f0f8; box-shadow: 0 1px 0 var(--marine); border-bottom-color: var(--marine); }
+.phrase [aria-invalid='true'] { border-bottom-color: #b42318; background-color: #fdecea; }
+
+/* la marge : précisions et accord */
+.marge { align-self: stretch; padding: 9px 0 2px clamp(22px, 2.8vw, 40px); border-left: 1px solid var(--trait); }
+.precis { display: block; }
+.precis span { display: block; margin-bottom: 6px; font-size: 14.5px; line-height: 1.45; color: var(--gris); }
+.precis textarea { display: block; width: 100%; min-height: 72px; padding: 8px 11px; border: 1px solid var(--trait); border-radius: 0; background: #fff; font: 400 16.5px/1.5 var(--sans); color: var(--marine); resize: vertical; }
+.precis textarea:focus-visible { outline: 2px solid var(--bleu); outline-offset: 0; }
+.accord { display: flex; align-items: flex-start; gap: 10px; margin-top: 13px; font-size: 14.5px; line-height: 1.5; color: var(--gris); }
+.accord input { flex: none; width: 17px; height: 17px; margin-top: 2px; accent-color: var(--bleu-f); }
+.accord input[aria-invalid='true'] { outline: 2px solid #b42318; outline-offset: 2px; }
+
+/* la signature : la date du jour, le bouton, le téléphone */
+.signe { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 26px; margin-top: clamp(18px, 2.2vw, 28px); margin-right: clamp(0px, 13.4vw, 192px); padding-top: 16px; border-top: 3px double #7f93ab; }
+.signe .fait { font: italic 400 clamp(16.5px, 1.4vw, 19px) var(--serif); color: var(--marine); }
+.signe .lien { font: 600 16px/1.3 var(--sans); letter-spacing: 0; text-transform: none; color: var(--bleu-f); }
+.signe .btn:disabled { opacity: 0.62; cursor: default; }
+.retour { flex-basis: 100%; font-size: 15.5px; }
+.retour:empty { margin-top: -12px; }
+.retour.err { color: #b42318; }
+
+/* le timbre sec du cabinet, gaufré dans le papier, et le tampon « Reçu » qui se pose à l'envoi */
+.feuille .sceau { position: absolute; right: clamp(14px, 3.4vw, 50px); bottom: clamp(12px, 1.4vw, 20px); width: clamp(72px, 7.2vw, 104px); height: auto; pointer-events: none; }
+.tampon { position: absolute; right: clamp(24px, 6vw, 86px); bottom: clamp(30px, 4.3vw, 62px); padding: 8px 16px 7px; border: 3px solid #2d5ba6; color: #2d5ba6; font: 600 clamp(13px, 1.1vw, 15.5px) / 1.25 var(--sans); letter-spacing: 0.15em; text-transform: uppercase; text-align: center; transform: rotate(-9deg) scale(1.9); opacity: 0; mix-blend-mode: multiply; pointer-events: none; }
+.tampon.pose { animation: tampon 0.55s cubic-bezier(0.2, 1.4, 0.4, 1) forwards; }
+@keyframes tampon { 0% { opacity: 0; transform: rotate(-9deg) scale(1.9); } 60% { opacity: 0.94; transform: rotate(-9deg) scale(0.95); } 100% { opacity: 0.86; transform: rotate(-9deg) scale(1); } }
+/* animations réduites : le réglage global coupe l'animation, le tampon doit quand même se voir */
+@media (prefers-reduced-motion: reduce) { .tampon.pose { opacity: 0.86; transform: rotate(-9deg); } }
+
+/* Une seule colonne : la marge passe sous la phrase, le tampon se pose dans le fil de la feuille */
+@media (max-width: 860px) {
+  .signe { margin-right: 0; }
+  .feuille { grid-template-columns: minmax(0, 1fr); }
+  .marge { margin-top: 14px; padding: 0; border-left: 0; }
+  .feuille .sceau { width: 72px; right: 18px; bottom: 18px; }
+  .retour { padding-right: 84px; }
+  .tampon { position: relative; right: auto; bottom: auto; display: none; justify-self: start; margin: 16px 0 4px 8px; }
+  .tampon.pose { display: block; }
+}
+
+/* Téléphone : chaque membre de la phrase fait une ligne nette, le champ va jusqu'à la marge */
+@media (max-width: 620px) {
+  .phrase { font-size: 16.5px; line-height: 2; }
+  .phrase .l { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 0.38em; }
+  .phrase .nb { display: flex; flex: 1 1 9em; align-items: baseline; min-width: 0; }
+  .phrase .nb input, .phrase .nb select { flex: 1 1 0; width: auto; min-width: 0; field-sizing: fixed; }
+  .phrase .nb:has([name='org']) { flex-basis: 11.2em; }
+  .phrase input::placeholder { font-size: 0.94em; }
+  .precis textarea { min-height: 62px; }
+  .feuille { padding-top: 22px; }
+}
+@media (max-width: 480px) { .signe .lien { max-width: 11.5em; } }
+@media (max-width: 420px) {
+  .feuille .sceau { width: 60px; right: 14px; bottom: 14px; }
+  .retour { padding-right: 70px; }
+}

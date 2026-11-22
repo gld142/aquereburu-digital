@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
-import { PageHead } from '@/components/ui';
+import { PageHead, Section } from '@/components/ui';
 import { MatterRows } from '@/components/matter-rows';
 import type { Locale } from '@/content/site';
 
@@ -26,9 +26,13 @@ export default async function MattersPage({ params }: { params: Promise<{ locale
         }
         crumbs={[{ label: fr ? 'Réalisations' : 'Matters' }]}
       />
-      <div className="shell pb-20 md:pb-28">
+      <Section
+        id="dossiers"
+        label={fr ? 'Dossiers représentatifs' : 'Representative matters'}
+        gloss={fr ? 'Sélection anonymisée' : 'Anonymised selection'}
+      >
         <MatterRows locale={locale} />
-      </div>
+      </Section>
     </>
   );
 }

@@ -1,0 +1,23 @@
+/* Socle commun aux sections portées depuis la maquette.
+   Porté depuis maquettes/i.html. Importé dans la couche « maquette » (voir globals.css). */
+
+/* Section dont la manchette passe au-dessus du contenu, sur toute la largeur */
+.art.plein { grid-template-columns: minmax(0, 1fr); gap: clamp(20px, 2.4vw, 30px); }
+.art.plein > .manchette { position: relative; top: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
+.art.plein > .manchette span { margin: 0; }
+
+/* Gravure posée dans l'en-tête d'une page intérieure : en bas à droite, debout sur le filet de la section qui suit */
+.page-tete .gravure.g-tete { position: relative; inset: auto; justify-self: end; align-self: end; margin: 0 clamp(0px, 2vw, 28px) calc(-1 * clamp(40px, 5vw, 72px)) 0; }
+@media (max-width: 860px) {
+  .page-tete .gravure.g-tete { margin-top: -18px; }
+}
+
+/* En-tête entre 381 et 430 px (la plupart des téléphones) : la marque, la loupe et « Menu » tiennent sur la ligne.
+   En dessous de 381 px, les réglages de globals.css prennent le relais (la loupe passe dans le menu). */
+@media (min-width: 381px) and (max-width: 430px) {
+  .top .shell { gap: 8px; }
+  .top .r { gap: 2px; }
+  .marque { gap: 8px; }
+  .marque b { font-size: 12px; letter-spacing: 0.07em; }
+  .marque i { font-size: 12px; }
+}

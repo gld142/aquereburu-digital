@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
-import { PageHead } from '@/components/ui';
+import { Fleche, PageHead, Section, capitale, enLettres } from '@/components/ui';
 import type { Locale } from '@/content/site';
 import { practiceContent, practiceHref, sectorList, sortByName } from '@/lib/content';
 
@@ -29,20 +29,33 @@ export default async function SectorsPage({ params }: { params: Promise<{ locale
         }
         crumbs={[{ label: fr ? 'Secteurs' : 'Sectors' }]}
       />
-      <ul className="shell grid gap-x-10 py-12 md:grid-cols-2 md:py-16">
-        {list.map((p) => {
-          const c = practiceContent(p, locale);
-          return (
-            <li key={p.slug} className="border-b border-rule">
-              <Link href={practiceHref(p)} className="group block py-8">
-                <span className="t-h2 block transition-colors group-hover:text-accent">{c.name}</span>
-                <span className="t-body mt-3 block text-[1.0625rem] text-ink-2">{c.pitch}</span>
-                <span className="t-small mt-4 block text-slate">{c.services.slice(0, 3).join(', ')}</span>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+      <Section
+        id="index"
+        label={fr ? 'Secteurs' : 'Sectors'}
+        gloss={
+          fr
+            ? `${capitale(enLettres(list.length, locale))} secteurs d’activité`
+            : `${capitale(enLettres(list.length, locale))} industry sectors`
+        }
+      >
+        <ul className="filet">
+          {list.map((p) => {
+            const c = practiceContent(p, locale);
+            return (
+              <li key={p.slug}>
+                <Link href={practiceHref(p)} className="ligne">
+                  <b>{c.name}</b>
+                  <span>
+                    {c.pitch}
+                    <span className="t-glose mt-2 block">{c.services.slice(0, 3).join(' · ')}</span>
+                  </span>
+                  <Fleche strokeWidth={1.8} />
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </Section>
     </>
   );
 }

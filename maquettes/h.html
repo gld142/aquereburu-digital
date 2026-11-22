@@ -1,0 +1,819 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Aquereburu &amp; Partners — Société d’avocats</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="shared.css" />
+    <style>
+      /* Identité du cabinet (bleu acier, marine du logo, violet de la Fondation).
+         Forme propre au site : le coin coupé de l'onglet et de la chemise de dossier. */
+      @property --c { syntax: '<length>'; inherits: true; initial-value: 12px; }
+      :root {
+        --bleu: #466c93;
+        --bleu-f: #33557a;
+        --marine: #1b2a4a;
+        --nuit: #0f1d2b;
+        --brume: #edf1f6;
+        --trait: #d6dee8;
+        --texte: #34445a;
+        --gris: #5b6b80;
+        --clair: #f3f6fa;
+        --clair-2: #b9c6d6;
+        --violet: #462768;
+        --serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+        --sans: 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', sans-serif;
+        --pad: clamp(20px, 4vw, 64px);
+        --max: 1280px;
+        --ease: cubic-bezier(0.16, 1, 0.3, 1);
+        --mnav-bg: var(--nuit);
+        --mnav-fg: var(--clair);
+        --focus: var(--bleu);
+      }
+      body { background: #fff; color: var(--texte); font-family: var(--sans); font-size: 17px; line-height: 1.6; }
+      ::selection { background: var(--bleu); color: #fff; }
+      .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
+      h1, h2, h3 { font-family: var(--serif); color: var(--marine); font-weight: 600; letter-spacing: -0.012em; }
+      h2 { font-size: clamp(28px, 2.9vw, 42px); line-height: 1.14; }
+
+      /* ——— Le coin coupé */
+      .coin { clip-path: polygon(0 0, calc(100% - var(--c)) 0, 100% var(--c), 100% 100%, 0 100%); }
+      .ombre { filter: drop-shadow(0 22px 34px rgba(15, 29, 43, 0.16)); }
+
+      /* ——— Boutons : au survol, le coin se replie comme celui d'une page */
+      .btn {
+        --c: 11px;
+        --pli: rgba(15, 29, 43, 0.34);
+        position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+        min-height: 50px; padding: 0 26px 0 24px; font: 600 16px/1 var(--sans); white-space: nowrap;
+        color: #fff; background: var(--bleu);
+        clip-path: polygon(0 0, calc(100% - var(--c)) 0, 100% var(--c), 100% 100%, 0 100%);
+        transition: --c 0.4s var(--ease), background 0.25s, color 0.25s;
+      }
+      .btn::after { content: ''; position: absolute; top: 0; right: 0; width: var(--c); height: var(--c); background: linear-gradient(to bottom left, transparent 50%, var(--pli) 50.5%); pointer-events: none; }
+      .btn:hover, .btn:focus-visible { --c: 21px; background: var(--marine); }
+      .btn:focus-visible { outline: none; box-shadow: inset 0 0 0 2px #fff, inset 0 0 0 4px var(--marine); }
+      .btn svg { width: 17px; height: 17px; transition: transform 0.35s var(--ease); }
+      .btn:hover svg { transform: translateX(4px); }
+      .btn.blanc { background: #fff; color: var(--marine); --pli: rgba(27, 42, 74, 0.2); }
+      .btn.blanc:hover, .btn.blanc:focus-visible { background: var(--brume); }
+      .btn.blanc:focus-visible { box-shadow: inset 0 0 0 2px var(--marine); }
+      .btn.contour { background: transparent; color: #fff; --pli: rgba(255, 255, 255, 0.5); }
+      .btn.contour::before {
+        content: ''; position: absolute; inset: 0; background: currentColor; opacity: 0.7; transition: opacity 0.25s;
+        clip-path: polygon(evenodd, 0 0, calc(100% - var(--c)) 0, 100% var(--c), 100% 100%, 0 100%, 0 0,
+          1.5px 1.5px, 1.5px calc(100% - 1.5px), calc(100% - 1.5px) calc(100% - 1.5px), calc(100% - 1.5px) calc(var(--c) + 0.6px), calc(100% - var(--c) - 0.6px) 1.5px, 1.5px 1.5px);
+      }
+      .btn.contour:hover, .btn.contour:focus-visible { background: rgba(255, 255, 255, 0.14); }
+      .btn.contour:hover::before, .btn.contour:focus-visible::before { opacity: 1; }
+      .btn.contour:focus-visible { box-shadow: inset 0 0 0 3px #fff; }
+
+      /* Liens de texte : un filet qui se retrace */
+      .lien { display: inline-flex; align-items: center; gap: 9px; font-weight: 600; font-size: 16px; color: var(--bleu-f); padding-bottom: 4px; background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1.5px no-repeat; transition: color 0.2s; }
+      .lien svg { width: 16px; height: 16px; transition: transform 0.35s var(--ease); }
+      .lien:hover { color: var(--marine); animation: retrace 0.6s var(--ease); }
+      .lien:hover svg { transform: translateX(5px); }
+      @keyframes retrace { 0% { background-size: 100% 1.5px; background-position: 100% 100%; } 45% { background-size: 0% 1.5px; background-position: 100% 100%; } 46% { background-position: 0 100%; } 100% { background-size: 100% 1.5px; background-position: 0 100%; } }
+
+      /* ——— Bandeau utilitaire et en-tête */
+      .util { background: var(--bleu); color: #fff; font-size: 14px; }
+      .util .wrap { display: flex; align-items: stretch; justify-content: space-between; gap: 18px; min-height: 40px; }
+      .util ul { display: flex; align-items: center; gap: clamp(14px, 2vw, 28px); }
+      .util a { display: inline-flex; align-items: center; gap: 8px; padding: 9px 0; }
+      .util svg { width: 15px; height: 15px; opacity: 0.9; }
+      .util .fond { background: var(--violet); padding: 9px 18px; font-weight: 600; transition: background 0.2s; }
+      .util .fond:hover { background: #5a3384; }
+      .util .lang a { opacity: 0.75; padding: 9px 2px; }
+      .util .lang a[aria-current] { opacity: 1; font-weight: 600; }
+      .top { position: sticky; top: 0; z-index: 60; background: #fff; border-bottom: 1px solid var(--trait); transition: box-shadow 0.3s; }
+      .scrolled .top { box-shadow: 0 10px 30px -18px rgba(15, 29, 43, 0.45); }
+      .top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 84px; }
+      .marque { display: flex; align-items: center; gap: 12px; }
+      .marque img { width: 54px; height: 61px; }
+      .marque b { display: block; font: 600 15.5px/1.15 var(--serif); letter-spacing: 0.13em; color: var(--marine); white-space: nowrap; }
+      .marque i { display: block; font: italic 400 13.5px/1.3 var(--serif); color: var(--bleu-f); letter-spacing: 0.03em; }
+      .top nav { display: flex; gap: clamp(14px, 1.9vw, 30px); }
+      .top nav a { font-weight: 500; font-size: 16px; color: var(--marine); padding: 8px 0; position: relative; }
+      .top nav a::after { content: ''; position: absolute; left: 0; right: 0; bottom: 2px; height: 2px; background: var(--bleu); transform: scaleX(0); transform-origin: left; transition: transform 0.35s var(--ease); }
+      .top nav a:hover::after { transform: scaleX(1); }
+      .top .r { display: flex; align-items: center; gap: 12px; }
+      .top .btn { min-height: 46px; }
+      .ico { display: grid; place-items: center; width: 44px; height: 44px; color: var(--marine); transition: background 0.2s; }
+      .ico:hover { background: var(--brume); }
+      .ico svg { width: 20px; height: 20px; }
+      .menu-btn { font-weight: 600; color: var(--marine); min-height: 44px; padding: 0 6px; }
+      .mnav a { font-family: var(--serif); }
+
+      /* ——— Hero : la bibliothèque, éclairée là où l'on regarde */
+      .hero { position: relative; color: #fff; overflow: hidden; background: var(--nuit); }
+      .hero-img { position: absolute; inset: 0; }
+      .hero-img img { width: 100%; height: 112%; object-fit: cover; object-position: 62% 50%; }
+      .voile {
+        position: absolute; inset: 0;
+        background: linear-gradient(90deg, rgba(15, 29, 43, 0.95) 0%, rgba(15, 29, 43, 0.86) 34%, rgba(15, 29, 43, 0.6) 62%, rgba(15, 29, 43, 0.5) 100%);
+        -webkit-mask-image: radial-gradient(circle clamp(180px, 24vw, 340px) at var(--lx, 76%) var(--ly, 44%), rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.62) 55%, #000 100%);
+        mask-image: radial-gradient(circle clamp(180px, 24vw, 340px) at var(--lx, 76%) var(--ly, 44%), rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.62) 55%, #000 100%);
+      }
+      .hero .wrap { position: relative; z-index: 2; padding-top: clamp(64px, 11vh, 132px); padding-bottom: clamp(128px, 20vh, 220px); }
+      .hero-in { max-width: 660px; }
+      .hero .sur { font-weight: 500; font-size: 15.5px; color: #c9d8e8; margin-bottom: 12px; }
+      h1 { color: #fff; font-weight: 600; font-size: clamp(36px, 4.7vw, 72px); line-height: 1.07; letter-spacing: -0.018em; margin-bottom: 22px; }
+      .hero-in { text-shadow: 0 1px 22px rgba(15, 29, 43, 0.6); }
+      .hero-in .btn { text-shadow: none; }
+      .hero p.ch { font-size: clamp(17px, 1.3vw, 19.5px); line-height: 1.6; color: #e3eaf2; max-width: 56ch; }
+      .acts { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+
+      .reperes { position: relative; z-index: 3; margin-top: clamp(-104px, -10vh, -70px); }
+      .reperes ul { --c: 30px; display: grid; grid-template-columns: repeat(4, 1fr); background: #fff; }
+      .reperes li { padding: clamp(20px, 2.2vw, 30px) clamp(18px, 2vw, 30px); }
+      .reperes li + li { border-left: 1px solid var(--trait); }
+      .reperes b { display: block; font: 600 clamp(20px, 1.9vw, 27px) / 1.15 var(--serif); color: var(--marine); }
+      .reperes span { display: block; margin-top: 5px; font-size: 15px; color: var(--gris); }
+
+      /* ——— Mise en page « code annoté » : la manchette suit la lecture dans la marge */
+      .sec { padding: clamp(72px, 9vw, 132px) 0; }
+      .sec.brume { background: var(--brume); }
+      .art { display: grid; grid-template-columns: minmax(160px, 216px) minmax(0, 1fr); gap: clamp(24px, 4.4vw, 76px); align-items: start; }
+      .manchette { position: sticky; top: 118px; padding-top: 12px; border-top: 3px double var(--marine); }
+      .manchette b { display: block; font: 600 15px/1.3 var(--sans); color: var(--marine); }
+      .manchette span { display: block; margin-top: 6px; font: italic 400 15.5px/1.4 var(--serif); color: var(--gris); }
+      .nuit .manchette { border-color: #7fa3c9; }
+      .nuit .manchette b { color: #fff; }
+      .nuit .manchette span { color: #9db7d3; }
+      .tete { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px 40px; margin-bottom: clamp(26px, 3.4vw, 44px); }
+      .tete p { max-width: 56ch; margin-top: 12px; }
+
+      /* Le cabinet */
+      .cab { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(24px, 3.6vw, 60px); align-items: center; }
+      .cab figure { margin: 0; }
+      .cab .ph { --c: 38px; aspect-ratio: 1266 / 810; overflow: hidden; }
+      .cab .ph img { width: 100%; height: 108%; object-fit: cover; }
+      .cab figcaption { margin-top: 10px; font: italic 400 15px var(--serif); color: var(--gris); }
+      .cab h2 { margin-bottom: 16px; }
+      .valeurs { margin: 24px 0 28px; border-top: 1px solid var(--trait); }
+      .valeurs li { padding: 13px 0; border-bottom: 1px solid var(--trait); font-size: 16px; }
+      .valeurs b { display: block; font: 600 17px/1.4 var(--serif); color: var(--marine); }
+
+      /* ——— Répertoire à onglets, comme la tranche d'un code */
+      .rep { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; }
+      .rep-feuille { background: #fff; padding: clamp(22px, 3vw, 44px) clamp(20px, 3.4vw, 52px) clamp(18px, 2.4vw, 30px); min-height: 668px; display: flex; flex-direction: column; }
+      .pan { display: flex; flex-direction: column; flex: 1; }
+      .pan[hidden] { display: none; }
+      .pan-t { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; padding-bottom: 16px; border-bottom: 3px double var(--marine); }
+      .gl { display: block; font: 600 clamp(64px, 7vw, 108px) / 0.78 var(--serif); color: var(--bleu); letter-spacing: -0.02em; }
+      .pan-t p { font-size: 15px; color: var(--gris); }
+      .pan li a { position: relative; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.5fr) 20px; gap: 6px clamp(16px, 2.4vw, 40px); align-items: baseline; padding: 17px 0; border-bottom: 1px solid var(--trait); }
+      .pan a b { font: 600 clamp(18px, 1.55vw, 22px) / 1.25 var(--serif); color: var(--marine); transition: transform 0.4s var(--ease); }
+      .pan a span { font-size: 15.5px; line-height: 1.5; color: #55657a; }
+      .pan a svg { width: 18px; height: 18px; color: var(--bleu); align-self: center; transition: transform 0.35s var(--ease); }
+      .pan a::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 1.5px; background: var(--bleu); transform: scaleX(0); transform-origin: left; transition: transform 0.5s var(--ease); }
+      .pan a:hover::after, .pan a:focus-visible::after { transform: scaleX(1); }
+      .pan a:hover b { transform: translateX(6px); }
+      .pan a:hover svg { transform: translateX(4px); }
+      .rep-pied { margin-top: auto; padding-top: 18px; display: flex; justify-content: space-between; gap: 16px; font: italic 400 15px var(--serif); color: var(--gris); }
+      .tabs { display: flex; flex-direction: column; gap: 3px; padding-top: 20px; }
+      .tabs button {
+        --c: 10px; position: relative; width: 52px; height: 44px; font: 600 18px/1 var(--serif); color: var(--marine);
+        background: color-mix(in srgb, #bccbde calc(var(--k) * 7%), #f6f8fb);
+        clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--c)), calc(100% - var(--c)) 100%, 0 100%);
+        transition: width 0.4s var(--ease), background 0.25s, color 0.25s;
+      }
+      .tabs button:hover { background: #dbe5f0; width: 58px; }
+      .tabs button[aria-selected='true'] { background: var(--bleu); color: #fff; width: 68px; }
+      .tabs button:focus-visible { outline: none; box-shadow: inset 0 0 0 2px #fff, inset 0 0 0 4px var(--marine); }
+
+      /* ——— L'emblème prend vie : l'espace OHADA */
+      .ohada { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(24px, 4vw, 64px); align-items: center; }
+      .ohada h2 { margin-bottom: 16px; }
+      .etats { columns: 2; column-gap: 30px; margin-top: 24px; padding-top: 14px; border-top: 3px double var(--marine); }
+      .etats li { break-inside: avoid; }
+      .etats button { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; padding: 6px 0; font-size: 16px; color: var(--texte); transition: color 0.2s; }
+      .etats button::before { content: ''; flex: none; width: 9px; height: 9px; background: var(--bleu); clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); transition: transform 0.3s var(--ease), background 0.2s; }
+      .etats button:hover, .etats button.on, .etats button:focus-visible { color: var(--marine); font-weight: 600; }
+      .etats button:hover::before, .etats button.on::before { background: var(--marine); transform: scale(1.5) rotate(45deg); }
+      .carte svg { display: block; width: 100%; height: auto; overflow: visible; }
+      .carte .p { fill: #e4eaf2; stroke: #fff; stroke-width: 0.7; }
+      .carte .m { fill: var(--bleu); stroke: #fff; stroke-width: 0.7; cursor: pointer; transition: fill 0.25s; }
+      .carte .m:hover, .carte .m.on { fill: var(--marine); }
+      .carte .meridien { fill: none; stroke: var(--marine); stroke-width: 0.9; stroke-dasharray: 2.4 3; }
+      .carte .pt { fill: #fff; stroke: var(--marine); stroke-width: 1.3; }
+      .carte .pt.com { fill: var(--bleu); stroke: #fff; cursor: pointer; }
+      .carte .pt.com.on { fill: var(--marine); }
+      .carte text { font: 600 11px var(--sans); fill: var(--marine); }
+      .carte text.s { font-weight: 400; fill: var(--gris); }
+      .legende { margin-top: 10px; min-height: 1.6em; font: italic 400 16px var(--serif); color: var(--gris); text-align: center; }
+
+      /* ——— Distinctions */
+      .nuit { position: relative; background: var(--nuit); color: var(--clair); overflow: hidden; }
+      .nuit h2 { color: #fff; }
+      .nuit .tete p { color: var(--clair-2); }
+      .frise { position: relative; display: grid; grid-template-columns: repeat(6, 1fr); gap: clamp(10px, 1.4vw, 22px); }
+      .frise::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 2px; background: var(--bleu); transform-origin: left; transform: scaleX(var(--trace, 1)); }
+      .frise li { position: relative; padding-top: 26px; }
+      .frise li::before { content: ''; position: absolute; left: 0; top: -5px; width: 12px; height: 12px; background: #9db7d3; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
+      .frise li:first-child::before { background: #fff; }
+      .frise time { display: block; font: 600 clamp(24px, 2.3vw, 36px) / 1 var(--serif); color: #fff; font-variant-numeric: lining-nums; }
+      .frise p { margin: 12px 0 8px; font-size: 15.5px; line-height: 1.45; color: var(--clair); }
+      .frise span { font-size: 14px; color: #9db7d3; }
+
+      /* ——— Associés : portraits en couleur, plaque à double filet */
+      .trois { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(14px, 2vw, 30px); }
+      .trois a { display: block; }
+      .trois .pp { --c: 26px; aspect-ratio: 4 / 5; overflow: hidden; background: #e8eef5; transition: --c 0.5s var(--ease); }
+      .trois a:hover .pp, .trois a:focus-visible .pp { --c: 44px; }
+      .trois img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 12%; transition: transform 0.9s var(--ease); }
+      .trois a:hover img { transform: scale(1.04); }
+      .plaque { margin-top: 14px; padding-top: 12px; border-top: 3px double var(--marine); }
+      .plaque b { display: block; font: 600 clamp(17px, 1.4vw, 20px) / 1.25 var(--serif); color: var(--marine); }
+      .plaque span { display: block; font-size: 15px; color: var(--gris); }
+      .plaque i { display: block; margin-top: 4px; font: italic 400 15px var(--serif); color: var(--bleu-f); }
+
+      /* ——— Fondation */
+      .fondation { background: var(--violet); color: #f1eaf8; }
+      .fondation .wrap { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(20px, 4vw, 72px); align-items: center; padding-top: clamp(56px, 7vw, 96px); padding-bottom: clamp(56px, 7vw, 96px); }
+      .fondation h2 { color: #fff; }
+      .fondation p { font-size: 18px; max-width: 58ch; margin-bottom: 22px; }
+
+      /* ——— Pied de page : se referme comme un acte, avec le timbre sec du cabinet */
+      .pied { position: relative; background: var(--nuit); color: var(--clair-2); overflow: hidden; }
+      .pied .haut { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 4vw, 72px); padding-top: clamp(64px, 8vw, 110px); padding-bottom: clamp(44px, 5vw, 72px); }
+      .pied h2 { color: #fff; margin-bottom: 14px; }
+      .pied .rdv p { max-width: 44ch; margin-bottom: 26px; }
+      .bureaux { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2vw, 32px); }
+      .bureaux > div { padding-top: 12px; border-top: 3px double #5f7f9f; }
+      .bureaux h3 { color: #fff; font-size: 21px; margin-bottom: 2px; }
+      .bureaux .r { font: italic 400 15px var(--serif); color: #9db7d3; margin-bottom: 10px; }
+      .bureaux address, .bureaux p { font-size: 15.5px; line-height: 1.6; }
+      .acte { display: flex; align-items: center; justify-content: space-between; gap: 30px; padding-top: clamp(26px, 3vw, 44px); padding-bottom: clamp(26px, 3vw, 44px); border-top: 1px solid rgba(185, 198, 214, 0.2); }
+      .fait { font: italic 400 clamp(20px, 2vw, 28px) / 1.3 var(--serif); color: #dfe7f0; }
+      .fait small { display: block; margin-top: 8px; font: 400 15px/1.5 var(--sans); color: var(--clair-2); max-width: 58ch; }
+      .sceau { flex: none; width: clamp(150px, 17vw, 232px); height: auto; }
+      .bas { border-top: 1px solid rgba(185, 198, 214, 0.2); }
+      .bas .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 40px; padding-top: 22px; padding-bottom: 84px; font-size: 14px; }
+      .bas ul { display: flex; flex-wrap: wrap; gap: 6px 22px; }
+      .bas a:hover { color: #fff; }
+
+      @media (max-width: 1080px) {
+        .top nav, .top .r .btn { display: none; }
+        .menu-btn { display: inline-flex; align-items: center; }
+        .art { grid-template-columns: 1fr; gap: 22px; }
+        .manchette { position: static; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
+        .manchette span { margin: 0; }
+        .frise { grid-template-columns: 1fr; gap: 0; padding-left: 26px; }
+        .frise::before { right: auto; bottom: 0; width: 2px; height: auto; transform-origin: top; transform: scaleY(var(--trace, 1)); }
+        .frise li { padding: 0 0 24px; }
+        .frise li::before { left: -31px; top: 8px; }
+      }
+      @media (max-width: 860px) {
+        .util ul.c li:nth-child(2) { display: none; }
+        .reperes ul { grid-template-columns: 1fr 1fr; }
+        .reperes li:nth-child(3) { border-left: 0; }
+        .reperes li:nth-child(n + 3) { border-top: 1px solid var(--trait); }
+        .cab, .ohada, .fondation .wrap, .pied .haut { grid-template-columns: 1fr; }
+        .voile { background: linear-gradient(180deg, rgba(15, 29, 43, 0.92) 0%, rgba(15, 29, 43, 0.82) 60%, rgba(15, 29, 43, 0.7) 100%); -webkit-mask-image: none; mask-image: none; }
+        .rep { grid-template-columns: minmax(0, 1fr); }
+        .tabs { order: -1; flex-direction: row; gap: 3px; padding: 0; min-width: 0; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+        .tabs::-webkit-scrollbar { display: none; }
+        .tabs button, .tabs button:hover, .tabs button[aria-selected='true'] { flex: 1 0 44px; width: auto; height: 46px; clip-path: polygon(0 0, calc(100% - var(--c)) 0, 100% var(--c), 100% 100%, 0 100%); }
+        .rep-feuille { min-height: 0; }
+        .pan li a { grid-template-columns: minmax(0, 1fr) 20px; }
+        .pan a span { grid-column: 1; }
+        .pan a svg { grid-column: 2; grid-row: 1 / 3; }
+        .acte { flex-direction: column; align-items: flex-start; }
+      }
+      @media (max-width: 560px) {
+        .util ul.c li:first-child span { display: none; }
+        .marque img { width: 44px; height: 50px; }
+        .marque b { font-size: 12.5px; letter-spacing: 0.1em; }
+        .marque i { font-size: 12.5px; }
+        .trois, .bureaux { grid-template-columns: 1fr; }
+        .trois { max-width: 320px; }
+        .etats { columns: 1; }
+        .acts .btn { flex: 1 1 100%; }
+      }
+      @media (max-width: 380px) {
+        .top .ico { display: none; }
+        .top .wrap { gap: 10px; }
+        .marque { gap: 9px; }
+        .marque img { width: 38px; height: 43px; }
+        .marque b { font-size: 11.5px; letter-spacing: 0.07em; }
+        .marque i { font-size: 12px; }
+        .util .fond { padding-inline: 12px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="util">
+      <div class="wrap">
+        <ul class="c">
+          <li><a href="tel:+22822210505"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" /></svg><span>+228 22 21 05 05</span></a></li>
+          <li><a href="mailto:contact@aquereburu-partners.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1.5" /><path d="m3.5 6.5 8.5 7 8.5-7" /></svg><span>contact@aquereburu-partners.com</span></a></li>
+        </ul>
+        <ul>
+          <li class="lang"><a href="#" aria-current="true" lang="fr">FR</a> / <a href="#" lang="en">EN</a></li>
+          <li><a class="fond" href="#fondation">Fondation Aquereburu</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <header class="top">
+      <div class="wrap">
+        <a class="marque" href="#" aria-label="Aquereburu &amp; Partners, société d’avocats, accueil">
+          <img src="img2/embleme.svg" width="54" height="61" alt="" />
+          <span><b>AQUEREBURU &amp; PARTNERS</b><i>Société d’Avocats</i></span>
+        </a>
+        <nav aria-label="Navigation principale">
+          <a href="#cabinet">Le cabinet</a><a href="#expertises">Expertises</a><a href="#ohada">Espace OHADA</a><a href="#equipe">Équipe</a><a href="#contact">Contact</a>
+        </nav>
+        <div class="r">
+          <button class="ico" aria-label="Rechercher sur le site"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="6.5" /><path d="m16 16 4.5 4.5" /></svg></button>
+          <a class="btn" href="#contact">Prendre rendez-vous</a>
+          <button class="menu-btn" data-menu aria-expanded="false" aria-controls="mnav">Menu</button>
+        </div>
+      </div>
+    </header>
+    <nav class="mnav" id="mnav" aria-label="Menu">
+      <a href="#cabinet">Le cabinet</a><a href="#expertises">Expertises</a><a href="#ohada">Espace OHADA</a><a href="#equipe">Équipe</a><a href="#fondation">Fondation</a><a href="#contact">Contact</a>
+      <button data-menu style="margin-top: 28px; text-align: left; font-weight: 600">Fermer</button>
+    </nav>
+
+    <main>
+      <section class="hero" data-intro data-solid-after>
+        <div class="hero-img"><img src="img2/bibliotheque.webp" width="2000" height="886" alt="La bibliothèque du cabinet" fetchpriority="high" /></div>
+        <div class="voile"></div>
+        <div class="wrap">
+          <div class="hero-in">
+            <p class="sur">Société d’avocats, à Lomé depuis 1987</p>
+            <h1 data-split>Construire demain en s’inspirant d’hier.</h1>
+            <p class="ch">Aquereburu &amp; Partners conseille et défend entreprises, investisseurs et États en droit des affaires OHADA, arbitrage, propriété intellectuelle et financement de projets.</p>
+            <div class="acts">
+              <a class="btn blanc" href="#contact">Prendre rendez-vous <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+              <a class="btn contour" href="#expertises">Nos domaines d’intervention</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="reperes">
+        <div class="wrap ombre">
+          <ul class="coin">
+            <li><b>Depuis 1987</b><span>Fondé à Lomé par Me Coffi Alexis Aquereburu</span></li>
+            <li><b>Barreau du Togo</b><span>Société civile professionnelle d’avocats</span></li>
+            <li><b>ISO 9001:2015</b><span>Certification qualité AFAQ</span></li>
+            <li><b>Trois bureaux</b><span>Lomé, Paris et Cotonou</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <section class="sec" id="cabinet">
+        <div class="wrap art">
+          <p class="manchette"><b>Le cabinet</b><span>Fondé à Lomé en 1987</span></p>
+          <div class="cab">
+            <figure data-fade>
+              <div class="ph coin"><img src="img2/associes.webp" width="1266" height="810" alt="Deux associés du cabinet" loading="lazy" decoding="async" data-parallax="4" /></div>
+              <figcaption>Les associés du cabinet</figcaption>
+            </figure>
+            <div data-stagger>
+              <h2>Près de quarante ans au service du droit des affaires</h2>
+              <p>Le cabinet accompagne ses clients dans l’espace OHADA et à l’international. Pionnier de la propriété intellectuelle au Togo, mandataire agréé auprès de l’OAPI, il intervient en conseil comme en contentieux.</p>
+              <ul class="valeurs">
+                <li><b>Culture du progrès</b>Adapter nos méthodes sans renoncer à ce qui a fait ses preuves.</li>
+                <li><b>Excellence et rigueur</b>Un processus qualité certifié, appliqué à chaque dossier.</li>
+                <li><b>Intégrité intransigeante</b>Secret professionnel, indépendance et loyauté.</li>
+              </ul>
+              <a class="lien" href="#">Découvrir le cabinet <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec brume" id="expertises">
+        <div class="wrap art">
+          <p class="manchette"><b>Expertises</b><span>Vingt-quatre domaines, de A à S</span></p>
+          <div>
+            <div class="tete">
+              <div><h2>Le répertoire du cabinet</h2><p>Choisissez une lettre, comme sur la tranche d’un code : chaque domaine y est rangé.</p></div>
+            </div>
+            <div class="rep ombre" data-fade>
+              <div class="rep-feuille">
+                <div class="pan" role="tabpanel" id="pan-A" aria-labelledby="tab-A">
+              <div class="pan-t"><span class="gl" aria-hidden="true">A</span><p>3 domaines</p></div>
+              <ul>
+                <li><a href="#"><b>Arbitrage</b><span>Arbitrage institutionnel (CCJA, CCI, CIRDI) et ad hoc, de la clause à l’exécution de la sentence.</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+                <li><a href="#"><b>Assurances</b><span>Contrats d’assurance et de réassurance, conformité CIMA, contentieux de la garantie.</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+                <li><a href="#"><b>Aérien</b><span>Contrats de transport aérien, réglementation, responsabilité des transporteurs.</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+              </ul>
+            </div>
+            <div class="pan" role="tabpanel" id="pan-B" aria-labelledby="tab-B" hidden>
+              <div class="pan-t"><span class="gl" aria-hidden="true">B</span><p>1 domaine</p></div>
+              <ul>
+                <li><a href="#"><b>Banque et finance</b><span>Financements structurés, sûretés et garanties, réglementation bancaire.</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+              </ul>
+            </div>
+            <div class="pan" role="tabpanel" id="pan-C" aria-labelledby="tab-C" hidden>
+              <div class="pan-t"><span class="gl" aria-hidden="true">C</span><p>2 domaines</p></div>
+              <ul>
+                <li><a href="#"><b>Contentieux des affaires</b><span>Litiges commerciaux et financiers, conflits entre associés, responsabilité des dirigeants.</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+                <li><a href="#"><b>Corporate et droit OHADA</b><span>Constitution de sociétés, gouvernance, fusions, acquisitions, private equity.</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+              </ul>
+            </div>
+            <div class="pan" role="tabpanel" id="pan-D" aria-labelledby="tab-D" hidden>
+              <div class="pan-t"><span class="gl" aria-hidden="true">D</span><p>5 domaines</p></div>
+              <ul>
+                <li><a href="#"><b>Droit de la famille et du patrimoine</b><span>Divorce, régimes matrimoniaux, successions, protection des personnes vulnérables.</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+                <li><a href="#"><b>Droit de l’environnement</b><span>Études d’impact, autorisations, conformité et contentieux environnemental.</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+                <li><a href="#"><b>Droit du travail et relations sociales</b><span>Contrats de travail, relations collectives, restructurations, contentieux social.</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+                <li><a href="#"><b>Droit pénal et pénal des affaires</b><span>Défense des dirigeants et des entreprises, prévention du risque pénal.</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+                <li><a href="#"><b>Droit public et marchés publics</b><span>Passation et exécution des marchés, concessions, contentieux administratif.</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+              </ul>
+            </div>
+            <div class="pan" role="tabpanel" id="pan-E" aria-labelledby="tab-E" hidden>
+              <div class="pan-t"><span class="gl" aria-hidden="true">E</span><p>2 domaines</p></div>
+              <ul>
+                <li><a href="#"><b>Énergie et ressources naturelles</b><span>Projets pétroliers, gaziers, miniers et renouvelables, contrats de concession.</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+                <li><a href="#"><b>Entreprises en difficulté</b><span>Prévention, sauvegarde, redressement, liquidation et reprise d’actifs.</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+              </ul>
+            </div>
+            <div class="pan" role="tabpanel" id="pan-F" aria-labelledby="tab-F" hidden>
+              <div class="pan-t"><span class="gl" aria-hidden="true">F</span><p>4 domaines</p></div>
+              <ul>
+                <li><a href="#"><b>Financement de projets</b><span>Structuration juridique et financière des projets d’infrastructures et d’énergie.</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+                <li><a href="#"><b>Fintech et numérique</b><span>Paiements électroniques, mobile money, protection des données, levées de fonds.</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+                <li><a href="#"><b>Fiscalité des entreprises</b><span>Fiscalité des entreprises et des groupes, contentieux fiscal et social.</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+                <li><a href="#"><b>Fonds d’investissement</b><span>Structuration de fonds, capital-investissement, pactes et sorties.</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+              </ul>
+            </div>
+            <div class="pan" role="tabpanel" id="pan-H" aria-labelledby="tab-H" hidden>
+              <div class="pan-t"><span class="gl" aria-hidden="true">H</span><p>1 domaine</p></div>
+              <ul>
+                <li><a href="#"><b>Hôtellerie et tourisme</b><span>Contrats de gestion et de franchise, financement de projets hôteliers.</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+              </ul>
+            </div>
+            <div class="pan" role="tabpanel" id="pan-I" aria-labelledby="tab-I" hidden>
+              <div class="pan-t"><span class="gl" aria-hidden="true">I</span><p>1 domaine</p></div>
+              <ul>
+                <li><a href="#"><b>Immobilier et construction</b><span>Promotion, baux commerciaux, contrats de construction, urbanisme.</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+              </ul>
+            </div>
+            <div class="pan" role="tabpanel" id="pan-P" aria-labelledby="tab-P" hidden>
+              <div class="pan-t"><span class="gl" aria-hidden="true">P</span><p>3 domaines</p></div>
+              <ul>
+                <li><a href="#"><b>Partenariats public-privé</b><span>Structuration, négociation et exécution des contrats de PPP et des concessions.</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+                <li><a href="#"><b>Privatisations et entreprises publiques</b><span>Audit, structuration juridique et contrats de cession.</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+                <li><a href="#"><b>Propriété intellectuelle</b><span>Marques, brevets, droits d’auteur, lutte contre la contrefaçon. Mandataire agréé OAPI.</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+              </ul>
+            </div>
+            <div class="pan" role="tabpanel" id="pan-R" aria-labelledby="tab-R" hidden>
+              <div class="pan-t"><span class="gl" aria-hidden="true">R</span><p>1 domaine</p></div>
+              <ul>
+                <li><a href="#"><b>Restructurations</b><span>Fusions, scissions, apports partiels d’actifs, réorganisations.</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+              </ul>
+            </div>
+            <div class="pan" role="tabpanel" id="pan-S" aria-labelledby="tab-S" hidden>
+              <div class="pan-t"><span class="gl" aria-hidden="true">S</span><p>1 domaine</p></div>
+              <ul>
+                <li><a href="#"><b>Sport</b><span>Contrats des sportifs, droits à l’image, contentieux disciplinaires, structuration des clubs.</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+              </ul>
+            </div>
+                <p class="rep-pied"><span>Répertoire des expertises</span><span>A — S</span></p>
+              </div>
+              <div class="tabs" role="tablist" aria-label="Expertises par lettre" aria-orientation="vertical">
+                <button type="button" role="tab" id="tab-A" aria-controls="pan-A" aria-selected="true" tabindex="0" style="--k: 0"><span class="sr">Lettre </span>A</button>
+            <button type="button" role="tab" id="tab-B" aria-controls="pan-B" aria-selected="false" tabindex="-1" style="--k: 1"><span class="sr">Lettre </span>B</button>
+            <button type="button" role="tab" id="tab-C" aria-controls="pan-C" aria-selected="false" tabindex="-1" style="--k: 2"><span class="sr">Lettre </span>C</button>
+            <button type="button" role="tab" id="tab-D" aria-controls="pan-D" aria-selected="false" tabindex="-1" style="--k: 3"><span class="sr">Lettre </span>D</button>
+            <button type="button" role="tab" id="tab-E" aria-controls="pan-E" aria-selected="false" tabindex="-1" style="--k: 4"><span class="sr">Lettre </span>E</button>
+            <button type="button" role="tab" id="tab-F" aria-controls="pan-F" aria-selected="false" tabindex="-1" style="--k: 5"><span class="sr">Lettre </span>F</button>
+            <button type="button" role="tab" id="tab-H" aria-controls="pan-H" aria-selected="false" tabindex="-1" style="--k: 6"><span class="sr">Lettre </span>H</button>
+            <button type="button" role="tab" id="tab-I" aria-controls="pan-I" aria-selected="false" tabindex="-1" style="--k: 7"><span class="sr">Lettre </span>I</button>
+            <button type="button" role="tab" id="tab-P" aria-controls="pan-P" aria-selected="false" tabindex="-1" style="--k: 8"><span class="sr">Lettre </span>P</button>
+            <button type="button" role="tab" id="tab-R" aria-controls="pan-R" aria-selected="false" tabindex="-1" style="--k: 9"><span class="sr">Lettre </span>R</button>
+            <button type="button" role="tab" id="tab-S" aria-controls="pan-S" aria-selected="false" tabindex="-1" style="--k: 10"><span class="sr">Lettre </span>S</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec" id="ohada">
+        <div class="wrap art">
+          <p class="manchette"><b>Espace OHADA</b><span>Dix-sept États, un même droit des affaires</span></p>
+          <div class="ohada">
+            <div>
+              <h2>Le terrain du cabinet</h2>
+              <p>L’OHADA réunit dix-sept États africains autour d’un droit des affaires commun. Le cabinet y intervient depuis Lomé et Cotonou, en lien avec son bureau de Paris.</p>
+              <ul class="etats" aria-label="États membres de l’OHADA">
+                <li><button type="button" data-i="3">Bénin</button></li>
+            <li><button type="button" data-i="1">Burkina Faso</button></li>
+            <li><button type="button" data-i="9">Cameroun</button></li>
+            <li><button type="button" data-i="6">Centrafrique</button></li>
+            <li><button type="button" data-i="com">Comores</button></li>
+            <li><button type="button" data-i="7">Congo</button></li>
+            <li><button type="button" data-i="8">Côte d’Ivoire</button></li>
+            <li><button type="button" data-i="15">Gabon</button></li>
+            <li><button type="button" data-i="18">Guinée</button></li>
+            <li><button type="button" data-i="19">Guinée équatoriale</button></li>
+            <li><button type="button" data-i="20">Guinée-Bissau</button></li>
+            <li><button type="button" data-i="27">Mali</button></li>
+            <li><button type="button" data-i="32">Niger</button></li>
+            <li><button type="button" data-i="5" data-nom="République démocratique du Congo" aria-label="République démocratique du Congo">RD Congo</button></li>
+            <li><button type="button" data-i="37">Sénégal</button></li>
+            <li><button type="button" data-i="41">Tchad</button></li>
+            <li><button type="button" data-i="42">Togo</button></li>
+              </ul>
+            </div>
+            <div class="carte">
+              <svg viewBox="866 244 410 558" role="img" aria-label="Carte de l’Afrique : les dix-sept États membres de l’OHADA, avec Lomé, Cotonou et la direction de Paris">
+                <g id="pays">
+                  <path class="p" data-i="0" d="M1068.3 609.6l-16.6-.1-1.9.7-1.7-.1-2.3.9-.5 1.2 2.8 4 1.1 4.3 1.6 6.1-1.7 2.6-.3 1.3 1.3 3.8 1.5 3.9 1.6 2.2.3 3.6-.7 4.8-1.8 2.8-3.3 4.2-1.3 2.6-1.9 5.7-.3 2.7-2 5.9-.9 5.5.5 4 2.7-1.2 3.3-1 3.6.1 3.2 2.9.9-.4 22.5-.3 3.7 3 13.4.9 10.3-2.5-3.5-4-3.6-5.2.8-20.3 11.6.1-.5-2.2.9-2.4-.9-3 .7-3-.5-2-2.6-.4-3.5 1-2.4-.2-1.4.6.5-7.6-1.9-2.3-.3-4 .9-3.8-1.2-2.4v-4h-6.8l.5-2.3h-2.9l-.3 1.1-3.4.3-1.5 3.7-.9 1.6-3-.9-1.9.9-3.7.5-2.1-3.3-1.3-2.1-1.6-3.8-1.3-4.7zm-21.8-1.3l.2-2.7.9-1.7 2-1.3-2-2.2-1.8 1.1-2.2 2.7 1.4 4.8 1.5-.7z"/>
+          <path class="m" data-i="1" d="M978.8 477.2h-3.6l-1.4-1.2-3 .9-5.2 2.6-1.1 2-4.3 2.9-.8 1.6-2.3 1.3-2.7-.9-1.6 1.6-.8 4.4-4.5 5.2.2 2.2-1.6 2.7.4 3.7 2.5 1.4 1 2.1 2.5 1.3 1.9-1.6 2.7-.2 3.8 1.6-.8-4.8.2-3.6 9.7-.3 2.4.5 1.8-1 2.6.5 4.9.1 1.9-.7 1.2-2.8 2.7-.6 1.2-1.9.1-4.4-6.4-1.4-.2-3.1-3.1-4.1-.8-2.9.5-3.1z"/>
+          <path class="p" data-i="2" d="M1148.2 590l-.3-2.5-3-.4-1.7 3.6-3.5-.5 1.4 2.9.1 1.1 2 6.1-.1.3.6-.1 2.1-2.3 2.2-3.3 1.4-1.4v-2l-1.2-1.5z"/>
+          <path class="m" data-i="3" d="M996.9 498l-4.3-3.7h-2l-1.9 1.9-1.2 1.9-2.7.6-1.2 2.8-1.9.7-.7 3.3 1.7 1.9 2 2.3.2 3.1 1.1 1.3-.2 14.6 1.4 4.4 4.6-.8.3-10.2-.1-4.1 1-4 1.7-1.9 2.7-4-.6-1.7 1.1-2.5-1.2-3.8.2-2.1z"/>
+          <path class="p" data-i="4" d="M1116.7 685l-1-.5-3.2 1.5h-1.6l-3.7 2.5-2-2.6-8.6 2.2-4.1.2-.9 22.7-5.4.2-.6 18.5 1.4 1 3 6.1-.7 3.8 1.1 2.3 4-.7 2.8-2.8 2.7-1.9 1.5-3.1 2.7-1.5 2.3.8 2.5 1.8 4.4.3 3.6-1.5.6-2 1.2-3 3-.5 1.7-2.4 2-4.3 5.2-4.7 8-4.7-3.4-2.9-4.2-.9-1.5-4.1.1-2.2-2.3-.7-6-7-1.6-3.7-1.1-1.1-1.9-5.1z"/>
+          <path class="m" data-i="5" d="M1124.9 539.4l-4.3-.7-2 .6-.9 1.5-1.8.2-2.2-1.3-6.2 3.1-2.6-.6-.8.5-1.6 3.8-4.2-1.2-4.1-.6-3.6-2.4-4.6-2.1-3 2-2.2 3.2-.5 4.5-.3 3.8-1.6 3.4-1.1 4-.7 5.6.3 3.6-.9 2.2-.2 2.4-.6 2-3.7 3.1-2.6 3.2-2.5 6.2.2 5.3-1.4 2-3.3 3.1-3.4 4-2-1.1-.4-1.8-3.1-.1-1.9 2.4-1.5-.6-2 1.3-.9 1.7-.2 2.7-1.5.7.8 2 2.3-.9 1.7.1 1.9-.7 16.6.1 1.3 4.7 1.6 3.8 1.3 2.1 2.1 3.3 3.7-.5 1.9-.9 3 .9.9-1.6 1.5-3.7 3.4-.3.3-1.1h2.9l-.5 2.3h6.8v4l1.2 2.4-.9 3.8.3 4 1.9 2.3-.5 7.6 1.4-.6 2.4.2 3.5-1 2.6.4 1.9.1.3 2 2.6-.1 3.5.6 1.8 2.8 4.5.9 3.4-2 1.2 3.4 4.3.8 2 2.8 2.1 3.5h4.3l-.3-6.9-1.5 1.2-3.9-2.5-1.4-1.1.8-6.4 1.2-7.5-1.2-2.8 1.6-4.1 1.6-.7 7.5-1.1 1 .3.2-1.1-1.5-1.7-.7-3.5-3.4-3.5-1.8-4.5 1-2.7-1.5-3.6 1.1-10.2.1.1-.1-1.1-1.4-2.9.6-3.5.8-.4.2-3.8 1.6-1.8.1-4.8 1.3-2.4.3-5.1 1.2-3 2.1-3.3 2.2-1.7 1.8-2.3-2.3-.8.3-7.5-5-4.2-1.4-2.7-3.1 1.3-2.6-.4-1.5 1.1-2.5-.8-3.5-5.2-1.8.6-3.6-.1z"/>
+          <path class="m" data-i="6" d="M1110.5 517.3l-.5-.3-2-1.8-.3-2 .8-2.6V508l-3.3-4-.7-2.7-3.5 1.1-2.8 2.5-4 7-5.2 2.9-5.4-.4-1.6.6.6 2.3-2.9 2.2-2.3 2.5-7.1 2.4-1.4-1.4-.9-.2-1 1.7-4.7.4-2.7 6.5-1.4 1.1-.4 5 .6 2.7-.4 1.9 2.6 3.3.5 2.3 2.1 3.2 2.6 2.1.3 2.9.6 1.8 2.9-5.9 3.3-3.4 3.8 1.1 3.6.4.5-4.5 2.2-3.2 3-2 4.6 2.1 3.6 2.4 4.1.6 4.2 1.2 1.6-3.8.8-.5 2.6.6 6.2-3.1 2.2 1.3 1.8-.2.9-1.5 2-.6 4.3.7 3.6.1 1.8-.6-.9-2.1-4.2-2.5-1.5-3.8-2.4-2.7-3.8-3.4-.1-2-3.1-2.6-3.8-2.5z"/>
+          <path class="m" data-i="7" d="M1080.3 549.9l-3.6-.4-3.8-1.1-3.3 3.4-2.9 5.9-.4 3.5-4.5-1.5-4.5-1.7-7.1-.3-.4 2.8 1.5 3.3 4.2-.5 1.4 1.2-2.4 7.4 2.7 3.8.6 4.9-.8 4.3-1.7 3-4.9-.3-3-3-.5 2.8-3.8.8-1.9 1.6 2.1 4.2-4.3 3.5 4.6 6.7 2.2-2.7 1.8-1.1 2 2.2 1.5.6 1.9-2.4 3.1.1.4 1.8 2 1.1 3.4-4 3.3-3.1 1.4-2-.2-5.3 2.5-6.2 2.6-3.2 3.7-3.1.6-2 .2-2.4.9-2.2-.3-3.6.7-5.6 1.1-4 1.6-3.4.3-3.8z"/>
+          <path class="m" data-i="8" d="M946.5 506.2l-2.3.9-1.3.8-.9-2.7-1.6.7-1-.1-1 1.9-4.3-.1-1.6-1-.7.6-1.1.5-.5 2.2 1.3 2.6 1.3 5.1-2 .8-.6.9.4 1.2-.3 2.8h-.9l-.3 1.8.6 3.1-1.2 2.8 1.6 1.8 1.8.4 2.3 2.7.2 2.5-.5.8-.5 5.2 1.1.2 5.6-2.4 3.9-1.8 6.6-1.1 3.6-.1 3.9 1.3 2.6-.1.2-2.5-2.4-5.5 1.5-7.2 2.3-5.3-1.4-9.1-3.8-1.6-2.7.2-1.9 1.6-2.5-1.3-1-2.1-2.5-1.4z"/>
+          <path class="m" data-i="9" d="M1060.1 502.9l.2-4.3-.5-4.2-2.2-4.1-1.6.4-.2 2 2.3 2.6-.6 1.1-.3 2.1-4.6 5-1.5 4-.7 3.3-1.2 1.4-1.1 4.5-3 2.6-.8 3.2-1.2 2.6-.5 2.6-3.9 2.2-3.2-2.6-2.1.1-3.3 3.7-1.6.1-2.7 6.1-1.4 4.5v1.8l1.4.9 1.1 2.8 2.6 1.1 2.2 4.2-.8 5 9.2.2 2.6-.4 3.4.8 3.4-.8.7.3 7.1.3 4.5 1.7 4.5 1.5.4-3.5-.6-1.8-.3-2.9-2.6-2.1-2.1-3.2-.5-2.3-2.6-3.3.4-1.9-.6-2.7.4-5 1.4-1.1 2.7-6.5.9-1.7-1.8-4.4-.8-2.6-2.5-1.1-3.3-3.7 1.2-3 2.5.6 1.6-.4 3.1.1-3.1-5.8z"/>
+          <path class="p" data-i="10" d="M1217.8 499.2l-2.5-1.7 3.1-1.5.1-2.7-1.4-1.9-1.6 1.5-2.4-.5-1.9 2.8-1.8 3 .5 1.7.2 2 3.1.1 1.3-.5 1.3 1.1 2-3.4z"/>
+          <path class="p" data-i="11" d="M1021 336.9l-3.6.4-2.2-1.5h-5.6l-4.9 2.6-2.7-1-8.7.5-8.9 1.2-5 2-3.4 2.6-5.7 1.2-5.1 3.5 2 4.1.3 3.9 1.8 6.7 1.4 1.4-1 2.5-7 1-2.5 2.4-3.1.5-.3 4.7-6.3 2.5-2.1 3.2-4.4 1.7-5.4 1-8.9 4.7-.1 7.5v.4l-.1 1.2 20.3 15.5 18.4 13.9 18.6 13.8 1.3 3 3.4 1.8 2.6 1.1.1 4 6.1-.6 7.8-2.8 15.8-12.5 18.6-12.2-2.5-4-4.3-2.9-2.6 1.2-2-3.6-.2-2.7-3.4-4.7 2.1-2.6-.5-4 .6-3.5-.5-2.9.9-5.2-.4-3-1.9-5.6-2.6-11.3-3.4-2.6v-1.5l-4.5-3.8-.6-4.8 3.2-3.6 1.1-5.3-1-6.2 1-3.3z"/>
+          <path class="p" data-i="12" d="M1129.7 374.8l-5.5-1.9-5.3-1.7-7.1.2-1.8 3 1.1 2.7-1.2 3.9 2 5.1 1.3 22.7 1 23.4h65.3l-1-1.3-6.8-5.7-.4-4.2 1-1.1-5.3-7-2-3.6-2.3-3.5-4.8-9.9-3.9-6.4-2.8-6.7.5-.6 4.6 9.1 2.7 2.9 2 2 1.2-1.1 1.2-3.3.7-4.8 1.3-2.5-.7-1.7-3.9-9.2-2.5 1.6-4.2-.4-4.4-1.5-1.1 2.1-1.7-3.2-3.9-.8-4.7.6-2.1 1.8-3.9 2-2.6-1z"/>
+          <path class="p" data-i="13" d="M1198.1 474l-3.2-3.1-1.8-5.9-3.7-7.3-2.6 3.6-4 1-1.6 2-.4 4.2-1.9 9.4.7 2.5 6.5 1.3 1.5-4.7 3.5 2.9 3.2-1.5 1.4 1.3 3.9.1 4.9 2.5 1.6 2.2 2.5 2.1 2.5 3.7 2 2.1 2.4.5 1.6-1.5-2.8-1.9-1.9-2.2-3.2-3.7-3.2-3.6-7.9-6z"/>
+          <path class="p" data-i="14" d="M1187.6 477l-1.5 4.7-6.5-1.3-.7 5.5-2.1 6.2-3.2 3.2-2.3 4.8-.5 2.6-2.6 1.8-1.4 6.7v.7l.2 5-.8 2-3 .1-1.8 3.6 3.4.5 2.9 3.1 1 2.5 2.6 1.5 3.5 6.9 2.9 1.1v3.6l2 2.1h3.9l7.2 5.4h1.8l1.3-.1 1.2.7 3.8.5 1.6-2.7 5.1-2.6 2.3 2.1h3.8l1.5-2 3.6-.1 4.9-4.5 7.4-.3 15.4-19.1-4.8.1-18.5-7.6-2.2-2.2-2.1-3.1-2.2-3.5 1.1-2.3-1.3-1.1-1.3.5-3.1-.1-.2-2-.5-1.7 1.8-3 1.9-2.8-2-2.1-2.5-3.7-2.5-2.1-1.6-2.2-4.9-2.5-3.9-.1-1.4-1.3-3.2 1.5-3.5-2.9z"/>
+          <path class="m" data-i="15" d="M1050.2 557.7l-.7-.3-3.4.8-3.4-.8-2.6.4v7.6h-8.2l-1.9.3-1.1 4.8-1.3 4.6-1.3 2-.2 2.1 3.4 6.6 3.7 5.3 5.8 6.4 4.3-3.5-2.1-4.2 1.9-1.6 3.8-.8.5-2.8 3 3 4.9.3 1.7-3 .8-4.3-.6-4.9-2.7-3.8 2.4-7.4-1.4-1.2-4.2.5-1.5-3.3.4-2.8z"/>
+          <path class="p" data-i="16" d="M976.8 502.1l-2.6-.5-1.8 1-2.4-.5-9.7.3-.2 3.6.8 4.8 1.4 9.1-2.3 5.3-1.5 7.2 2.4 5.5-.2 2.5 5 1.8 5-1.9 3.2-2.1 8.7-3.8-1.2-2.2-1.5-4-.4-3.2 1.2-5.7-1.4-2.3-.6-5.1.1-4.6-2.4-3.3.4-1.9z"/>
+          <path class="p" data-i="17" d="M882.8 488.5l5 .1 1.4-.9h1l2.1-1.5 2.4 1.4 2.4.1 2.4-1.5-1.1-1.8-1.8 1.1-1.8-.1-2.1-1.5-1.8.1-1.3 1.5-6.1.2-.7 2.8z"/>
+          <path class="m" data-i="18" d="M912.4 493l-.8.4-3-.5-.4.7-1.3.1-4-1.5-2.7-.1-.1 2.1-.6.7.4 2.1-.8.9h-1.3l-1.4 1-1.7-.1-2.6 3.1 1.6 1.1.8 1.4.7 2.8 1.3 1.2 1.5.9 2.1 2.5 2.4 3.7 3-2.8.7-1.7 1-1.4 1.5-.2 1.3-1.2h4.5l1.5 2.3 1.2 2.7-.2 1.8.9 1.7v2.3l1.5-.3 1.2-.2 1.5-.7 2.3 3.9-.4 2.6 1.1 1.3 1.6.1 1.1-2.6 1.6.2h.9l.3-2.8-.4-1.2.6-.9 2-.8-1.3-5.1-1.3-2.6.5-2.2 1.1-.5-1.7-1.8.3-1.9-.7-.7-1.2.6.2-2.1 1.2-1.6-2.3-2.7-.6-1.7-1.3-1.4-1.1-.2-1.3.9-1.8.8-1.6 1.4-2.4-.5-1.5-1.6-.9-.2-1.5.8h-.9l-.3-2.3z"/>
+          <path class="m" data-i="19" d="M1040.1 557.8l-9.2-.2-1.9 7.2 1 .9 1.9-.3h8.2v-7.6z"/>
+          <path class="m" data-i="20" d="M900.2 492.1l-10.3-.3-1.5.7-1.8-.2-3 1.1.3 1.3 1.7 1.4v.9l1.2 1.8 2.4.5 2.9 2.6 2.6-3.1 1.7.1 1.4-1h1.3l.8-.9-.4-2.1.6-.7.1-2.1z"/>
+          <path class="p" data-i="21" d="M1211.7 547.2h-3.8l-2.3-2.1-5.1 2.6-1.6 2.7-3.8-.5-1.2-.7-1.3.1h-1.8l-7.2-5.4h-3.9l-2-2.1v-3.6l-2.9-1.1-3.8 4.2-3.4 3.8 2.7 4.4.7 3.2 2.6 7.3-2.1 4.7-2.7 4.2-1.6 2.6v.3l1.4 2.4-.4 4.7 20.2 13 .4 3.7 8 6.3 2.2-2.1 1.2-4.2 1.8-2.6.9-4.5 2.1-.4 1.4-2.7 4-2.5-3.3-5.3-.2-23.2 4.8-7.2z"/>
+          <path class="p" data-i="22" d="M929.4 523.3l-1.6-.2-1.1 2.6-1.6-.1-1.1-1.3.4-2.6-2.3-3.9-1.5.7-1.2.2-2.6 3-2.6 3.4-.3 1.9-1.3 2 3.7 4.1 4.8 3.5 5.1 4.8 5.7 3.1 1.5-.1.5-5.2.5-.8-.2-2.5-2.3-2.7-1.8-.4-1.6-1.8 1.2-2.8-.6-3.1.3-1.8z"/>
+          <path class="p" data-i="23" d="M1128.1 766.5l1.1-2 3.1-1 1.1-2.1 1.9-3.1-1.7-1.9-2.3-2-2.6 1.3-3.1 2.5-3.2 4 3.7 4.9 2-.6z"/>
+          <path class="p" data-i="24" d="M1111.8 371.4l-1.5-2.1-5.4-.8-1.8-1.1h-2l-2-2.8-7.3-1.3-3.6.8-3.7 3-1.5 3.1 1.5 4.8-2.4 3-2.5 1.6-5.9-3.1-7.7-2.7-4.9-1.2-2.8-5.7-7.2-2.8-4.5-1.1-2.2.6-6.4-2.2-.1 4.9-2.6 1.8-1.5 2-3.7 2.5.7 2.6-.4 2.7-2.6 1.4 1.9 5.6.4 3-.9 5.2.5 2.9-.6 3.5.5 4-2.1 2.6 3.4 4.7.2 2.7 2 3.6 2.6-1.2 4.3 2.9 2.5 4 8.8 2.8 3.1 3.5 3.9-2.4 5.4-3.5 22.3 12.2 22.4 12.2v-2.7h6.3l-.5-12.7-1-23.4-1.3-22.7-2-5.1 1.2-3.9-1.1-2.7 1.8-3z"/>
+          <path class="p" data-i="25" d="M965.2 348.4l-2.3-.1-5.5-1.4-5 .4-3.1-2.7h-3.9l-1.8 3.9-3.7 6.7-4 2.6-5.4 2.9-3.5 4.3-.9 3.4-2.1 5.4 1.1 7.9-4.7 5.3-2.7 1.7-4.4 4.4-5.1.7-2.8 2.4-.1.1-3.6 6.5-3.7 2.3-2.1 4-.2 3.3-1.6 3.8-1.9 1-3.1 4-2 4.5.3 2.2-1.9 3.3-2.2 1.7-.3 3h.1l12.4-.5.7-2.3 2.3-2.9 2-8.8 7.8-6.8 2.8-8.1 1.7-.4 1.9-5 4.6-.7 1.9.9h2.5l1.8-1.5 3.4-.2-.1-3.4h.8l.1-7.5 8.9-4.7 5.4-1 4.4-1.7 2.1-3.2 6.3-2.5.3-4.7 3.1-.5 2.5-2.4 7-1 1-2.5-1.4-1.4-1.8-6.7-.3-3.9-2-4.1z"/>
+          <path class="p" data-i="26" d="M1255.7 658.4l-1.1-4.2-1.4-2.7-1.8-2.7-2 2.8-.3 3.8-3.3 4.5-2.3-.8.6 2.7-1.8 3.2-4.8 3.9-3.4 3.7h-2.4l-2.2 1.2-3.1 1.3-2.8.2-1 4.1-2.2 3.5.1 5.9.8 4 1.1 3-.8 4.1-2.9 4.8-.2 2.1-2.6 1.1-1.3 4.6.2 4.6 1.6 5-.1 5.7 1.2 3.3 4.2 2.3 3 1.7 5-2.7 4.6-1.5 3.1-7.4 2.8-8.9 4.3-12 3.3-8.8 2.7-7.4.8-5.4 1.6-1.5.7-2.7-.8-4.7 1.2-1.9 1.6 3.8 1.1-1.9.8-3.1-1.3-2.9-.5-7.7z"/>
+          <path class="m" data-i="27" d="M1000.3 450.3l-6.1.6-.1-4-2.6-1.1-3.4-1.8-1.3-3-18.6-13.8-18.4-13.9-8.4.1 2.4 27.4 2.4 27.5 1 .8-1.3 4.4-22.3.1-.9 1.4-2.1-.4-3.2 1.3-3.8-1.8-1.8.2-1 3.7-1.9 1.2.2 3.9 1.1 3.7 2.1 1.8.4 2.4-.3 2 .3 2.3h.9l1.5-.8.9.2 1.5 1.6 2.4.5 1.6-1.4 1.8-.8 1.3-.9 1.1.2 1.3 1.4.6 1.7 2.3 2.7-1.2 1.6-.2 2.1 1.2-.6.7.7-.3 1.9 1.7 1.8.7-.6 1.6 1 4.3.1 1-1.9 1 .1 1.6-.7.9 2.7 1.3-.8 2.3-.9-.4-3.7 1.6-2.7-.2-2.2 4.5-5.2.8-4.4 1.6-1.6 2.7.9 2.3-1.3.8-1.6 4.3-2.9 1.1-2 5.2-2.6 3-.9 1.4 1.2h3.6l3.6-.3 2-2.2 7.6-.6 4.9-1 .5-3.9 3-4.3-.1-14.6z"/>
+          <path class="p" data-i="28" d="M949.8 413.3l-20.3-15.5-.2 9.7-17.9-.3-.2 16.3-5.2.5-1.4 3.3.9 9.2-21.6-.1-1.2 2.2 2.8 2.7 1.4 3-.7 3.2.6 3.2.5 6.3-.8 5.9-1.7 3.2.4 3.4 2-2 2.7.5 2.8-1.4h3.1l2.6 1.8 3.7 1.7 3.2 4.7 3.6 4.4 1.9-1.2 1-3.7 1.8-.2 3.8 1.8 3.2-1.3 2.1.4.9-1.4 22.3-.1 1.3-4.4-1-.8-2.4-27.5-2.4-27.4 8.4-.1z"/>
+          <path class="p" data-i="29" d="M1169.2 661.5l.1-2.3-1.2-1.9.1-2.8-1.5-4.7 1.7-3.5-.1-7.7-1.9-4.1.2-.7-1.1-1.7-5.4-1.2 2.6 2.8 1.2 5.4-1 1.8-1.2 5.1.9 5.3-1.8 2.2-1.9 5.9 2.9 1.7 3 3 1.6-.6 2.1 1.6.3 2.6-1.3 2.9.2 4.5 3.4 4 1.9-4.5 2.5-1.3-.1-8.2-2.2-4.6-1.9-2h-.3v.8l1.1.3 1 3.4-.2.8-1.9-2.5-1 1.6-.8-1.4z"/>
+          <path class="p" data-i="30" d="M1203 640.7l-.8-2.9-4.6 3.7-6.2 2.5-3.3-.1-2.1 1.9-3.9.1-1.4.8-6.7-1.8-2.1.3-1.6 6 .7 7.3h.3l1.9 2 2.2 4.6.1 8.2-2.5 1.3-1.9 4.5-3.4-4-.2-4.5 1.3-2.9-.3-2.6-2.1-1.6-1.6.6-3-3-17.1 5.2.3 4.5.3 2.4 4.6-.1 2.6 1.3 1.1 1.6 2.6.5 2.8 2-.3 8.1-1.3 4.4-.5 4.7.8 1.9-.8 3.7-.9.6-1.6 4.6-6.2 7.2 2.2 9 1.1 4.5-1.4 7.1.4 2.3.6 2.9.3 2.8h4.1l.7-3.3-1.4-.5-.3-2.6 2.6-2.4 6.8-3.4 4.6-2.2 2.5-2.3.9-2.6-1.2-1.1 1.1-3 .5-6.2-1 .3v-1.9l-.8-3.7-2.4-4.8.7-4.6 2.3-1.4 4.1-4.6 2.2-1.1 6.7-6.8 6.4-3.1 5.2-2.5 3.7-3.9 2.4-4.4 1.9-4.6-.9-3.1.2-9.9-.4-5.6.4-6.3z"/>
+          <path class="p" data-i="31" d="M1105.4 683.7l-10.3 2.5-13.4-.9-3.7-3-22.5.3-.9.4-3.2-2.9-3.6-.1-3.3 1-2.7 1.2.2 4.9 4.4 6.2 1.1 4 2.8 7.7 2.7 5.2 2.1 2.6.6 3.5v7.6l1.6 9.8 1.2 4.6 1 6.2 1.9 4.7 3.9 4.8 2.7-3.2 2.1 1.8.8 2.7 2.4.5 3.3 1.2 2.9-.5 5-3.2 1.1-23.6.6-18.5 5.4-.2.9-22.7 4.1-.2 8.6-2.2 2 2.6 3.7-2.5h1.6l3.2-1.5v-.5l-2.1-1.4-3.6-.4-4.6 1.5z"/>
+          <path class="m" data-i="32" d="M1051.3 425.6l-8.8-2.8-18.6 12.2-15.8 12.5-7.8 2.8.1 14.6-3 4.3-.5 3.9-4.9 1-7.6.6-2 2.2-3.6.3-.5 3.1.8 2.9 3.1 4.1.2 3.1 6.4 1.4-.1 4.4 1.9-1.9h2l4.3 3.7.3-5.7 1.6-2.6.8-3.6 1.4-1.4 6-.8 5.6 2.4 2.1 2.4 2.9.1 2.6-1.5 6.8 3.3 2.8-.2 3.3-2.7 3.3.2 1.6-.9 3 .4 4.3 1.8 4.3-3.5 1.3.2 3.9 7 1-.2.2-2 1.6-.4.5-2.9-3.6-.2v-4.1l-2.4-2.3 2.3-8.4 6.9-6 .2-8.3 1.8-12.9 1.1-2.7-2.3-2.2-.2-2.1-2-1.6-1.6-9.9-3.9 2.4-3.1-3.5z"/>
+          <path class="p" data-i="33" d="M1055.8 492.7l-1 .2-3.9-7-1.3-.2-4.3 3.5-4.3-1.8-3-.4-1.6.9-3.3-.2-3.3 2.7-2.8.2-6.8-3.3-2.6 1.5-2.9-.1-2.1-2.4-5.6-2.4-6 .8-1.4 1.4-.8 3.6-1.6 2.6-.3 5.7-.2 2.1 1.2 3.8-1.1 2.5.6 1.7-2.7 4-1.7 1.9-1 4 .1 4.1-.3 10.2h9.2l3.9 4.2 1.9 4.6 3 3.9 4.5.2 2.2-1.4 2.1.3 5.8-2.3 1.4-4.5 2.7-6.1 1.6-.1 3.3-3.7 2.1-.1 3.2 2.6 3.9-2.2.5-2.6 1.2-2.6.8-3.2 3-2.6 1.1-4.5 1.2-1.4.7-3.3 1.5-4 4.6-5 .3-2.1.6-1.1-2.3-2.6z"/>
+          <path class="p" data-i="34" d="M1147.6 579.4l-3.3 1.9-1.4-.6-1.6 1.8-.2 3.8-.8.4-.6 3.5 3.5.5 1.7-3.6 3 .4 1.6-.8.4-3.7-2.3-3.6z"/>
+          <path class="p" data-i="35" d="M1180.8 468.5l.4-4.2 1.6-2 4-1 2.6-3.6-3.1-2.4-2.2-1.6-2.5-7.6-1.1-6.5 1.1-1.2-2.1-6.2H1114.2l.5 12.7h-6.3v2.7l1.1 25.2-4.8-.4-2.4 4.7-1.4 3.9 1.2 1.5-1.8 1.9.7 2.7-1.4 2.6-.5 2.4 2-.4 1.2 2.5.1 3.7 2.1 1.8v1.6l.7 2.7 3.3 4v2.6l-.8 2.6.3 2 2 1.8.5.3 1.7-.7 1.9-1.2 1.3-5.7 1.5-2.9 4-.9 1 1.8 3 3.7 1.5.5 2-1.1 4.1.3.8 1.3h5.5l.2-1.3 2.9-1.2.5-1.9 2.1-1.3 4.8 3.7 2.8-.7 2.7-4.5 3-3.5-.6-3.9-1.4-1.8 3.4-.3.3-1.5 2.6.5-.5 4.7.8 4.6 2.9 2.5.7 2.2v3.1l.8.1v-.7l1.4-6.7 2.6-1.8.5-2.6 2.3-4.8 3.2-3.2 2.1-6.2.7-5.5-.7-2.5 1.9-9.4z"/>
+          <path class="p" data-i="36" d="M919.4 518.7l-1.5.3v-2.3l-.9-1.7.2-1.8-1.2-2.7-1.5-2.3H910l-1.3 1.2-1.5.2-1 1.4-.7 1.7-3 2.8.7 4.7.9 2.3 2.9 3.5 4.1 2.5 1.5.5 1.3-2 .3-1.9 2.6-3.4 2.6-3z"/>
+          <path class="m" data-i="37" d="M908.9 479.2l-3.6-4.4-3.2-4.7-3.7-1.7-2.6-1.8h-3.1l-2.8 1.4-2.7-.5-2 2-1.3 3.3-2.8 4.4-2.5 1.2 2.7 2.3 2.2 5 6.1-.2 1.3-1.5 1.8-.1 2.1 1.5 1.8.1 1.8-1.1 1.1 1.8-2.4 1.5-2.4-.1-2.4-1.4-2.1 1.5h-1l-1.4.9-5-.1.8 4.9 3-1.1 1.8.2 1.5-.7 10.3.3 2.7.1 4 1.5 1.3-.1.4-.7 3 .5.8-.4.3-2-.4-2.4-2.1-1.8-1.1-3.7-.2-3.9z"/>
+          <path class="p" data-i="38" d="M1223.4 505.7l-2.6-2.7-1.2-2.6-1.8-1.2-2 3.4-1.1 2.3 2.2 3.5 2.1 3.1 2.2 2.2 18.5 7.6 4.8-.1-15.4 19.1-7.4.3-4.9 4.5-3.6.1-1.5 2-4.8 7.2.2 23.2 3.3 5.3 1.3-1.5 1.3-3.4 6.1-7.7 5.3-4.8 8.3-6.4 5.6-5.1 6.4-8.7 4.7-7.1 4.6-9.3 3.2-8.2 2.5-7.1 1.3-6.8 1.1-2.3-.2-3.4.4-3.7-.2-1.7h-2.1l-2.6 2.2-2.9.6-2.5.9-1.8.2-3.2.2-1.9 1.1-2.8.5-4.8 1.9-6.1.8-5.2 1.6h-2.8z"/>
+          <path class="p" data-i="39" d="M1166 508.7l-.7-2.2-2.9-2.5-.8-4.6.5-4.7-2.6-.5-.3 1.5-3.4.3 1.4 1.8.6 3.9-3 3.5-2.7 4.5-2.8.7-4.8-3.7-2.1 1.3-.5 1.9-2.9 1.2-.2 1.3h-5.5l-.8-1.3-4.1-.3-2 1.1-1.5-.5-3-3.7-1-1.8-4 .9-1.5 2.9-1.3 5.7-1.9 1.2-1.7.7 3.8 2.5 3.1 2.6.1 2 3.8 3.4 2.4 2.7 1.5 3.8 4.2 2.5.9 2.1 3.5 5.2 2.5.8 1.5-1.1 2.6.4 3.1-1.3 1.4 2.7 5 4.2 2.3-1.7 3.5 1.4 4.5-1.5 4 .1 3.4-3 3.4-3.8 3.8-4.2-3.5-6.9-2.6-1.5-1-2.5-2.9-3.1-3.4-.5 1.8-3.6 3-.1.8-2-.2-5-.8-.1v-3.1z"/>
+          <path class="p" data-i="40" d="M1150.5 736.6l-2.7-1.2-1.6.5-.7 1.8-1.6 2.4-.1 2.2 3 3.5 3.3-.7 1.3-2.8-.3-2.8-.6-2.9z"/>
+          <path class="m" data-i="41" d="M1108.4 447.6l-22.4-12.2-22.3-12.2-5.4 3.5 1.6 9.9 2 1.6.2 2.1 2.3 2.2-1.1 2.7-1.8 12.9-.2 8.3-6.9 6-2.3 8.4 2.4 2.3v4.1l3.6.2-.5 2.9 2.2 4.1.5 4.2-.2 4.3 3.1 5.8-3.1-.1-1.6.4-2.5-.6-1.2 3 3.3 3.7 2.5 1.1.8 2.6 1.8 4.4-.9 1.7 4.7-.4 1-1.7.9.2 1.4 1.4 7.1-2.4 2.3-2.5 2.9-2.2-.6-2.3 1.6-.6 5.4.4 5.2-2.9 4-7 2.8-2.5 3.5-1.1v-1.6l-2.1-1.8-.1-3.7-1.2-2.5-2 .4.5-2.4 1.4-2.6-.7-2.7 1.8-1.9-1.2-1.5 1.4-3.9 2.4-4.7 4.8.4-1.1-25.2z"/>
+          <path class="m" data-i="42" d="M981.7 502.2l-4.9-.1-.4 1.9 2.4 3.3-.1 4.6.6 5.1 1.4 2.3-1.2 5.7.4 3.2 1.5 4 1.2 2.2 4.6-1.3-1.4-4.4.2-14.6-1.1-1.3-.2-3.1-2-2.3-1.7-1.9.7-3.3z"/>
+          <path class="p" data-i="43" d="M1038 361.4l-2-1-1.5-3-2.8-.1-1.1-3.5 3.4-3.2.5-5.6-1.9-1.6-.1-3 2.5-3.2-.4-1.3-4.4 2.4.1-3.3-3.7-.7-5.6 2.6-1 3.3 1 6.2-1.1 5.3-3.2 3.6.6 4.8 4.5 3.8v1.5l3.4 2.6 2.6 11.3 2.6-1.4.4-2.7-.7-2.6 3.7-2.5 1.5-2 2.6-1.8.1-4.9z"/>
+          <path class="p" data-i="44" d="M1149.6 578.6l-2 .8 2.3 3.6-.4 3.7-1.6.8.3 2.5 1.2 1.5v2l-1.4 1.4-2.2 3.3-2.1 2.3-.6.1-.3 2.7 1.1.9-.2 2.7 1 2.6-1.3 2.4 4.5 4.3.3 3.9 2.7 6.5.3.2 2.2 1.1 3.5 1.1 3.2 1.9 5.4 1.2 1.1 1.7.4-1.2 2.8 3.4.3 6.7 1.8 2.4v.1l2.1-.3 6.7 1.8 1.4-.8 3.9-.1 2.1-1.9 3.3.1 6.2-2.5 4.6-3.7-2-1.4-2.2-6.3-1.8-3.9.4-3.1-.3-1.9 1.7-3.9-.2-1.6-3.5-2.3-.3-3.6 2.8-7.9-8-6.3-.4-3.7-20.2-13-2.8 2.8-1.9 2.9 2.2 2.2-3.2 1.6-.7-.8-3.2.4-2.5 1.4-1.6-2.4 1.1-4.5.2-3.8-6.2-.1z"/>
+          <path class="p" data-i="45" d="M1167.6 545.1l-3.4 3-4-.1-4.5 1.5-3.5-1.4-2.3 1.7-.3 7.5 2.3.8-1.8 2.3-2.2 1.7-2.1 3.3-1.2 3-.3 5.1-1.3 2.4-.1 4.8 1.4.6 3.3-1.9 2-.8 6.2.1-.3-2.5 2.6-3.7 3.5-.9 2.4-1.5 2.9 1.2.3.5v-.3l1.6-2.6 2.7-4.2 2.1-4.7-2.6-7.3-.7-3.2-2.7-4.4z"/>
+          <path class="p" data-i="46" d="M1148.2 713.7l-2.9-.6-1.9.8-2.6-1.1-2.2-.1-8 4.7-5.2 4.7-2 4.3-1.7 2.4-3 .5-1.2 3-.6 2-3.6 1.5-4.4-.3-2.5-1.8-2.3-.8-2.7 1.5-1.5 3.1-2.7 1.9-2.8 2.8-4 .7-1.1-2.3.7-3.8-3-6.1-1.4-1-1.1 23.6-5 3.2-2.9.5-3.3-1.2-2.4-.5-.8-2.7-2.1-1.8-2.7 3.2 3.5 8.2v.1l2.5 5.3 3.2 6-.2 4.8-1.7 1.2 1.4 4.2-.2 3.8.6 1.7.3-.9 2.1 2.9 1.8.1 2.1 2.3 2.4-.2 3.5-2.4 4.6-1 5.6-2.5 2.2.3 3.3-.8 5.7 1.2 2.7-1.2 3.2 1 .8-1.8 2.7-.3 5.8-2.5 4.3-2.9 4.1-3.8 6.7-6.5 3.4-4.6 1.8-3.2 2.5-3.3 1.2-.9 3.9-3.2 1.6-2.9 1.1-5.2 1.7-4.7h-4.1l-1.3 2.8-3.3.7-3-3.5.1-2.2 1.6-2.4.7-1.8 1.6-.5 2.7 1.2-.4-2.3 1.4-7.1-1.1-4.5-2.2-9zm-20.1 52.8l-2 .6-3.7-4.9 3.2-4 3.1-2.5 2.6-1.3 2.3 2 1.7 1.9-1.9 3.1-1.1 2.1-3.1 1-1.1 2z"/>
+          <path class="p" data-i="47" d="M1149.2 626.7l-1.9-.5.4-1.3-1-.3-7.5 1.1-1.6.7-1.6 4.1 1.2 2.8-1.2 7.5-.8 6.4 1.4 1.1 3.9 2.5 1.5-1.2.3 6.9h-4.3l-2.1-3.5-2-2.8-4.3-.8-1.2-3.4-3.4 2-4.5-.9-1.8-2.8-3.5-.6-2.6.1-.3-2-1.9-.1.5 2-.7 3 .9 3-.9 2.4.5 2.2-11.6-.1-.8 20.3 3.6 5.2 3.5 4 4.6-1.5 3.6.4 2.1 1.4v.5l1 .5 6.2.7 1.7.7 1.9-.1 3.2-4.1 5.1-5.3 2-.5.7-2.2 3.3-2.5 4.2-.9-.3-4.5 17.1-5.2-2.9-1.7 1.9-5.9 1.8-2.2-.9-5.3 1.2-5.1 1-1.8-1.2-5.4-2.6-2.8-3.2-1.9-3.5-1.1-2.2-1.1-.3-.2.5 1.1-1 .4-1.2-1.4z"/>
+          <path class="p" data-i="48" d="M1148.2 713.7l6.2-7.2 1.6-4.6.9-.6.8-3.7-.8-1.9.5-4.7 1.3-4.4.3-8.1-2.8-2-2.6-.5-1.1-1.6-2.6-1.3-4.6.1-.3-2.4-4.2.9-3.3 2.5-.7 2.2-2 .5-5.1 5.3-3.2 4.1-1.9.1-1.7-.7-6.2-.7 1.9 5.1 1.1 1.1 1.6 3.7 6 7 2.3.7-.1 2.2 1.5 4.1 4.2.9 3.4 2.9 2.2.1 2.6 1.1 1.9-.8 2.9.6z"/>
+                </g>
+                <path class="meridien" d="M985.5 531 C 986 440, 990 340, 990 262" />
+                <circle class="pt com" data-i="com" cx="1219" cy="648" r="3.2" />
+                <text class="s" x="1226" y="652">Comores</text>
+                <circle class="pt" cx="990" cy="258" r="3.4" /><text x="997" y="262">Paris</text>
+                <circle class="pt" cx="981" cy="533" r="3.1" /><text x="975" y="547" text-anchor="end">Lomé</text>
+                <circle class="pt" cx="990.5" cy="533" r="3.1" /><text x="997" y="547">Cotonou</text>
+              </svg>
+              <p class="legende" aria-live="polite">Dix-sept États membres</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec nuit" id="distinctions">
+        <div class="wrap art">
+          <p class="manchette"><b>Distinctions</b><span>Datées et sourcées</span></p>
+          <div>
+            <div class="tete"><div><h2>Une exigence reconnue</h2></div></div>
+            <ol class="frise" data-stagger>
+              <li><time datetime="1987">1987</time><p>Fondation du cabinet à Lomé</p><span>Me Coffi Alexis Aquereburu</span></li>
+              <li><time datetime="2010">2010</time><p>Prix d’excellence qualité du Togo et de l’UEMOA</p><span>UEMOA</span></li>
+              <li><time datetime="2016">2016</time><p>World Quality Commitment, catégorie Or</p><span>BID, Paris</span></li>
+              <li><time datetime="2017">2017</time><p>Meilleure société d’avocats d’affaires au Togo</p><span>Lawyer Monthly Legal Awards</span></li>
+              <li><time datetime="2019">2019</time><p>Première société d’avocats en propriété intellectuelle au Togo</p><span>Global Law Expert</span></li>
+              <li><time datetime="2019">2019</time><p>Certification ISO 9001, version 2015</p><span>AFAQ</span></li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec" id="equipe">
+        <div class="wrap art">
+          <p class="manchette"><b>Équipe</b><span>Quatorze avocats et juristes</span></p>
+          <div>
+            <div class="tete">
+              <div><h2>Les associés</h2><p>Chaque avocat est inscrit au tableau de l’Ordre ; sa fiche précise son barreau et ses domaines.</p></div>
+              <a class="lien" href="#">Toute l’équipe <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+            </div>
+            <div class="trois" data-stagger>
+              <a href="#"><div class="pp coin"><img src="img2/c-aquereburu.webp" width="534" height="667" alt="Coffi Alexis Aquereburu" loading="lazy" /></div><div class="plaque"><b>Coffi Alexis Aquereburu</b><span>Associé fondateur</span><i>Avocat au Barreau du Togo</i></div></a>
+              <a href="#"><div class="pp coin"><img src="img2/c-adama.webp" width="195" height="222" alt="Claude Folly Adama" loading="lazy" /></div><div class="plaque"><b>Claude Folly Adama</b><span>Banque, finance et fiscalité</span><i>Avocat au Barreau du Togo</i></div></a>
+              <a href="#"><div class="pp coin"><img src="img2/c-bakoh.webp" width="258" height="342" alt="Kossi Apow Bakoh" loading="lazy" /></div><div class="plaque"><b>Kossi Apow Bakoh</b><span>Droit social et pénal</span><i>Avocat au Barreau du Togo, 2006</i></div></a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="fondation" id="fondation">
+        <div class="wrap">
+          <h2>La Fondation Aquereburu &amp; Partners</h2>
+          <div><p>Engagée pour le développement social, éducatif et environnemental du Togo, à travers des actions concrètes et durables.</p><a class="btn blanc" href="#">Découvrir la Fondation <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="pied" id="contact">
+      <div class="wrap haut">
+        <div class="rdv">
+          <h2>Prendre rendez-vous</h2>
+          <p>Décrivez votre situation en quelques lignes. Votre demande est lue par un avocat, sous le sceau du secret professionnel.</p>
+          <div class="acts" style="margin: 0">
+            <a class="btn blanc" href="#">Écrire au cabinet <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+            <a class="btn contour" href="tel:+22822210505">+228 22 21 05 05</a>
+          </div>
+        </div>
+        <div class="bureaux">
+          <div><h3>Lomé</h3><p class="r">Siège</p><address>777, avenue Kléber Dadjo<br />08 BP 8989<br />Lomé, Togo</address></div>
+          <div><h3>Paris</h3><p class="r">Bureau</p><address>23, rue de la Victoire<br />75009 Paris<br />France</address></div>
+          <div><h3>Cotonou</h3><p class="r">Bureau</p><p>Bénin<br />Sur rendez-vous</p></div>
+        </div>
+      </div>
+      <div class="wrap">
+        <div class="acte">
+          <p class="fait"><span data-fait>Fait à Lomé.</span><small>SCP Aquereburu &amp; Partners, société civile professionnelle d’avocats inscrite au Barreau du Togo. Exercice conforme au règlement UEMOA relatif à la profession d’avocat.</small></p>
+          <svg class="sceau" viewBox="0 0 300 340" aria-hidden="true">
+            <defs>
+              <path id="arc-sceau" d="M 35 148 Q 150 55 265 148" />
+              <filter id="timbre" x="-6%" y="-6%" width="112%" height="112%">
+                <feOffset in="SourceAlpha" dx="1.3" dy="1.3" result="o1" data-l="-1" />
+                <feComposite in="SourceAlpha" in2="o1" operator="out" result="clair" />
+                <feFlood flood-color="#a9c3de" flood-opacity="0.62" />
+                <feComposite in2="clair" operator="in" result="L" />
+                <feOffset in="SourceAlpha" dx="-1.3" dy="-1.3" result="o2" data-l="1" />
+                <feComposite in="SourceAlpha" in2="o2" operator="out" result="sombre" />
+                <feFlood flood-color="#02070c" flood-opacity="0.72" />
+                <feComposite in2="sombre" operator="in" result="D" />
+                <feFlood flood-color="#ffffff" flood-opacity="0.028" />
+                <feComposite in2="SourceAlpha" operator="in" result="F" />
+                <feMerge><feMergeNode in="F" /><feMergeNode in="D" /><feMergeNode in="L" /></feMerge>
+              </filter>
+            </defs>
+            <g filter="url(#timbre)"><use href="#pays" transform="translate(-342.2, -91.9) scale(0.46)" /></g>
+            <g filter="url(#timbre)"><g fill="#7B8DB5" stroke="none"> <path d=" M 112,260 L 109,260 L 142,120 L 146,118 L 148,120 L 116,260 Z "/> <path d=" M 148,120 L 150,118 L 170,260 L 167,260 L 148,124 Z "/> <path d=" M 122,213 L 122,210 L 162,210 L 162,213 Z "/> </g> <g fill="#1B2A4A" stroke="none"> <path d=" M 150,96 L 157,96 L 157,266 L 162,266 L 162,270 L 145,270 L 145,266 L 150,266 Z "/> <path d=" M 150,100 L 157,100 C 162,98 170,96 180,98 C 195,102 205,118 203,138 C 201,158 188,170 174,172 C 165,173 157,168 157,168 L 157,160 C 157,160 164,165 172,164 C 184,162 194,152 196,138 C 198,122 190,110 180,106 C 172,103 164,106 157,112 L 150,112 Z "/> </g> <text font-family="'Georgia','Times New Roman',serif" font-size="12" font-weight="700" fill="#1B2A4A" letter-spacing="2.5"> <textPath href="#arc-sceau" startOffset="50%" text-anchor="middle">AQUEREBURU &amp; PARTNERS</textPath> </text> <text x="150" y="298" text-anchor="middle" font-family="'Georgia','Times New Roman',serif" font-size="14" font-style="italic" fill="#1B2A4A" letter-spacing="1">Société d'Avocats</text></g>
+          </svg>
+        </div>
+      </div>
+      <div class="bas">
+        <div class="wrap">
+          <span>© Aquereburu &amp; Partners</span>
+          <ul><li><a href="#">Mentions légales</a></li><li><a href="#">Confidentialité</a></li><li><a href="#">Déontologie</a></li></ul>
+        </div>
+      </div>
+    </footer>
+
+    <a class="back" href="index.html">← Toutes les maquettes</a>
+
+    <script src="vendor/gsap.min.js"></script>
+    <script src="vendor/ScrollTrigger.min.js"></script>
+    <script src="vendor/lenis.min.js"></script>
+    <script src="shared.js"></script>
+    <script>
+      const FIN = matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+      // ——— Ouverture
+      window.addEventListener('intro', () => {
+        if (REDUCE) return;
+        gsap.from('.hero-img img', { scale: 1.12, duration: 2.4, ease: 'expo.out' });
+        gsap.from('.hero h1 .wi', { yPercent: 115, duration: 1.15, ease: 'expo.out', stagger: 0.045, delay: 0.1 });
+        gsap.from('.hero .sur, .hero .ch, .hero .acts', { opacity: 0, y: 16, duration: 0.9, ease: 'expo.out', stagger: 0.08, delay: 0.4 });
+        gsap.from('.reperes ul', { y: 40, opacity: 0, duration: 1.1, ease: 'expo.out', delay: 0.55 });
+      });
+      if (!REDUCE) gsap.to('.hero-img img', { yPercent: -9, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+
+      // ——— La lampe : le voile bleu se lève là où se trouve le curseur, jamais sous le texte
+      const hero = document.querySelector('.hero');
+      if (FIN && !REDUCE) {
+        const lampe = { x: 0, y: 0, tx: 0, ty: 0, on: false };
+        const place = () => {
+          const r = hero.getBoundingClientRect();
+          lampe.tx = lampe.x = r.width * 0.76;
+          lampe.ty = lampe.y = r.height * 0.44;
+        };
+        place();
+        hero.addEventListener('mousemove', (e) => {
+          const r = hero.getBoundingClientRect();
+          lampe.tx = Math.max(r.width * 0.68, e.clientX - r.left);
+          lampe.ty = e.clientY - r.top;
+          lampe.on = true;
+        });
+        hero.addEventListener('mouseleave', place);
+        addEventListener('resize', place);
+        gsap.ticker.add(() => {
+          lampe.x += (lampe.tx - lampe.x) * 0.07;
+          lampe.y += (lampe.ty - lampe.y) * 0.07;
+          hero.style.setProperty('--lx', lampe.x.toFixed(1) + 'px');
+          hero.style.setProperty('--ly', lampe.y.toFixed(1) + 'px');
+        });
+      }
+
+      // ——— Répertoire à onglets
+      const tabs = [...document.querySelectorAll('.tabs [role=tab]')];
+      const choisir = (tab, focus) => {
+        const prev = tabs.find((t) => t.getAttribute('aria-selected') === 'true');
+        if (prev === tab) return;
+        tabs.forEach((t) => { const on = t === tab; t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1; });
+        document.querySelectorAll('.pan').forEach((p) => (p.hidden = p.id !== tab.getAttribute('aria-controls')));
+        const pan = document.getElementById(tab.getAttribute('aria-controls'));
+        if (focus) tab.focus();
+        tab.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+        if (REDUCE) return;
+        gsap.fromTo(pan.querySelector('.gl'), { yPercent: 34, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.6, ease: 'expo.out' });
+        gsap.fromTo(pan.querySelectorAll('li'), { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, ease: 'expo.out', stagger: 0.055, delay: 0.05 });
+      };
+      tabs.forEach((t, i) => {
+        t.addEventListener('click', () => choisir(t));
+        t.addEventListener('keydown', (e) => {
+          const pas = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+          let j = null;
+          if (pas) j = (i + pas + tabs.length) % tabs.length;
+          else if (e.key === 'Home') j = 0;
+          else if (e.key === 'End') j = tabs.length - 1;
+          if (j === null) return;
+          e.preventDefault();
+          choisir(tabs[j], true);
+        });
+      });
+
+      // ——— Carte de l'espace OHADA : liste et carte se répondent
+      const legende = document.querySelector('.legende');
+      const formes = [...document.querySelectorAll('.carte [data-i]')].filter((el) => el.classList.contains('m') || el.classList.contains('com'));
+      const boutons = [...document.querySelectorAll('.etats button')];
+      const precision = { 42: ', siège du cabinet à Lomé', 3: ', bureau de Cotonou' };
+      const allumer = (i) => {
+        formes.forEach((f) => f.classList.toggle('on', f.dataset.i === i));
+        boutons.forEach((b) => b.classList.toggle('on', b.dataset.i === i));
+        const b = boutons.find((x) => x.dataset.i === i);
+        legende.textContent = b ? (b.dataset.nom || b.textContent) + (precision[i] || '') : 'Dix-sept États membres';
+      };
+      formes.forEach((f) => { f.addEventListener('mouseenter', () => allumer(f.dataset.i)); f.addEventListener('mouseleave', () => allumer(null)); });
+      boutons.forEach((b) => {
+        b.addEventListener('mouseenter', () => allumer(b.dataset.i));
+        b.addEventListener('focus', () => allumer(b.dataset.i));
+        b.addEventListener('mouseleave', () => allumer(null));
+        b.addEventListener('blur', () => allumer(null));
+      });
+      if (!REDUCE) {
+        // les États membres se remplissent d'ouest en est, puis le méridien de Paris se trace
+        const membres = [...document.querySelectorAll('.carte .m')].sort((a, b) => a.getBBox().x - b.getBBox().x);
+        const mer = document.querySelector('.meridien');
+        const long = mer.getTotalLength();
+        gsap.timeline({ scrollTrigger: { trigger: '.carte', start: 'top 72%' } })
+          .from(membres, { fill: '#e4eaf2', duration: 0.5, stagger: 0.045, ease: 'power1.out', clearProps: 'fill' })
+          .from('.carte .pt, .carte text', { opacity: 0, duration: 0.5, stagger: 0.05 }, '-=0.3')
+          .fromTo(mer, { strokeDasharray: long, strokeDashoffset: long }, { strokeDashoffset: 0, duration: 1.1, ease: 'power2.inOut', onComplete: () => gsap.set(mer, { clearProps: 'strokeDasharray,strokeDashoffset' }) }, '-=0.5');
+        // la frise se trace avec le défilement
+        gsap.fromTo('.frise', { '--trace': 0 }, { '--trace': 1, ease: 'none', scrollTrigger: { trigger: '.frise', start: 'top 85%', end: 'top 45%', scrub: true } });
+      }
+
+      // ——— Le pied de page se referme comme un acte : date du jour, timbre sec éclairé par le curseur
+      const fait = document.querySelector('[data-fait]');
+      fait.textContent = 'Fait à Lomé, le ' + new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Africa/Lome' }).format(new Date()).replace(/^1 /, '1er ') + '.';
+      if (FIN && !REDUCE) {
+        const sceau = document.querySelector('.sceau');
+        const decalages = [...sceau.querySelectorAll('feOffset')];
+        let cible = { x: -0.707, y: -0.707 };
+        const cur = { x: -0.707, y: -0.707 };
+        document.querySelector('.pied').addEventListener('mousemove', (e) => {
+          const r = sceau.getBoundingClientRect();
+          const dx = e.clientX - (r.left + r.width / 2);
+          const dy = e.clientY - (r.top + r.height / 2);
+          const n = Math.hypot(dx, dy) || 1;
+          cible = { x: dx / n, y: dy / n };
+        });
+        gsap.ticker.add(() => {
+          cur.x += (cible.x - cur.x) * 0.08;
+          cur.y += (cible.y - cur.y) * 0.08;
+          decalages.forEach((o) => {
+            const s = +o.dataset.l * 1.85;
+            o.setAttribute('dx', (cur.x * s).toFixed(2));
+            o.setAttribute('dy', (cur.y * s).toFixed(2));
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

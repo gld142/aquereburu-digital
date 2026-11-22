@@ -30,7 +30,7 @@ export default async function CommitmentPage({ params }: { params: Promise<{ loc
         crumbs={[{ label: fr ? 'Cabinet' : 'Firm', href: '/cabinet' }, { label: fr ? 'Engagement' : 'Commitment' }]}
         aside={
           foundationUrl ? (
-            <a href={foundationUrl} className="btn btn-primary" rel="noopener">
+            <a href={foundationUrl} className="btn" rel="noopener">
               {fr ? 'Site de la Fondation' : 'Foundation website'}
             </a>
           ) : undefined

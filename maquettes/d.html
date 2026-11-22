@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>D. Prétoire — Aquereburu &amp; Partners</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Libre+Franklin:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="shared.css" />
+    <style>
+      :root {
+        --noir: #0a0a0b;
+        --char: #141415;
+        --papier: #f2f0ea;
+        --blanc: #f6f4ef;
+        --gris: #8d8c87;
+        --encre: #16161a;
+        --bordeaux: #8a2231;
+        --trait: rgba(246, 244, 239, 0.16);
+        --trait-n: rgba(22, 22, 26, 0.16);
+        --display: 'Libre Caslon Display', 'Times New Roman', serif;
+        --serif: 'Libre Caslon Text', Georgia, serif;
+        --sans: 'Libre Franklin', system-ui, sans-serif;
+        --pad: clamp(20px, 4.6vw, 76px);
+        --mnav-bg: var(--noir);
+        --mnav-fg: var(--blanc);
+        --focus: #d9a3ab;
+      }
+      body { background: var(--noir); color: var(--blanc); font-family: var(--sans); font-size: 16px; line-height: 1.55; }
+      .cap { font: 500 12px/1.3 var(--sans); letter-spacing: 0.2em; text-transform: uppercase; }
+
+      .loader { background: var(--noir); }
+      .l-in { text-align: center; }
+      .l-in b { display: block; font: 400 clamp(22px, 2.4vw, 32px) / 1 var(--display); letter-spacing: 0.02em; }
+      .l-in i { display: block; height: 2px; width: min(240px, 50vw); margin: 20px auto 0; background: var(--bordeaux); }
+
+      /* En-tête */
+      .top { position: fixed; inset: 0 0 auto 0; z-index: 60; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 22px var(--pad); transition: background 0.4s, padding 0.4s, border-color 0.4s; border-bottom: 1px solid transparent; }
+      .scrolled .top { background: rgba(10, 10, 11, 0.92); backdrop-filter: blur(14px); padding-block: 14px; border-color: var(--trait); }
+      .logo { font: 600 13px/1 var(--sans); letter-spacing: 0.24em; text-transform: uppercase; white-space: nowrap; padding-block: 10px; }
+      .logo span { color: var(--gris); font-weight: 400; }
+      .top nav { display: flex; gap: clamp(18px, 2.4vw, 40px); font-size: 14px; }
+      .top nav a, .rdv { position: relative; padding: 6px 0; }
+      .top nav a::after, .rdv::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
+      .top nav a:hover::after, .rdv::after { transform: scaleX(1); transform-origin: left; }
+      .rdv { font-size: 14px; font-weight: 500; white-space: nowrap; }
+      .top .r { display: flex; align-items: center; gap: 22px; }
+      .menu-btn { font: 500 13px var(--sans); letter-spacing: 0.16em; text-transform: uppercase; padding: 8px 0; }
+      .mnav a { font-family: var(--display); }
+
+      /* Hero */
+      .hero { position: relative; height: 100svh; min-height: 620px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
+      .hero-media { position: absolute; inset: -5% 0; }
+      .hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: 36% 50%; }
+      .hero::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(10, 10, 11, 0.62) 0%, rgba(10, 10, 11, 0.05) 30%, rgba(10, 10, 11, 0.35) 58%, rgba(10, 10, 11, 0.96) 100%); }
+      .hero-in { position: relative; z-index: 2; padding: 0 var(--pad); display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; align-items: end; }
+      .hero-t { grid-column: 1 / 9; padding-left: clamp(16px, 2.2vw, 34px); position: relative; }
+      .hero-t::before { content: ''; position: absolute; left: 0; top: 0.4em; bottom: 0.5em; width: 3px; background: var(--bordeaux); transform-origin: top; }
+      .hero .cap { color: rgba(246, 244, 239, 0.78); margin-bottom: 20px; }
+      h1 { font: 400 clamp(40px, 7.3vw, 128px) / 0.98 var(--display); letter-spacing: -0.015em; }
+      .hero-s { grid-column: 9 / 13; padding-bottom: 8px; }
+      .hero-s p { font: 400 clamp(15px, 1.12vw, 17.5px) / 1.6 var(--serif); color: rgba(246, 244, 239, 0.86); }
+      .acts { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+      .btn { display: inline-flex; align-items: center; min-height: 46px; padding: 0 22px; font: 500 14px var(--sans); letter-spacing: 0.02em; border: 1px solid var(--blanc); transition: background 0.3s, color 0.3s, border-color 0.3s; }
+      .btn.f { background: var(--blanc); color: var(--noir); }
+      .btn.f:hover { background: var(--bordeaux); border-color: var(--bordeaux); color: var(--blanc); }
+      .btn.o:hover { background: var(--blanc); color: var(--noir); }
+      .facts { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(3, 1fr); margin: clamp(28px, 4.5vh, 54px) var(--pad) 0; border-top: 1px solid var(--trait); }
+      .facts li { padding: 18px 0 22px; font-size: 13.5px; color: rgba(246, 244, 239, 0.8); }
+      .facts li + li { padding-left: 22px; border-left: 1px solid var(--trait); }
+      .facts b { display: block; font: 500 11.5px var(--sans); letter-spacing: 0.2em; text-transform: uppercase; color: var(--gris); margin-bottom: 4px; }
+
+      /* Sections */
+      .sec { padding: clamp(84px, 12vw, 180px) var(--pad); display: grid; grid-template-columns: repeat(12, 1fr); gap: clamp(20px, 2.4vw, 40px); }
+      .sec.l { background: var(--papier); color: var(--encre); --trait: var(--trait-n); --focus: var(--bordeaux); }
+      .sec.c { background: var(--char); }
+      .mk { grid-column: 1 / 4; }
+      .mk i { display: block; font: 400 clamp(30px, 3vw, 44px) / 1 var(--display); font-style: normal; color: var(--bordeaux); margin-bottom: 10px; }
+      .sec:not(.l) .mk i { color: #c9727f; }
+      .mk .cap { color: var(--gris); }
+      .body { grid-column: 4 / 13; }
+      .lead { font: 400 clamp(26px, 3.5vw, 58px) / 1.14 var(--display); letter-spacing: -0.01em; max-width: 22ch; }
+      .vals { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(20px, 3vw, 48px); margin-top: clamp(48px, 7vw, 100px); }
+      .vals li { border-top: 1px solid var(--trait); padding-top: 18px; position: relative; }
+      .vals li::before { content: ''; position: absolute; left: 0; top: -1px; width: 28px; height: 2px; background: var(--bordeaux); }
+      .vals h3 { font: 400 clamp(20px, 1.7vw, 26px) / 1.2 var(--display); margin-bottom: 8px; }
+      .vals p { font: 400 15.5px/1.6 var(--serif); opacity: 0.8; }
+
+      .plate { position: relative; height: clamp(360px, 78vh, 820px); overflow: hidden; }
+      .plate img { position: absolute; inset: -12% 0; width: 100%; height: 124%; object-fit: cover; }
+      .plate::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(10, 10, 11, 0.82) 0%, rgba(10, 10, 11, 0.2) 62%, rgba(10, 10, 11, 0.4) 100%); }
+      .plate blockquote { position: absolute; z-index: 2; left: var(--pad); bottom: clamp(40px, 9vh, 96px); margin: 0; max-width: 17ch; font: italic 400 clamp(30px, 4.6vw, 78px) / 1.06 var(--serif); letter-spacing: -0.015em; }
+
+      .idx { display: grid; grid-template-columns: 1fr 1fr; column-gap: clamp(24px, 4vw, 72px); border-top: 1px solid var(--trait); }
+      .idx a { display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 18px; padding: 22px 0; border-bottom: 1px solid var(--trait); position: relative; transition: padding-left 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+      .idx a::before { content: ''; position: absolute; left: 0; top: 50%; width: 0; height: 2px; background: #c9727f; transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+      .idx a:hover { padding-left: 34px; }
+      .idx a:hover::before { width: 22px; }
+      .idx b { font: 400 clamp(20px, 2vw, 30px) / 1.15 var(--display); }
+      .idx span { font-size: 13.5px; color: var(--gris); text-align: right; }
+      .more { display: inline-block; margin-top: 34px; font: 500 14px var(--sans); border-bottom: 1px solid currentColor; padding-bottom: 4px; }
+
+      .people { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2.4vw, 40px); }
+      .people figure { margin: 0; }
+      .ph { aspect-ratio: 4 / 5; overflow: hidden; background: #e2e0da; }
+      .ph img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 12%; transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+      .people a:hover .ph img { transform: scale(1.045); }
+      .people figcaption { padding-top: 16px; border-top: 2px solid var(--encre); margin-top: 14px; }
+      .people b { display: block; font: 400 clamp(19px, 1.7vw, 25px) / 1.2 var(--display); }
+      .people span { font-size: 13.5px; color: #5d5c58; }
+      .note { margin-top: 34px; max-width: 58ch; font: 400 15.5px/1.6 var(--serif); color: #45443f; }
+
+      .rk { border-top: 1px solid var(--trait); }
+      .rk li { display: grid; grid-template-columns: clamp(86px, 11vw, 170px) 1fr auto; gap: 20px; align-items: baseline; padding: 22px 0; border-bottom: 1px solid var(--trait); }
+      .rk time { font: 400 clamp(26px, 3vw, 46px) / 1 var(--display); font-variant-numeric: lining-nums tabular-nums; }
+      .rk p { font: 400 clamp(16px, 1.25vw, 19px) / 1.45 var(--serif); }
+      .rk span { font-size: 13.5px; color: var(--gris); text-align: right; }
+
+      .end { padding: clamp(84px, 12vw, 170px) var(--pad) 28px; }
+      .end h2 { font: 400 clamp(40px, 8vw, 138px) / 0.98 var(--display); letter-spacing: -0.02em; max-width: 12ch; }
+      .end .acts { margin-top: 34px; }
+      .offices { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(20px, 3vw, 48px); margin-top: clamp(60px, 9vw, 130px); padding-top: 26px; border-top: 1px solid var(--trait); }
+      .offices h3 { font: 400 22px/1.2 var(--display); margin-bottom: 8px; }
+      .offices p, .offices address { font-size: 14.5px; line-height: 1.6; color: rgba(246, 244, 239, 0.74); }
+      .legal { margin-top: clamp(50px, 7vw, 90px); padding: 20px 0 70px; border-top: 1px solid var(--trait); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 12.5px; color: var(--gris); }
+
+      @media (max-width: 900px) {
+        .top nav, .rdv { display: none; }
+        .hero-t, .hero-s { grid-column: 1 / -1; }
+        .hero-in { gap: 18px; }
+        .facts { grid-template-columns: 1fr; }
+        .facts li { padding: 12px 0; display: flex; gap: 12px; align-items: baseline; }
+        .facts li + li { padding-left: 0; border-left: 0; border-top: 1px solid var(--trait); }
+        .facts b { margin: 0; min-width: 9.5em; }
+        .hero { height: auto; min-height: 100svh; padding-top: 110px; }
+        .mk, .body { grid-column: 1 / -1; }
+        .mk { display: flex; align-items: baseline; gap: 14px; }
+        .mk i { margin: 0; }
+        .vals, .idx, .offices { grid-template-columns: 1fr; }
+        .people { grid-template-columns: 1fr 1fr; }
+        .rk li { grid-template-columns: 78px 1fr; }
+        .rk span { grid-column: 2; text-align: left; }
+        .idx span { display: none; }
+      }
+      @media (max-width: 520px) {
+        .people { grid-template-columns: 1fr; }
+        .ph { aspect-ratio: 5 / 4; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="loader"><div class="l-in"><b>Aquereburu &amp; Partners</b><i data-bar></i></div></div>
+
+    <header class="top">
+      <a class="logo" href="#" aria-label="Aquereburu &amp; Partners, accueil">Aquereburu <span>&amp;</span> Partners</a>
+      <nav aria-label="Navigation principale">
+        <a href="#cabinet">Cabinet</a><a href="#expertises">Expertises</a><a href="#associes">Associés</a><a href="#distinctions">Distinctions</a>
+      </nav>
+      <div class="r">
+        <a class="rdv" href="#contact">Prendre rendez-vous</a>
+        <button class="menu-btn" data-menu aria-expanded="false" aria-controls="mnav">Menu</button>
+      </div>
+    </header>
+    <nav class="mnav" id="mnav" aria-label="Menu">
+      <a href="#cabinet">Cabinet</a><a href="#expertises">Expertises</a><a href="#associes">Associés</a><a href="#distinctions">Distinctions</a><a href="#contact">Contact</a>
+      <button class="cap" data-menu style="margin-top: 28px; text-align: left">Fermer</button>
+    </nav>
+
+    <main>
+      <section class="hero" data-intro data-solid-after>
+        <div class="hero-media"><img src="img2/robe-nb.webp" width="1800" height="1007" alt="" fetchpriority="high" /></div>
+        <div class="hero-in">
+          <div class="hero-t">
+            <p class="cap">Société d’avocats, fondée à Lomé en 1987</p>
+            <h1 data-split>Construire demain<br />en s’inspirant d’hier.</h1>
+          </div>
+          <div class="hero-s">
+            <p>Nous conseillons et défendons entreprises, investisseurs et États en droit des affaires OHADA, arbitrage, propriété intellectuelle et financement de projets.</p>
+            <div class="acts"><a class="btn f" href="#expertises">Nos expertises</a><a class="btn o" href="#contact">Nous contacter</a></div>
+          </div>
+        </div>
+        <ul class="facts">
+          <li><b>Bureaux</b>Lomé, Paris, Cotonou</li>
+          <li><b>Barreau</b>Ordre des avocats du Togo</li>
+          <li><b>Qualité</b>Certifié ISO 9001:2015</li>
+        </ul>
+      </section>
+
+      <section class="sec l" id="cabinet">
+        <div class="mk"><i>I.</i><p class="cap">Le cabinet</p></div>
+        <div class="body">
+          <p class="lead" data-scrubtext>Près de quarante ans de dossiers nous ont appris que le droit se gagne avant l’audience : dans la clause que l’on rédige et dans le risque que l’on voit venir.</p>
+          <ul class="vals" data-stagger>
+            <li><h3>Culture du progrès</h3><p>Le droit change, nos clients aussi. Nous adaptons nos méthodes sans renoncer à ce qui a fait ses preuves.</p></li>
+            <li><h3>Excellence et rigueur</h3><p>Chaque dossier suit un processus qualité certifié : relecture, traçabilité, délais tenus.</p></li>
+            <li><h3>Intégrité intransigeante</h3><p>Secret professionnel, indépendance et loyauté ne se négocient pas, quel que soit l’enjeu.</p></li>
+          </ul>
+        </div>
+      </section>
+
+      <div class="plate">
+        <img src="img2/bibliotheque-nb.webp" width="2000" height="886" alt="Bibliothèque juridique" loading="lazy" decoding="async" data-parallax="8" />
+        <blockquote data-split>La mémoire des dossiers, au service des suivants.</blockquote>
+      </div>
+
+      <section class="sec c" id="expertises">
+        <div class="mk"><i>II.</i><p class="cap">Expertises</p></div>
+        <div class="body">
+          <div class="idx" data-stagger>
+            <a href="#"><b>Arbitrage</b><span>CCJA, CCI, CIRDI</span></a>
+            <a href="#"><b>Énergie et ressources naturelles</b><span>Pétrole, gaz, mines</span></a>
+            <a href="#"><b>Banque et finance</b><span>Financements, sûretés</span></a>
+            <a href="#"><b>Financement de projets</b><span>Infrastructures</span></a>
+            <a href="#"><b>Contentieux des affaires</b><span>Litiges commerciaux</span></a>
+            <a href="#"><b>Fintech et numérique</b><span>Paiements, données</span></a>
+            <a href="#"><b>Corporate et droit OHADA</b><span>Sociétés, fusions</span></a>
+            <a href="#"><b>Partenariats public-privé</b><span>Concessions</span></a>
+            <a href="#"><b>Droit public</b><span>Marchés publics</span></a>
+            <a href="#"><b>Propriété intellectuelle</b><span>Mandataire OAPI</span></a>
+          </div>
+          <a class="more" href="#">Consulter les 24 domaines d’intervention</a>
+        </div>
+      </section>
+
+      <section class="sec l" id="associes">
+        <div class="mk"><i>III.</i><p class="cap">Les associés</p></div>
+        <div class="body">
+          <div class="people" data-stagger>
+            <a href="#"><figure><div class="ph"><img src="img2/p-aquereburu.webp" width="534" height="667" alt="Coffi Alexis Aquereburu" loading="lazy" /></div><figcaption><b>Coffi Alexis Aquereburu</b><span>Associé fondateur</span></figcaption></figure></a>
+            <a href="#"><figure><div class="ph"><img src="img2/p-adama.webp" width="195" height="222" alt="Claude Folly Adama" loading="lazy" /></div><figcaption><b>Claude Folly Adama</b><span>Associé, banque, finance et fiscalité</span></figcaption></figure></a>
+            <a href="#"><figure><div class="ph"><img src="img2/p-bakoh.webp" width="258" height="342" alt="Kossi Apow Bakoh" loading="lazy" /></div><figcaption><b>Kossi Apow Bakoh</b><span>Associé, droit social et pénal</span></figcaption></figure></a>
+          </div>
+          <p class="note">Chaque avocat du cabinet est inscrit au tableau de l’Ordre. Sa fiche précise son barreau, les juridictions devant lesquelles il plaide et ses activités déclarées. <a class="more" href="#" style="margin: 0">Voir toute l’équipe</a></p>
+        </div>
+      </section>
+
+      <section class="sec" id="distinctions">
+        <div class="mk"><i>IV.</i><p class="cap">Distinctions</p></div>
+        <div class="body">
+          <ol class="rk" data-stagger>
+            <li><time datetime="2019">2019</time><p>Certification ISO 9001, version 2015</p><span>AFAQ</span></li>
+            <li><time datetime="2019">2019</time><p>Première société d’avocats en propriété intellectuelle au Togo</p><span>Global Law Expert</span></li>
+            <li><time datetime="2017">2017</time><p>Meilleure société d’avocats d’affaires au Togo</p><span>Lawyer Monthly Legal Awards</span></li>
+            <li><time datetime="2016">2016</time><p>World Quality Commitment, catégorie Or</p><span>BID, Paris</span></li>
+            <li><time datetime="2010">2010</time><p>Prix d’excellence qualité du Togo et de l’UEMOA</p><span>UEMOA</span></li>
+          </ol>
+        </div>
+      </section>
+    </main>
+
+    <footer class="end" id="contact">
+      <h2 data-split>Prendre rendez-vous.</h2>
+      <div class="acts"><a class="btn f" href="#">Écrire au cabinet</a><a class="btn o" href="tel:+22822210505">+228 22 21 05 05</a></div>
+      <div class="offices" data-stagger>
+        <div><h3>Lomé</h3><address>777, avenue Kléber Dadjo<br />08 BP 8989, Lomé, Togo</address></div>
+        <div><h3>Paris</h3><address>23, rue de la Victoire<br />75009 Paris, France</address></div>
+        <div><h3>Cotonou</h3><p>Bénin<br />Sur rendez-vous</p></div>
+      </div>
+      <div class="legal"><span>SCP Aquereburu &amp; Partners, société civile professionnelle d’avocats inscrite au Barreau du Togo.</span><span>Mentions légales · Confidentialité · Déontologie</span></div>
+    </footer>
+
+    <a class="back" href="index.html">← Toutes les maquettes</a>
+
+    <script src="vendor/gsap.min.js"></script>
+    <script src="vendor/ScrollTrigger.min.js"></script>
+    <script src="vendor/lenis.min.js"></script>
+    <script src="shared.js"></script>
+    <script>
+      window.addEventListener('intro', () => {
+        if (REDUCE) return;
+        gsap.from('.hero-media img', { scale: 1.22, duration: 2.6, ease: 'expo.out' });
+        gsap.from('.hero h1 .wi', { yPercent: 118, duration: 1.35, ease: 'expo.out', stagger: 0.06, delay: 0.1 });
+        gsap.from('.hero .cap, .hero-s > *, .facts li, .top > *', { opacity: 0, y: 16, duration: 1, ease: 'expo.out', stagger: 0.05, delay: 0.6 });
+      });
+      if (!REDUCE) {
+        gsap.timeline({ scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } })
+          .to('.hero-media', { yPercent: 10, scale: 1.06, ease: 'none' }, 0)
+          .to('.hero-in', { yPercent: -18, opacity: 0.2, ease: 'none' }, 0);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,144 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+img {
+  display: block;
+  max-width: 100%;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+h1,
+h2,
+h3,
+p,
+ul {
+  margin: 0;
+  padding: 0;
+}
+ul,
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.w {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+.wi {
+  display: inline-block;
+  will-change: transform;
+}
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+}
+.loader [data-bar] {
+  transform: scaleX(0);
+  transform-origin: left;
+}
+[data-marquee] {
+  overflow: hidden;
+  white-space: nowrap;
+}
+[data-marquee] > * {
+  display: inline-flex;
+  will-change: transform;
+}
+/* Retour à la planche de comparaison */
+.back {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 90;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font: 500 13px/1 system-ui, sans-serif;
+  background: rgba(20, 20, 20, 0.72);
+  color: #fff;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+/* Accessibilité et menu mobile communs aux maquettes D, E, F */
+:focus-visible {
+  outline: 2px solid var(--focus, currentColor);
+  outline-offset: 3px;
+}
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+address {
+  font-style: normal;
+}
+.menu-btn {
+  display: none;
+}
+.mnav {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 var(--pad);
+  background: var(--mnav-bg, #000);
+  color: var(--mnav-fg, #fff);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s, visibility 0.35s;
+}
+.menu-open .mnav {
+  opacity: 1;
+  visibility: visible;
+}
+.mnav a {
+  font-size: clamp(30px, 8.4vw, 52px);
+  line-height: 1.15;
+  padding: 8px 0;
+}
+@media (max-width: 900px) {
+  .menu-btn {
+    display: inline-flex;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

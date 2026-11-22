@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
-import { PageHead } from '@/components/ui';
+import { Gravure } from '@/components/gravure';
+import { PageHead, Section, capitale, enLettres } from '@/components/ui';
 import { ExpertiseIndex, type ExpertiseRow } from '@/components/expertise-index';
 import { practiceGroups, type PracticeGroup } from '@/content/practices';
 import type { Locale } from '@/content/site';
@@ -48,10 +49,19 @@ export default async function ExpertisesPage({ params }: { params: Promise<{ loc
             : 'Advisory, transactions, disputes: every matter is led by a responsible partner and the team they bring together, in Lomé, Paris or Cotonou.'
         }
         crumbs={[{ label: fr ? 'Expertises' : 'Expertise' }]}
+        aside={<Gravure nom="avocat" largeur="clamp(40px, 3.6vw, 52px)" className="g-tete" />}
       />
-      <div className="shell py-12 md:py-16">
+      <Section
+        id="index"
+        label={fr ? 'Pratiques' : 'Practices'}
+        gloss={
+          fr
+            ? `${capitale(enLettres(rows.length, locale))} pratiques, par ordre alphabétique`
+            : `${capitale(enLettres(rows.length, locale))} practices, in alphabetical order`
+        }
+      >
         <ExpertiseIndex rows={rows} groups={groups} locale={locale} />
-      </div>
+      </Section>
     </>
   );
 }

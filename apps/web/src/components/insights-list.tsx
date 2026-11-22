@@ -1,7 +1,6 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Search } from 'lucide-react';
 import { Link } from '@/i18n/routing';
 import type { Locale } from '@/content/site';
 import { fold } from '@/lib/content';
@@ -50,13 +49,16 @@ export function InsightsList({
   return (
     <div>
       <div className="grid gap-3 md:grid-cols-12">
-        <label className="relative block md:col-span-5">
+        <label className="champ-icone md:col-span-5">
           <span className="sr-only">{fr ? 'Rechercher une publication' : 'Search insights'}</span>
-          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate" aria-hidden />
-          <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder={fr ? 'Sujet, texte, mot-clé' : 'Topic, statute, keyword'} className="field pl-9" />
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+            <circle cx="11" cy="11" r="6.5" />
+            <path d="m16 16 4.5 4.5" />
+          </svg>
+          <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder={fr ? 'Sujet, texte, mot-clé' : 'Topic, statute, keyword'} className="field" />
         </label>
         <label className="md:col-span-3">
-          <span className="sr-only">{fr ? 'Type' : 'Type'}</span>
+          <span className="sr-only">{fr ? 'Format' : 'Format'}</span>
           <select value={type} onChange={(e) => setType(e.target.value)} className="field">
             <option value="">{fr ? 'Tous les formats' : 'All formats'}</option>
             {types.map((t) => (
@@ -88,16 +90,16 @@ export function InsightsList({
         </label>
       </div>
 
-      <p className="t-small mt-6 text-slate" aria-live="polite">
+      <p className="t-glose mt-8 pb-3" aria-live="polite">
         {visible.length} {fr ? (visible.length > 1 ? 'publications' : 'publication') : visible.length > 1 ? 'items' : 'item'}
       </p>
 
       {visible.length === 0 ? (
-        <div className="mt-4 border-t border-rule py-12">
-          <p className="t-ui">{fr ? 'Aucune publication ne correspond à ces critères.' : 'No insight matches these criteria.'}</p>
+        <div className="filet py-10">
+          <p className="t-h3">{fr ? 'Aucune publication ne correspond à ces critères.' : 'No insight matches these criteria.'}</p>
           <button
             type="button"
-            className="link t-ui mt-2 text-accent"
+            className="lien mt-4"
             onClick={() => {
               setQ('');
               setType('');
@@ -109,23 +111,21 @@ export function InsightsList({
           </button>
         </div>
       ) : (
-        <ul className="mt-4 border-t border-ink">
+        <ul className="pubs">
           {visible.map((r) => (
-            <li key={r.slug} className="grid gap-x-10 gap-y-2 border-b border-rule py-8 md:grid-cols-12">
-              <p className="t-small text-slate md:col-span-3">
+            <li key={r.slug} className="pub">
+              <p className="t-glose">
                 {r.typeLabel}
                 <br className="hidden md:block" />
                 <span className="md:hidden">, </span>
                 <time dateTime={r.date}>{r.dateLabel}</time>
               </p>
-              <div className="md:col-span-8">
-                <h2 className="t-h3">
-                  <Link href={{ pathname: '/publications/[slug]', params: { slug: r.slug } }} className="hover:text-accent">
-                    {r.title}
-                  </Link>
+              <div>
+                <h2>
+                  <Link href={{ pathname: '/publications/[slug]', params: { slug: r.slug } }}>{r.title}</Link>
                 </h2>
-                <p className="t-body mt-2 text-[1.0625rem] text-ink-2">{r.summary}</p>
-                <p className="t-small mt-3 text-slate">{r.practices.map((p) => p.name).join(', ')}</p>
+                <p className="mt-2">{r.summary}</p>
+                <p className="t-small mt-3">{r.practices.map((p) => p.name).join(', ')}</p>
               </div>
             </li>
           ))}
