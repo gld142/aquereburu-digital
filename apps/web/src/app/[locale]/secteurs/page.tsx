@@ -3,6 +3,8 @@ import { setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
 import { Fleche, PageHead, Section, capitale, enLettres } from '@/components/ui';
 import type { Locale } from '@/content/site';
+import { Fragment } from 'react';
+import { Gravure, Pause } from '@/components/gravure';
 import { practiceContent, practiceHref, sectorList, sortByName } from '@/lib/content';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -28,6 +30,7 @@ export default async function SectorsPage({ params }: { params: Promise<{ locale
             : 'Knowing our clients’ business, its standard contracts, regulators and risks is what makes advice useful.'
         }
         crumbs={[{ label: fr ? 'Secteurs' : 'Sectors' }]}
+        aside={<Gravure nom="port" largeur="clamp(132px, 15vw, 210px)" className="g-tete" />}
       />
       <Section
         id="index"
@@ -39,10 +42,13 @@ export default async function SectorsPage({ params }: { params: Promise<{ locale
         }
       >
         <ul className="filet">
-          {list.map((p) => {
+          {list.map((p, i) => {
             const c = practiceContent(p, locale);
             return (
-              <li key={p.slug}>
+              <Fragment key={p.slug}>
+                {i === 3 && <Pause nom="pecheurs" largeur="clamp(150px, 16vw, 220px)" />}
+                {i === 6 && <Pause nom="tailleur" cote="gauche" largeur="clamp(112px, 12vw, 170px)" />}
+              <li>
                 <Link href={practiceHref(p)} className="ligne">
                   <b>{c.name}</b>
                   <span>
@@ -52,6 +58,7 @@ export default async function SectorsPage({ params }: { params: Promise<{ locale
                   <Fleche strokeWidth={1.8} />
                 </Link>
               </li>
+              </Fragment>
             );
           })}
         </ul>

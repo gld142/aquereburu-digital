@@ -114,6 +114,7 @@ export function Section({
   heading = false,
   lecture = true,
   plein = false,
+  marge,
   className,
   children,
 }: {
@@ -126,6 +127,8 @@ export function Section({
   lecture?: boolean;
   /** La manchette passe au-dessus du contenu, qui prend toute la largeur */
   plein?: boolean;
+  /** Petit dessin posé dans la marge, sous la manchette (sur son filet à l'écran étroit) */
+  marge?: React.ReactNode;
   className?: string;
   children: React.ReactNode;
 }) {
@@ -138,10 +141,20 @@ export function Section({
       className={clsx('sec', lecture && 'lecture', tone, tone === 'nuit' && 'sur-sombre', className)}
     >
       <div className={clsx('shell art', plein && 'plein')}>
-        <Marge className="manchette" id={heading ? labelId : undefined}>
-          <b>{label}</b>
-          {gloss && <span>{gloss}</span>}
-        </Marge>
+        {marge ? (
+          <div className="marge-bloc">
+            <Marge className="manchette" id={heading ? labelId : undefined}>
+              <b>{label}</b>
+              {gloss && <span>{gloss}</span>}
+            </Marge>
+            {marge}
+          </div>
+        ) : (
+          <Marge className="manchette" id={heading ? labelId : undefined}>
+            <b>{label}</b>
+            {gloss && <span>{gloss}</span>}
+          </Marge>
+        )}
         <div className="min-w-0">{children}</div>
       </div>
     </section>

@@ -37,6 +37,7 @@ export default async function CommitmentPage({ params }: { params: Promise<{ loc
         }
       />
       <ProseSections
+        dessins={['ecoliers', null, 'barque']}
         sections={[
           {
             id: 'fondation',

@@ -1,11 +1,12 @@
 import { useLocale } from 'next-intl';
 import { Link } from '@/i18n/routing';
+import { Gravure } from '@/components/gravure';
 import { Fleche, Section } from '@/components/ui';
 
 export default function NotFound() {
   const fr = useLocale() === 'fr';
   return (
-    <Section label="404" gloss={fr ? 'Page introuvable' : 'Page not found'} className="min-h-[56vh]">
+    <Section marge={<Gravure nom="pirogue-plage" />} label="404" gloss={fr ? 'Page introuvable' : 'Page not found'} className="min-h-[56vh]">
       <h1 className="t-h1 max-w-[18ch]">{fr ? 'Cette page n’existe pas ou plus.' : 'This page does not exist.'}</h1>
       <p className="t-lead measure mt-5">
         {fr

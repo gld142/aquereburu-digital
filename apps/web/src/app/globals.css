@@ -4,6 +4,7 @@
 @import './styles/socle.css' layer(maquette);
 @import './styles/boutons.css' layer(maquette);
 @import './styles/gravures.css' layer(maquette);
+@import './styles/scenes.css' layer(maquette);
 @import './styles/accueil-hero.css' layer(maquette);
 @import './styles/accueil-repertoire.css' layer(maquette);
 @import './styles/accueil-ohada.css' layer(maquette);
